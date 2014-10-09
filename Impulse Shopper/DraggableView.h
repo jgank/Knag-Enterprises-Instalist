@@ -48,12 +48,14 @@
 
 @property (nonatomic, strong)UIPanGestureRecognizer *panGestureRecognizer;
 @property (nonatomic)CGPoint originalPoint;
+@property (nonatomic)CGPoint imagePoint;
 @property (nonatomic,strong)OverlayView* overlayView;
 @property (nonatomic,strong)UILabel* information; //%%% a placeholder for any card-specific information
 @property (nonatomic,strong)UIImageView *imageView;
 @property (nonatomic,strong)PSSProduct *product;
+@property (nonatomic,strong)NSDictionary *item;
 
 -(void)leftClickAction;
 -(void)rightClickAction;
-
++ (UIImage *)imageWithImage:(UIImage *)image scaledToSize:(CGSize)newSize;
 @end

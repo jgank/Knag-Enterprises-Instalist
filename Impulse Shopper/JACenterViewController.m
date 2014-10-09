@@ -29,6 +29,8 @@
 #import <SDWebImage/UIImageView+WebCache.h>
 #import "DraggableViewBackground.h"
 #import "DraggableView.h"
+#import "XMLReader.h"
+#import "WebViewController.h"
 
 @interface JACenterViewController ()
 
@@ -36,6 +38,8 @@
 @property (nonatomic, retain) WKWebView *webView;
 @property (nonatomic, retain) UIView *contentView;
 @property (nonatomic, strong) NSArray *products;
+@property (nonatomic, strong) NSArray *detailURLs;
+@property (nonatomic, strong) DraggableView *draggableView;
 @property (readwrite, assign) int productIndex;
 
 @end
@@ -49,12 +53,57 @@
         //[self.view addSubview:_contentView];
 
     }
+
     return self;
 }
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    NSString *str=[[NSBundle mainBundle] pathForResource:@"Electronics" ofType:@"xml"];
+ 
+    NSData *data = [NSData dataWithContentsOfFile:str];
+    NSError *error = nil;
+    NSDictionary *dict = [XMLReader dictionaryForXMLData:data options:XMLReaderOptionsProcessNamespaces error:&error];
+    NSDictionary *list = [dict objectForKey:@"root"];
+    NSArray *arg = [list objectForKey:@"Item"];
+    NSMutableArray *pics = [[NSMutableArray alloc] init];
+    NSMutableArray *dURLs = [[NSMutableArray alloc] init];
     
+    
+    NSLog(@"%i", [arg count]);
+    for (id i in arg) {
+        if(![i objectForKey:@"LargeImage"])
+            continue;
+        NSLog(@"%@", [[i objectForKey:@"LargeImage"] objectForKey:@"text"]);
+        [pics addObject:[NSString stringWithFormat:@"%@", [[i objectForKey:@"LargeImage"] objectForKey:@"text"]]];
+        [dURLs addObject:[NSString stringWithFormat:@"%@", [[i objectForKey:@"DetailPageURL"] objectForKey:@"text"]]];
+        NSLog(@"%@", [[i objectForKey:@"ASIN"] objectForKey:@"text"]);
+    }
+    _products = pics;
+    _detailURLs = dURLs;
+    _productIndex = 0;
+    [self showProduct];
+    NSLog(@"%i", [arg count]);
+    
+    for (id i in list) {
+        //NSLog(@"%@", [[i valueForKey:@"ASIN"] valueForKey:@"text"]);
+        //jNSLog(@"%@", i);
+    }
+    
+    /*
+    if (![list isKindOfClass:[NSArray class]])
+    {
+        // if 'list' isn't an array, we create a new array containing our object
+        list = [NSArray arrayWithObject:list];
+        //NSLog(@"%i", [list count]);
+        for (id i in list) {
+            NSLog(@"%@", [[[i valueForKey:@"Item"] valueForKey:@"ASIN"] valueForKey:@"text"]);
+            NSLog(@"%@", i);
+        }
+    }
+     */
+
+    return;
     
     PSSProductQuery *productQuery = [[PSSProductQuery alloc] init];
     productQuery.searchTerm = @"jeans";
@@ -72,7 +121,6 @@
         NSLog(@"Request failed with error: %@", error);
     }];
     
-    return;
     
     WKUserContentController *contentController = [[WKUserContentController alloc] init];
     [contentController addScriptMessageHandler:self name:@"callbackHandler"];
@@ -115,15 +163,28 @@
     
     
 }
+-(void)go {
+    /*
+    self.draggableView.alpha = 0.0f;
+    [UIView animateWithDuration:1.0f animations:^ {
+        self.draggableView.alpha = 1.0f;
+    }];
+    [NSTimer scheduledTimerWithTimeInterval:4.0f target:self selector:@selector(go) userInfo:nil repeats:NO];
+     */
+}
 -(void)showProduct {
     
     if([_products count] > 0) {
         DraggableViewBackground *back = [[DraggableViewBackground alloc] initWithFrame:self.view.frame setArr:_products];
         for(int i = 0; i < [_products count]; i++) {
             DraggableView *b = [back.allCards objectAtIndex:i];
-            [b setProduct:[_products objectAtIndex:i]];
+//            [b setProduct:[_products objectAtIndex:i]];
+            [b setItem:[_products objectAtIndex:i]];
         }
-        [self.view addSubview:back];
+        self.draggableView = back;
+        [self.view addSubview:self.draggableView];
+        
+        [NSTimer scheduledTimerWithTimeInterval:4.0f target:self selector:@selector(go) userInfo:nil repeats:NO];
     }
     
     return;
@@ -133,6 +194,7 @@
     [self.view addSubview:imgView];
     
 }
+
 - (void)webView:(WKWebView *)webView decidePolicyForNavigationAction:(WKNavigationAction *)navigationAction decisionHandler:(void (^)(WKNavigationActionPolicy))decisionHandler {
     
     NSLog(@"decide poligy");
@@ -164,7 +226,7 @@ didFinishNavigation:(WKNavigation *)navigation {
     NSLog(@"did finish navigation");
 }
 - (void)webView:(WKWebView *)webView didReceiveServerRedirectForProvisionalNavigation:(WKNavigation *)navigation {
-    NSLog(@"trying to load %@", navigation.request.URL.absoluteString);
+    //NSLog(@"trying to load %@", navigation.request.URL.absoluteString);
 }
 - (void)userContentController:(WKUserContentController *)userContentController didReceiveScriptMessage:(WKScriptMessage *)message {
     NSLog(@"user content controller %@", message.body);

@@ -27,12 +27,17 @@
 		52CCC69219AE93CB00464A46 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 52CCC68E19AE93CB00464A46 /* UIKit.framework */; };
 		52F1900A19AF9F4D00606C5C /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 52F1900919AF9F4D00606C5C /* WebKit.framework */; };
 		A07576660AD94FA8B57F540B /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 89FAADAE8CAB497B9353AD67 /* libPods.a */; };
+		EF0B8A5D19E62FB400EA1B6E /* combine.xml in Resources */ = {isa = PBXBuildFile; fileRef = EF0B8A5C19E62FB400EA1B6E /* combine.xml */; };
+		EF0B8A6119E6590700EA1B6E /* Electronics.xml in Resources */ = {isa = PBXBuildFile; fileRef = EF0B8A6019E6590700EA1B6E /* Electronics.xml */; };
+		EF0B8A6419E7387B00EA1B6E /* WebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EF0B8A6319E7387B00EA1B6E /* WebViewController.m */; };
+		EF0B8A6619E738A500EA1B6E /* WebViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = EF0B8A6519E738A500EA1B6E /* WebViewController.xib */; };
 		EF86F90619BEE84A0023A507 /* DraggableViewBackground.m in Sources */ = {isa = PBXBuildFile; fileRef = EF86F90119BEE84A0023A507 /* DraggableViewBackground.m */; };
 		EF86F90719BEE84A0023A507 /* DraggableView.m in Sources */ = {isa = PBXBuildFile; fileRef = EF86F90319BEE84A0023A507 /* DraggableView.m */; };
 		EF86F90819BEE84A0023A507 /* OverlayView.m in Sources */ = {isa = PBXBuildFile; fileRef = EF86F90519BEE84A0023A507 /* OverlayView.m */; };
-		EF86F91219BEEE3D0023A507 /* ALView+PureLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = EF86F90A19BEEE3D0023A507 /* ALView+PureLayout.m */; };
-		EF86F91319BEEE3D0023A507 /* NSArray+PureLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = EF86F90C19BEEE3D0023A507 /* NSArray+PureLayout.m */; };
-		EF86F91419BEEE3D0023A507 /* NSLayoutConstraint+PureLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = EF86F90E19BEEE3D0023A507 /* NSLayoutConstraint+PureLayout.m */; };
+		EFEE5C5419E47B18009BD5D2 /* XMLReader.m in Sources */ = {isa = PBXBuildFile; fileRef = EFEE5C5319E47B18009BD5D2 /* XMLReader.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
+		EFEE5C6219E4A98A009BD5D2 /* ALView+PureLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = EFEE5C5A19E4A98A009BD5D2 /* ALView+PureLayout.m */; };
+		EFEE5C6319E4A98A009BD5D2 /* NSArray+PureLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = EFEE5C5C19E4A98A009BD5D2 /* NSArray+PureLayout.m */; };
+		EFEE5C6419E4A98A009BD5D2 /* NSLayoutConstraint+PureLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = EFEE5C5E19E4A98A009BD5D2 /* NSLayoutConstraint+PureLayout.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -79,21 +84,28 @@
 		52CCC68E19AE93CB00464A46 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		52F1900919AF9F4D00606C5C /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
 		89FAADAE8CAB497B9353AD67 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		EF0B8A5C19E62FB400EA1B6E /* combine.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = combine.xml; sourceTree = "<group>"; };
+		EF0B8A6019E6590700EA1B6E /* Electronics.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = Electronics.xml; sourceTree = "<group>"; };
+		EF0B8A6219E7387B00EA1B6E /* WebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WebViewController.h; sourceTree = "<group>"; };
+		EF0B8A6319E7387B00EA1B6E /* WebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WebViewController.m; sourceTree = "<group>"; };
+		EF0B8A6519E738A500EA1B6E /* WebViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WebViewController.xib; sourceTree = "<group>"; };
 		EF86F90019BEE84A0023A507 /* DraggableViewBackground.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DraggableViewBackground.h; sourceTree = "<group>"; };
 		EF86F90119BEE84A0023A507 /* DraggableViewBackground.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DraggableViewBackground.m; sourceTree = "<group>"; };
 		EF86F90219BEE84A0023A507 /* DraggableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DraggableView.h; sourceTree = "<group>"; };
 		EF86F90319BEE84A0023A507 /* DraggableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DraggableView.m; sourceTree = "<group>"; };
 		EF86F90419BEE84A0023A507 /* OverlayView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OverlayView.h; sourceTree = "<group>"; };
 		EF86F90519BEE84A0023A507 /* OverlayView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OverlayView.m; sourceTree = "<group>"; };
-		EF86F90919BEEE3D0023A507 /* ALView+PureLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ALView+PureLayout.h"; sourceTree = "<group>"; };
-		EF86F90A19BEEE3D0023A507 /* ALView+PureLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "ALView+PureLayout.m"; sourceTree = "<group>"; };
-		EF86F90B19BEEE3D0023A507 /* NSArray+PureLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSArray+PureLayout.h"; sourceTree = "<group>"; };
-		EF86F90C19BEEE3D0023A507 /* NSArray+PureLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSArray+PureLayout.m"; sourceTree = "<group>"; };
-		EF86F90D19BEEE3D0023A507 /* NSLayoutConstraint+PureLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSLayoutConstraint+PureLayout.h"; sourceTree = "<group>"; };
-		EF86F90E19BEEE3D0023A507 /* NSLayoutConstraint+PureLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSLayoutConstraint+PureLayout.m"; sourceTree = "<group>"; };
-		EF86F90F19BEEE3D0023A507 /* PureLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PureLayout.h; sourceTree = "<group>"; };
-		EF86F91019BEEE3D0023A507 /* PureLayout+Internal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "PureLayout+Internal.h"; sourceTree = "<group>"; };
-		EF86F91119BEEE3D0023A507 /* PureLayoutDefines.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PureLayoutDefines.h; sourceTree = "<group>"; };
+		EFEE5C5219E47B18009BD5D2 /* XMLReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XMLReader.h; sourceTree = "<group>"; };
+		EFEE5C5319E47B18009BD5D2 /* XMLReader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XMLReader.m; sourceTree = "<group>"; };
+		EFEE5C5919E4A98A009BD5D2 /* ALView+PureLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ALView+PureLayout.h"; sourceTree = "<group>"; };
+		EFEE5C5A19E4A98A009BD5D2 /* ALView+PureLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "ALView+PureLayout.m"; sourceTree = "<group>"; };
+		EFEE5C5B19E4A98A009BD5D2 /* NSArray+PureLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSArray+PureLayout.h"; sourceTree = "<group>"; };
+		EFEE5C5C19E4A98A009BD5D2 /* NSArray+PureLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSArray+PureLayout.m"; sourceTree = "<group>"; };
+		EFEE5C5D19E4A98A009BD5D2 /* NSLayoutConstraint+PureLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSLayoutConstraint+PureLayout.h"; sourceTree = "<group>"; };
+		EFEE5C5E19E4A98A009BD5D2 /* NSLayoutConstraint+PureLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSLayoutConstraint+PureLayout.m"; sourceTree = "<group>"; };
+		EFEE5C5F19E4A98A009BD5D2 /* PureLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PureLayout.h; sourceTree = "<group>"; };
+		EFEE5C6019E4A98A009BD5D2 /* PureLayout+Internal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "PureLayout+Internal.h"; sourceTree = "<group>"; };
+		EFEE5C6119E4A98A009BD5D2 /* PureLayoutDefines.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PureLayoutDefines.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -149,15 +161,21 @@
 		52CCC65219AE90FD00464A46 /* Impulse Shopper */ = {
 			isa = PBXGroup;
 			children = (
-				EF86F90919BEEE3D0023A507 /* ALView+PureLayout.h */,
-				EF86F90A19BEEE3D0023A507 /* ALView+PureLayout.m */,
-				EF86F90B19BEEE3D0023A507 /* NSArray+PureLayout.h */,
-				EF86F90C19BEEE3D0023A507 /* NSArray+PureLayout.m */,
-				EF86F90D19BEEE3D0023A507 /* NSLayoutConstraint+PureLayout.h */,
-				EF86F90E19BEEE3D0023A507 /* NSLayoutConstraint+PureLayout.m */,
-				EF86F90F19BEEE3D0023A507 /* PureLayout.h */,
-				EF86F91019BEEE3D0023A507 /* PureLayout+Internal.h */,
-				EF86F91119BEEE3D0023A507 /* PureLayoutDefines.h */,
+				EF0B8A6019E6590700EA1B6E /* Electronics.xml */,
+				EF0B8A5C19E62FB400EA1B6E /* combine.xml */,
+				EFEE5C5219E47B18009BD5D2 /* XMLReader.h */,
+				EFEE5C5319E47B18009BD5D2 /* XMLReader.m */,
+				EF0B8A6219E7387B00EA1B6E /* WebViewController.h */,
+				EF0B8A6319E7387B00EA1B6E /* WebViewController.m */,
+				EFEE5C5919E4A98A009BD5D2 /* ALView+PureLayout.h */,
+				EFEE5C5A19E4A98A009BD5D2 /* ALView+PureLayout.m */,
+				EFEE5C5B19E4A98A009BD5D2 /* NSArray+PureLayout.h */,
+				EFEE5C5C19E4A98A009BD5D2 /* NSArray+PureLayout.m */,
+				EFEE5C5D19E4A98A009BD5D2 /* NSLayoutConstraint+PureLayout.h */,
+				EFEE5C5E19E4A98A009BD5D2 /* NSLayoutConstraint+PureLayout.m */,
+				EFEE5C5F19E4A98A009BD5D2 /* PureLayout.h */,
+				EFEE5C6019E4A98A009BD5D2 /* PureLayout+Internal.h */,
+				EFEE5C6119E4A98A009BD5D2 /* PureLayoutDefines.h */,
 				EF86F90019BEE84A0023A507 /* DraggableViewBackground.h */,
 				EF86F90119BEE84A0023A507 /* DraggableViewBackground.m */,
 				EF86F90219BEE84A0023A507 /* DraggableView.h */,
@@ -181,6 +199,7 @@
 				52CCC65819AE90FD00464A46 /* AppDelegate.m */,
 				52CCC65D19AE90FD00464A46 /* ViewController.h */,
 				52CCC65E19AE90FD00464A46 /* ViewController.m */,
+				EF0B8A6519E738A500EA1B6E /* WebViewController.xib */,
 				52CCC66319AE90FD00464A46 /* Images.xcassets */,
 				52CCC65A19AE90FD00464A46 /* Impulse_Shopper.xcdatamodeld */,
 				52CCC65319AE90FD00464A46 /* Supporting Files */,
@@ -307,6 +326,9 @@
 				52CCC66419AE90FD00464A46 /* Images.xcassets in Resources */,
 				5245030119B8BF5800103542 /* View.xib in Resources */,
 				524502FE19B8BB4200103542 /* Main.storyboard in Resources */,
+				EF0B8A6619E738A500EA1B6E /* WebViewController.xib in Resources */,
+				EF0B8A5D19E62FB400EA1B6E /* combine.xml in Resources */,
+				EF0B8A6119E6590700EA1B6E /* Electronics.xml in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -359,19 +381,21 @@
 			files = (
 				52CCC68519AE920700464A46 /* JADebugViewController.m in Sources */,
 				52CCC65919AE90FD00464A46 /* AppDelegate.m in Sources */,
+				EFEE5C6419E4A98A009BD5D2 /* NSLayoutConstraint+PureLayout.m in Sources */,
 				52CCC68A19AE927200464A46 /* JACenterViewController.m in Sources */,
-				EF86F91419BEEE3D0023A507 /* NSLayoutConstraint+PureLayout.m in Sources */,
-				EF86F91219BEEE3D0023A507 /* ALView+PureLayout.m in Sources */,
-				EF86F91319BEEE3D0023A507 /* NSArray+PureLayout.m in Sources */,
 				52CCC68319AE920700464A46 /* JASidePanelController.m in Sources */,
+				EFEE5C6319E4A98A009BD5D2 /* NSArray+PureLayout.m in Sources */,
 				52CCC65619AE90FD00464A46 /* main.m in Sources */,
 				52CCC68419AE920700464A46 /* UIViewController+JASidePanel.m in Sources */,
 				EF86F90819BEE84A0023A507 /* OverlayView.m in Sources */,
 				EF86F90719BEE84A0023A507 /* DraggableView.m in Sources */,
+				EFEE5C5419E47B18009BD5D2 /* XMLReader.m in Sources */,
 				52CCC65F19AE90FD00464A46 /* ViewController.m in Sources */,
 				52CCC68619AE920700464A46 /* JALeftViewController.m in Sources */,
+				EF0B8A6419E7387B00EA1B6E /* WebViewController.m in Sources */,
 				52CCC65C19AE90FD00464A46 /* Impulse_Shopper.xcdatamodeld in Sources */,
 				EF86F90619BEE84A0023A507 /* DraggableViewBackground.m in Sources */,
+				EFEE5C6219E4A98A009BD5D2 /* ALView+PureLayout.m in Sources */,
 				52CCC68719AE920700464A46 /* JARightViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

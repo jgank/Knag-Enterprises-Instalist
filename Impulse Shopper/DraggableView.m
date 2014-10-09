@@ -46,13 +46,7 @@
         self.backgroundColor = [UIColor whiteColor];
         
         self.imageView = [[UIImageView alloc] init];
-        
-        
-        
-        
-        
-        
-            
+        self.backgroundColor = [UIColor clearColor];
 #warning placeholder stuff, replace with card-specific information }
         
         
@@ -62,8 +56,10 @@
         [self addGestureRecognizer:panGestureRecognizer];
         [self addSubview:information];
         
-        overlayView = [[OverlayView alloc]initWithFrame:CGRectMake(self.frame.size.width/2-100, 0, 100, 100)];
+        overlayView = [[OverlayView alloc]initWithFrame:CGRectMake(self.frame.size.width/2-100, self.frame.size.height/2.0-100, 100, 100)];
+        overlayView.layer.zPosition = 1;
         overlayView.alpha = 0;
+        overlayView.backgroundColor = [UIColor clearColor];
         [self addSubview:overlayView];
     }
     return self;
@@ -77,9 +73,51 @@
     self.layer.shadowOffset = CGSizeMake(1, 1);
 }
 
+-(void)setItem:(NSDictionary *)item {
+    _item = item;
+    _imageView.frame = self.frame;
+    [_imageView setImageWithURL:[NSURL URLWithString:_item] placeholderImage:nil options:SDWebImageRefreshCached];
+    /*
+    CGSize newSize = CGSizeMake(self.frame.size.width, self.frame.size.height);
+    UIGraphicsBeginImageContextWithOptions(newSize, NO, 0.0);
+    [_imageView.image drawInRect:CGRectMake(0, 0, newSize.width, newSize.height)];
+    UIImage *newImage = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    _imageView.image = newImage;
+     */
+//    eMake(288, 360);
+    _imageView.frame = CGRectMake(0, 0, 160, 360);
+    _imageView.layer.cornerRadius = 4;
+    _imageView.layer.shadowRadius = 3;
+    _imageView.layer.shadowOpacity = 0.2;
+    _imageView.layer.shadowOffset = CGSizeMake(1, 1);
+    _imageView.contentMode = UIViewContentModeScaleAspectFit;
+    
+//    [_imageView autoset]
+    [self addSubview:_imageView];
+    NSLog(@"set product");
+//    _imageView.autoresizingMask = (UIViewAutoresizingFlexibleBottomMargin|UIViewAutoresizingFlexibleHeight|UIViewAutoresizingFlexibleLeftMargin|UIViewAutoresizingFlexibleRightMargin|UIViewAutoresizingFlexibleTopMargin|UIViewAutoresizingFlexibleWidth);
+    [_imageView autoMatchDimension:ALDimensionHeight toDimension:ALDimensionHeight ofView:self];
+    [_imageView autoMatchDimension:ALDimensionWidth toDimension:ALDimensionWidth ofView:self];
+    [_imageView autoCenterInSuperview];
+    
+    
+//    UIGraphicsBeginImageContext(_imageView.bounds.size);
+//    [self.layer renderInContext:UIGraphicsGetCurrentContext()];
+//    UIImage *resultingImage = UIGraphicsGetImageFromCurrentImageContext();
+//    UIGraphicsEndImageContext();
+//    _imageView.image = resultingImage;
+//    [_imageView autoRemoveConstraintsAffectingView];
+//    _imageView.contentMode = 0;
+//    [_imageView autoMatchDimension:ALDimensionHeight toDimension:ALDimensionHeight ofView:self];
+//    [_imageView autoMatchDimension:ALDimensionWidth toDimension:ALDimensionWidth ofView:self];
+//    //    _imageView.contentMode = UIContentSizeCategoryMedium;
+//    [_imageView autoCenterInSuperviewMargins];
+}
 -(void)setProduct:(PSSProduct *)product {
     _product = product;
     [_imageView setImageWithURL:[_product.image imageURLWithSize:PSSProductImageSizeIPhone] placeholderImage:nil options:SDWebImageRefreshCached];
+//    [_imageView setImageWithURL:[NSURL URLWithString:_product] placeholderImage:nil options:SDWebImageRefreshCached];
     //_imageView.frame = CGRectMake(0, 0, self.frame.size.width/2, self.frame.size.height/2);
     //_imageView.frame = CGRectMake(0, 0, 160, 360);
     
@@ -120,6 +158,7 @@
             //%%% just started swiping
         case UIGestureRecognizerStateBegan:{
             self.originalPoint = self.center;
+//            self.imagePoint = _imageView.center;
             break;
         };
             //%%% in the middle of a swipe
@@ -135,6 +174,7 @@
             
             //%%% move the object's center by center + gesture coordinate
             self.center = CGPointMake(self.originalPoint.x + xFromCenter, self.originalPoint.y + yFromCenter);
+//            _imageView.center = CGPointMake(self.imagePoint.x + xFromCenter, self.imagePoint.y + yFromCenter);
             
             //%%% rotate by certain amount
             CGAffineTransform transform = CGAffineTransformMakeRotation(rotationAngel);
@@ -144,6 +184,7 @@
             
             //%%% apply transformations
             self.transform = scaleTransform;
+//            _imageView.transform = scaleTransform;
             [self updateOverlay:xFromCenter];
             
             break;
@@ -168,7 +209,7 @@
         overlayView.mode = GGOverlayViewModeLeft;
     }
     
-    overlayView.alpha = MIN(fabsf(distance)/100, 0.4);
+    overlayView.alpha = MAX(fabsf(distance)/100, 0.4);
 }
 
 //%%% called when the card is let go
@@ -182,7 +223,9 @@
         [UIView animateWithDuration:0.3
                          animations:^{
                              self.center = self.originalPoint;
+//                             _imageView.center = self.imagePoint;
                              self.transform = CGAffineTransformMakeRotation(0);
+//                             _imageView.transform = CGAffineTransformMakeRotation(0);
                              overlayView.alpha = 0;
                          }];
     }
@@ -252,6 +295,22 @@
     NSLog(@"NO");
 }
 
-
-
++ (UIImage *)imageWithImage:(UIImage *)image scaledToSize:(CGSize)newSize {
+    //UIGraphicsBeginImageContext(newSize);
+    // In next line, pass 0.0 to use the current device's pixel scaling factor (and thus account for Retina resolution).
+    // Pass 1.0 to force exact pixel size.
+    UIGraphicsBeginImageContextWithOptions(newSize, NO, 0.0);
+    [image drawInRect:CGRectMake(0, 0, newSize.width, newSize.height)];
+    UIImage *newImage = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    return newImage;
+}
+- (void) touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
+    UITouch *touch1 = [touches anyObject];
+    CGPoint touchLocation = [touch1 locationInView:self];
+    CGRect startRect = [[[self.imageView layer] presentationLayer] frame];
+    if(CGRectContainsPoint(startRect, touchLocation)){
+        NSLog(@"contains point");
+    }
+}
 @end
