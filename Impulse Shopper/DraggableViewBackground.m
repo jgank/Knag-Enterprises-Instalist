@@ -8,6 +8,7 @@
 
 #import "DraggableViewBackground.h"
 #import <POPSUGARShopSense.h>
+#import "PureLayout.h"
 
 @implementation DraggableViewBackground{
     NSInteger cardsLoadedIndex; //%%% the index of the card you have loaded into the loadedCards array last
@@ -17,6 +18,8 @@
     UIButton* messageButton;
     UIButton* checkButton;
     UIButton* xButton;
+    UILabel *titleLabel;
+    
 }
 //this makes it so only two cards are loaded at a time to
 //avoid performance and memory costs
@@ -24,7 +27,7 @@ static const int MAX_BUFFER_SIZE = 2; //%%% max number of cards loaded at any gi
 static const float CARD_HEIGHT = 386; //%%% height of the draggable card
 static const float CARD_WIDTH = 290; //%%% width of the draggable card
 
-@synthesize exampleCardLabels; //%%% all the labels I'm using as example data at the moment
+@synthesize Items; //%%% all the labels I'm using as example data at the moment
 @synthesize allCards;//%%% all the cards
 
 - (id)initWithFrame:(CGRect)frame setArr:(NSArray*)arr
@@ -33,7 +36,7 @@ static const float CARD_WIDTH = 290; //%%% width of the draggable card
     if (self) {
         [super layoutSubviews];
         [self setupView];
-        exampleCardLabels = arr;
+        Items = arr;
         //exampleCardLabels = [[NSArray alloc]initWithObjects:@"first",@"second",@"third",@"fourth",@"last", nil]; //%%% placeholder for card-specific information
         loadedCards = [[NSMutableArray alloc] init];
         allCards = [[NSMutableArray alloc] init];
@@ -58,10 +61,17 @@ static const float CARD_WIDTH = 290; //%%% width of the draggable card
     checkButton = [[UIButton alloc]initWithFrame:CGRectMake(200, 485, 59, 59)];
     [checkButton setImage:[UIImage imageNamed:@"checkButton"] forState:UIControlStateNormal];
     [checkButton addTarget:self action:@selector(swipeRight) forControlEvents:UIControlEventTouchUpInside];
+    titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(self.frame.size.width/2.0, 34, self.frame.size.width/3.0*2, 46)];
+    titleLabel.numberOfLines = 0;
+    titleLabel.font = [UIFont systemFontOfSize:12];
+    titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
+    titleLabel.textAlignment = NSTextAlignmentCenter;
+
     [self addSubview:menuButton];
     [self addSubview:messageButton];
     [self addSubview:xButton];
     [self addSubview:checkButton];
+    [self addSubview:titleLabel];
 }
 
 #warning include own card customization here!
@@ -79,21 +89,33 @@ static const float CARD_WIDTH = 290; //%%% width of the draggable card
 //%%% loads all the cards and puts the first x in the "loaded cards" array
 -(void)loadCards
 {
-    if([exampleCardLabels count] > 0) {
-        NSInteger numLoadedCardsCap =(([exampleCardLabels count] > MAX_BUFFER_SIZE)?MAX_BUFFER_SIZE:[exampleCardLabels count]);
+    if([Items count] > 0) {
+        NSInteger numLoadedCardsCap =(([Items count] > MAX_BUFFER_SIZE)?MAX_BUFFER_SIZE:[Items count]);
         //%%% if the buffer size is greater than the data size, there will be an array error, so this makes sure that doesn't happen
         
         //%%% loops through the exampleCardsLabels array to create a card for each label.  This should be customized by removing "exampleCardLabels" with your own array of data
-        for (int i = 0; i<[exampleCardLabels count]; i++) {
+        for (int i = 0; i<[Items count]; i++) {
             DraggableView* newCard = [self createDraggableViewWithDataAtIndex:i];
             [allCards addObject:newCard];
             
-            if (i<numLoadedCardsCap) {
-                //%%% adds a small number of cards to be loaded
-                [loadedCards addObject:newCard];
-            }
+//            if (i<numLoadedCardsCap) {
+//                //%%% adds a small number of cards to be loaded
+//                [loadedCards addObject:newCard];
+//            }
         }
         
+        for (int i = 0; i < numLoadedCardsCap; i++) {
+            
+            cardsLoadedIndex = arc4random() % [allCards count];
+            [loadedCards addObject:[allCards objectAtIndex:cardsLoadedIndex]];
+        }
+        
+        titleLabel.text = [[Items[cardsLoadedIndex] objectForKey:@"Title"] objectForKey:@"text"];
+//        titleLabel.text = @"hello world";
+        NSLog(@"title label %@", titleLabel.text);
+//        [titleLabel autoAlignAxis:ALAxisVertical toSameAxisOfView:self];
+//        [titleLabel autoAlignAxis:ALAxisHorizontal toSameAxisOfView:menuButton];
+//        [titleLabel autoCenterInSuperview];
         //%%% displays the small number of loaded cards dictated by MAX_BUFFER_SIZE so that not all the cards
         // are showing at once and clogging a ton of data
         for (int i = 0; i<[loadedCards count]; i++) {
@@ -104,6 +126,11 @@ static const float CARD_WIDTH = 290; //%%% width of the draggable card
             }
             cardsLoadedIndex++; //%%% we loaded a card into loaded cards, so we have to increment
         }
+        [titleLabel autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:menuButton];
+        [titleLabel autoPinEdge:ALEdgeBottom toEdge:ALEdgeTop ofView:[loadedCards firstObject]];
+        [titleLabel autoPinEdge:ALEdgeLeft toEdge:ALEdgeRight ofView:menuButton];
+        [titleLabel autoPinEdge:ALEdgeRight toEdge:ALEdgeLeft ofView:messageButton];
+        [titleLabel autoSetDimension:ALDimensionWidth toSize:self.frame.size.width/3.0*2.0];
     }
 }
 
@@ -122,6 +149,7 @@ static const float CARD_WIDTH = 290; //%%% width of the draggable card
         NSLog(@"loaded index %i", cardsLoadedIndex);
         cardsLoadedIndex = arc4random() % [allCards count];
 //        cardsLoadedIndex++;//%%% loaded a card, so have to increment count
+                titleLabel.text = [[[(DraggableView*)loadedCards[0] item] objectForKey:@"Title"] objectForKey:@"text"];
         [self insertSubview:[loadedCards objectAtIndex:(MAX_BUFFER_SIZE-1)] belowSubview:[loadedCards objectAtIndex:(MAX_BUFFER_SIZE-2)]];
     }
 }
@@ -138,8 +166,12 @@ static const float CARD_WIDTH = 290; //%%% width of the draggable card
     
     if (cardsLoadedIndex < [allCards count]) { //%%% if we haven't reached the end of all cards, put another into the loaded cards
         [loadedCards addObject:[allCards objectAtIndex:cardsLoadedIndex]];
+        
         NSLog(@"loaded index %i", cardsLoadedIndex);
+        NSLog(@"card size %f, %f", [(DraggableView*)[loadedCards firstObject] imageView].image.size.width, [(DraggableView*)[loadedCards firstObject] imageView].image.size.height);
+        
         cardsLoadedIndex = arc4random() % [allCards count];
+                titleLabel.text = [[[(DraggableView*)loadedCards[0] item] objectForKey:@"Title"] objectForKey:@"text"];
 //        cardsLoadedIndex++;//%%% loaded a card, so have to increment count
         [self insertSubview:[loadedCards objectAtIndex:(MAX_BUFFER_SIZE-1)] belowSubview:[loadedCards objectAtIndex:(MAX_BUFFER_SIZE-2)]];
     }
@@ -166,6 +198,15 @@ static const float CARD_WIDTH = 290; //%%% width of the draggable card
         dragView.overlayView.alpha = 1;
     }];
     [dragView leftClickAction];
+}
+
+
+-(void)cardTapped:(UIView *)card{
+    [_delegate cardTapped:[loadedCards firstObject]];
+}
+-(DraggableView*)topObject {
+    
+    return [loadedCards firstObject];
 }
 
 /*

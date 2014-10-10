@@ -12,5 +12,6 @@
 
 @property (strong, nonatomic) IBOutlet UIWebView *webView;
 - (IBAction)donPressed:(id)sender;
+@property (strong, nonatomic) IBOutlet UIView *view;
 
 @end

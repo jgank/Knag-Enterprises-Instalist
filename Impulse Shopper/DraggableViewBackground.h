@@ -33,15 +33,26 @@
 #import <UIKit/UIKit.h>
 #import "DraggableView.h"
 
-@interface DraggableViewBackground : UIView <DraggableViewDelegate>
+@protocol DraggableViewBackgroundDelegate <NSObject>
 
+-(void)cardSwipedLeft:(UIView *)card;
+-(void)cardSwipedRight:(UIView *)card;
+-(void)cardTapped:(UIView *)card;
+
+@end
+@interface DraggableViewBackground : UIView <DraggableViewDelegate> {
+
+}
+
+@property (weak) id <DraggableViewBackgroundDelegate> delegate;
 //methods called in DraggableView
 -(void)cardSwipedLeft:(UIView *)card;
 -(void)cardSwipedRight:(UIView *)card;
 -(void)loadCards;
+-(DraggableView*)topObject;
 -(DraggableView *)createDraggableViewWithDataAtIndex:(NSInteger)index;
 - (id)initWithFrame:(CGRect)frame setArr:(NSArray*)arr;
-@property (retain,nonatomic)NSArray* exampleCardLabels; //%%% the labels the cards
+@property (retain,nonatomic)NSArray* Items; //%%% the labels the cards
 @property (retain,nonatomic)NSMutableArray* allCards; //%%% the labels the cards
 @property (retain,nonatomic)NSArray* products; //%%% the labels the cards
 

@@ -31,6 +31,7 @@
 #import "DraggableView.h"
 #import "XMLReader.h"
 #import "WebViewController.h"
+#import "UIWebViewController.h"
 
 @interface JACenterViewController ()
 
@@ -39,7 +40,7 @@
 @property (nonatomic, retain) UIView *contentView;
 @property (nonatomic, strong) NSArray *products;
 @property (nonatomic, strong) NSArray *detailURLs;
-@property (nonatomic, strong) DraggableView *draggableView;
+@property (nonatomic, strong) DraggableViewBackground *draggableView;
 @property (readwrite, assign) int productIndex;
 
 @end
@@ -74,10 +75,11 @@
     for (id i in arg) {
         if(![i objectForKey:@"LargeImage"])
             continue;
-        NSLog(@"%@", [[i objectForKey:@"LargeImage"] objectForKey:@"text"]);
-        [pics addObject:[NSString stringWithFormat:@"%@", [[i objectForKey:@"LargeImage"] objectForKey:@"text"]]];
-        [dURLs addObject:[NSString stringWithFormat:@"%@", [[i objectForKey:@"DetailPageURL"] objectForKey:@"text"]]];
-        NSLog(@"%@", [[i objectForKey:@"ASIN"] objectForKey:@"text"]);
+//        NSLog(@"%@", [[i objectForKey:@"LargeImage"] objectForKey:@"text"]);
+//        [pics addObject:[NSString stringWithFormat:@"%@", [[i objectForKey:@"LargeImage"] objectForKey:@"text"]]];
+//        [dURLs addObject:[NSString stringWithFormat:@"%@", [[i objectForKey:@"DetailPageURL"] objectForKey:@"text"]]];
+        [pics addObject:i];
+//        NSLog(@"%@", [[i objectForKey:@"ASIN"] objectForKey:@"text"]);
     }
     _products = pics;
     _detailURLs = dURLs;
@@ -89,6 +91,7 @@
         //NSLog(@"%@", [[i valueForKey:@"ASIN"] valueForKey:@"text"]);
         //jNSLog(@"%@", i);
     }
+    
     
     /*
     if (![list isKindOfClass:[NSArray class]])
@@ -176,6 +179,7 @@
     
     if([_products count] > 0) {
         DraggableViewBackground *back = [[DraggableViewBackground alloc] initWithFrame:self.view.frame setArr:_products];
+        back.delegate = self;
         for(int i = 0; i < [_products count]; i++) {
             DraggableView *b = [back.allCards objectAtIndex:i];
 //            [b setProduct:[_products objectAtIndex:i]];
@@ -183,6 +187,7 @@
         }
         self.draggableView = back;
         [self.view addSubview:self.draggableView];
+        
         
         [NSTimer scheduledTimerWithTimeInterval:4.0f target:self selector:@selector(go) userInfo:nil repeats:NO];
     }
@@ -270,4 +275,31 @@ createWebViewWithConfiguration:(WKWebViewConfiguration *)configuration
     return _webView;
      */
 }
+- (void) touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event {
+    NSLog(@"touches ended");
+    UITouch *touch1 = [touches anyObject];
+    CGPoint touchLocation = [touch1 locationInView:self.view];
+    if(CGRectContainsPoint([self.draggableView topObject].frame, touchLocation)){
+        NSLog(@"contains point");
+    }
+}
+-(void)cardSwipedLeft:(UIView *)card {
+    
+}
+-(void)cardSwipedRight:(UIView *)card {
+    
+}
+-(void)cardTapped:(UIView *)card {
+//    WebViewController *w = [[WebViewController alloc] init];
+    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@", [[[(DraggableView*)card item] objectForKey:@"DetailPageURL"] objectForKey:@"text"]]]];
+    
+//    UIWebView *wv = [[UIWebView alloc] initWithFrame:self.view.frame];
+//    [wv loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@", [[[(DraggableView*)card item] objectForKey:@"DetailPageURL"] objectForKey:@"text"]]]]];
+//    [self.view addSubview:wv];
+//    
+//    UIWebViewController *w = [[UIWebViewController alloc] init];
+//    [w.webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@", [[[(DraggableView*)card item] objectForKey:@"LargeImage"] objectForKey:@"text"]]]]];
+//    [self presentViewController:w animated:YES completion:nil];
+}
+
 @end

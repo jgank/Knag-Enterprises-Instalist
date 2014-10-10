@@ -18,6 +18,7 @@
 #import "DraggableView.h"
 #import <SDWebImage/UIImageView+WebCache.h>
 #import "PureLayout.h"
+#import "WebViewController.h"
 
 @implementation DraggableView {
     CGFloat xFromCenter;
@@ -28,7 +29,6 @@
 @synthesize delegate;
 
 @synthesize panGestureRecognizer;
-@synthesize information;
 @synthesize overlayView;
 
 - (id)initWithFrame:(CGRect)frame
@@ -38,10 +38,6 @@
         [self setupView];
         
 #warning placeholder stuff, replace with card-specific information {
-        information = [[UILabel alloc]initWithFrame:CGRectMake(0, 50, self.frame.size.width, 100)];
-        information.text = @"no info given";
-        [information setTextAlignment:NSTextAlignmentCenter];
-        information.textColor = [UIColor blackColor];
         
         self.backgroundColor = [UIColor whiteColor];
         
@@ -52,9 +48,9 @@
         
         
         panGestureRecognizer = [[UIPanGestureRecognizer alloc]initWithTarget:self action:@selector(beingDragged:)];
+        panGestureRecognizer.delegate = self;
         
         [self addGestureRecognizer:panGestureRecognizer];
-        [self addSubview:information];
         
         overlayView = [[OverlayView alloc]initWithFrame:CGRectMake(self.frame.size.width/2-100, self.frame.size.height/2.0-100, 100, 100)];
         overlayView.layer.zPosition = 1;
@@ -76,61 +72,35 @@
 -(void)setItem:(NSDictionary *)item {
     _item = item;
     _imageView.frame = self.frame;
-    [_imageView setImageWithURL:[NSURL URLWithString:_item] placeholderImage:nil options:SDWebImageRefreshCached];
-    /*
-    CGSize newSize = CGSizeMake(self.frame.size.width, self.frame.size.height);
-    UIGraphicsBeginImageContextWithOptions(newSize, NO, 0.0);
-    [_imageView.image drawInRect:CGRectMake(0, 0, newSize.width, newSize.height)];
-    UIImage *newImage = UIGraphicsGetImageFromCurrentImageContext();
-    UIGraphicsEndImageContext();
-    _imageView.image = newImage;
-     */
-//    eMake(288, 360);
+    [_imageView setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@", [[item objectForKey:@"LargeImage"] objectForKey:@"text"]]] placeholderImage:nil options:SDWebImageRefreshCached];
     _imageView.frame = CGRectMake(0, 0, 160, 360);
     _imageView.layer.cornerRadius = 4;
     _imageView.layer.shadowRadius = 3;
     _imageView.layer.shadowOpacity = 0.2;
     _imageView.layer.shadowOffset = CGSizeMake(1, 1);
     _imageView.contentMode = UIViewContentModeScaleAspectFit;
+//    _imageView.backgroundColor = [UIColor blackColor];
+//    panGestureRecognizer = [[UIPanGestureRecognizer alloc]initWithTarget:self action:@selector(beingDragged:)];
     
-//    [_imageView autoset]
     [self addSubview:_imageView];
-    NSLog(@"set product");
-//    _imageView.autoresizingMask = (UIViewAutoresizingFlexibleBottomMargin|UIViewAutoresizingFlexibleHeight|UIViewAutoresizingFlexibleLeftMargin|UIViewAutoresizingFlexibleRightMargin|UIViewAutoresizingFlexibleTopMargin|UIViewAutoresizingFlexibleWidth);
+//    [_imageView addGestureRecognizer:panGestureRecognizer];
     [_imageView autoMatchDimension:ALDimensionHeight toDimension:ALDimensionHeight ofView:self];
     [_imageView autoMatchDimension:ALDimensionWidth toDimension:ALDimensionWidth ofView:self];
     [_imageView autoCenterInSuperview];
+
     
+    UIView *v = [[UIView alloc] initWithFrame:CGRectMake((_imageView.frame.size.width-_imageView.image.size.width)/2.0,(_imageView.frame.size.height-_imageView.image.size.height)/2.0, _imageView.image.size.width, _imageView.image.size.height)];
+    v.backgroundColor = [UIColor blackColor];
+//    v.frame = _imageView.frame;
+    v.layer.zPosition = 10;
+    [_imageView addSubview:v];
     
-//    UIGraphicsBeginImageContext(_imageView.bounds.size);
-//    [self.layer renderInContext:UIGraphicsGetCurrentContext()];
-//    UIImage *resultingImage = UIGraphicsGetImageFromCurrentImageContext();
-//    UIGraphicsEndImageContext();
-//    _imageView.image = resultingImage;
-//    [_imageView autoRemoveConstraintsAffectingView];
-//    _imageView.contentMode = 0;
-//    [_imageView autoMatchDimension:ALDimensionHeight toDimension:ALDimensionHeight ofView:self];
-//    [_imageView autoMatchDimension:ALDimensionWidth toDimension:ALDimensionWidth ofView:self];
-//    //    _imageView.contentMode = UIContentSizeCategoryMedium;
-//    [_imageView autoCenterInSuperviewMargins];
+    [v autoCenterInSuperview];
 }
 -(void)setProduct:(PSSProduct *)product {
     _product = product;
     [_imageView setImageWithURL:[_product.image imageURLWithSize:PSSProductImageSizeIPhone] placeholderImage:nil options:SDWebImageRefreshCached];
-//    [_imageView setImageWithURL:[NSURL URLWithString:_product] placeholderImage:nil options:SDWebImageRefreshCached];
-    //_imageView.frame = CGRectMake(0, 0, self.frame.size.width/2, self.frame.size.height/2);
-    //_imageView.frame = CGRectMake(0, 0, 160, 360);
-    
-    
-    /*
-    CGImageRef cgImage = _imageView.image.CGImage;
-    CGFloat width = CGImageGetWidth(cgImage) * 1.0f;
-    CGFloat height = CGImageGetHeight(cgImage) * 1.0f;
-    _imageView.frame = CGRectMake(0, 0, width, height);
-     */
-
     [self addSubview:_imageView];
-    NSLog(@"set product");
     NSLog(@"%@", [[_product.image imageURLWithSize:PSSProductImageSizeIPhone] absoluteString]);
     [_imageView autoCenterInSuperview];
 
@@ -149,6 +119,7 @@
 // called many times a second
 -(void)beingDragged:(UIPanGestureRecognizer *)gestureRecognizer
 {
+    NSLog(@"guesture recognizer");
     //%%% this extracts the coordinate data from your swipe movement. (i.e. How much did you move?)
     xFromCenter = [gestureRecognizer translationInView:self].x; //%%% positive for right swipe, negative for left
     yFromCenter = [gestureRecognizer translationInView:self].y; //%%% positive for up, negative for down
@@ -294,6 +265,9 @@
     
     NSLog(@"NO");
 }
+-(void)tapClickAction {
+    [delegate cardTapped:self];
+}
 
 + (UIImage *)imageWithImage:(UIImage *)image scaledToSize:(CGSize)newSize {
     //UIGraphicsBeginImageContext(newSize);
@@ -305,12 +279,27 @@
     UIGraphicsEndImageContext();
     return newImage;
 }
+- (void) touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event {
+    NSLog(@"touches count %i", touches.count);
+//        WebViewController *w = [[WebViewController alloc] init];
+//        [w.webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@", [[_item objectForKey:@"LargeImage"] objectForKey:@"text"]]]]];
+//    
+    [delegate cardTapped:self];
+    
+}
 - (void) touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
     UITouch *touch1 = [touches anyObject];
     CGPoint touchLocation = [touch1 locationInView:self];
     CGRect startRect = [[[self.imageView layer] presentationLayer] frame];
     if(CGRectContainsPoint(startRect, touchLocation)){
-        NSLog(@"contains point");
+//        WebViewController *w = [[WebViewController alloc] init];
+//        [w.webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@", [[_item objectForKey:@"LargeImage"] objectForKey:@"text"]]]]];
+//        NSLog(@"contains point");
     }
+}
+- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch {
+    CGPoint touchLocation = [touch locationInView:self];
+    CGRect startRect = [[[self.imageView layer] presentationLayer] frame];
+    return CGRectContainsPoint(startRect, touchLocation);
 }
 @end

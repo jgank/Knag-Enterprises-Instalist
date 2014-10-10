@@ -34,6 +34,8 @@
 		EF86F90619BEE84A0023A507 /* DraggableViewBackground.m in Sources */ = {isa = PBXBuildFile; fileRef = EF86F90119BEE84A0023A507 /* DraggableViewBackground.m */; };
 		EF86F90719BEE84A0023A507 /* DraggableView.m in Sources */ = {isa = PBXBuildFile; fileRef = EF86F90319BEE84A0023A507 /* DraggableView.m */; };
 		EF86F90819BEE84A0023A507 /* OverlayView.m in Sources */ = {isa = PBXBuildFile; fileRef = EF86F90519BEE84A0023A507 /* OverlayView.m */; };
+		EFBB10E119E75B8E000FBB38 /* UIWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EFBB10DF19E75B8E000FBB38 /* UIWebViewController.m */; };
+		EFBB10E219E75B8E000FBB38 /* UIWebViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = EFBB10E019E75B8E000FBB38 /* UIWebViewController.xib */; };
 		EFEE5C5419E47B18009BD5D2 /* XMLReader.m in Sources */ = {isa = PBXBuildFile; fileRef = EFEE5C5319E47B18009BD5D2 /* XMLReader.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		EFEE5C6219E4A98A009BD5D2 /* ALView+PureLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = EFEE5C5A19E4A98A009BD5D2 /* ALView+PureLayout.m */; };
 		EFEE5C6319E4A98A009BD5D2 /* NSArray+PureLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = EFEE5C5C19E4A98A009BD5D2 /* NSArray+PureLayout.m */; };
@@ -95,6 +97,9 @@
 		EF86F90319BEE84A0023A507 /* DraggableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DraggableView.m; sourceTree = "<group>"; };
 		EF86F90419BEE84A0023A507 /* OverlayView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OverlayView.h; sourceTree = "<group>"; };
 		EF86F90519BEE84A0023A507 /* OverlayView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OverlayView.m; sourceTree = "<group>"; };
+		EFBB10DE19E75B8E000FBB38 /* UIWebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIWebViewController.h; sourceTree = "<group>"; };
+		EFBB10DF19E75B8E000FBB38 /* UIWebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UIWebViewController.m; sourceTree = "<group>"; };
+		EFBB10E019E75B8E000FBB38 /* UIWebViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = UIWebViewController.xib; sourceTree = "<group>"; };
 		EFEE5C5219E47B18009BD5D2 /* XMLReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XMLReader.h; sourceTree = "<group>"; };
 		EFEE5C5319E47B18009BD5D2 /* XMLReader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XMLReader.m; sourceTree = "<group>"; };
 		EFEE5C5919E4A98A009BD5D2 /* ALView+PureLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ALView+PureLayout.h"; sourceTree = "<group>"; };
@@ -167,6 +172,10 @@
 				EFEE5C5319E47B18009BD5D2 /* XMLReader.m */,
 				EF0B8A6219E7387B00EA1B6E /* WebViewController.h */,
 				EF0B8A6319E7387B00EA1B6E /* WebViewController.m */,
+				EF0B8A6519E738A500EA1B6E /* WebViewController.xib */,
+				EFBB10DE19E75B8E000FBB38 /* UIWebViewController.h */,
+				EFBB10DF19E75B8E000FBB38 /* UIWebViewController.m */,
+				EFBB10E019E75B8E000FBB38 /* UIWebViewController.xib */,
 				EFEE5C5919E4A98A009BD5D2 /* ALView+PureLayout.h */,
 				EFEE5C5A19E4A98A009BD5D2 /* ALView+PureLayout.m */,
 				EFEE5C5B19E4A98A009BD5D2 /* NSArray+PureLayout.h */,
@@ -199,7 +208,6 @@
 				52CCC65819AE90FD00464A46 /* AppDelegate.m */,
 				52CCC65D19AE90FD00464A46 /* ViewController.h */,
 				52CCC65E19AE90FD00464A46 /* ViewController.m */,
-				EF0B8A6519E738A500EA1B6E /* WebViewController.xib */,
 				52CCC66319AE90FD00464A46 /* Images.xcassets */,
 				52CCC65A19AE90FD00464A46 /* Impulse_Shopper.xcdatamodeld */,
 				52CCC65319AE90FD00464A46 /* Supporting Files */,
@@ -325,6 +333,7 @@
 			files = (
 				52CCC66419AE90FD00464A46 /* Images.xcassets in Resources */,
 				5245030119B8BF5800103542 /* View.xib in Resources */,
+				EFBB10E219E75B8E000FBB38 /* UIWebViewController.xib in Resources */,
 				524502FE19B8BB4200103542 /* Main.storyboard in Resources */,
 				EF0B8A6619E738A500EA1B6E /* WebViewController.xib in Resources */,
 				EF0B8A5D19E62FB400EA1B6E /* combine.xml in Resources */,
@@ -385,6 +394,7 @@
 				52CCC68A19AE927200464A46 /* JACenterViewController.m in Sources */,
 				52CCC68319AE920700464A46 /* JASidePanelController.m in Sources */,
 				EFEE5C6319E4A98A009BD5D2 /* NSArray+PureLayout.m in Sources */,
+				EFBB10E119E75B8E000FBB38 /* UIWebViewController.m in Sources */,
 				52CCC65619AE90FD00464A46 /* main.m in Sources */,
 				52CCC68419AE920700464A46 /* UIViewController+JASidePanel.m in Sources */,
 				EF86F90819BEE84A0023A507 /* OverlayView.m in Sources */,

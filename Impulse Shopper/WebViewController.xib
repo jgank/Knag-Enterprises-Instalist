@@ -7,15 +7,11 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="WebViewController">
             <connections>
-                <outlet property="webView" destination="Fi5-18-5Mo" id="oVw-zk-rfI"/>
+                <outlet property="view" destination="jFx-hY-oIy" id="p5A-h1-uVk"/>
+                <outlet property="webView" destination="Fi5-18-5Mo" id="ks2-5l-9Qc"/>
             </connections>
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <view contentMode="scaleToFill" id="iN0-l3-epB" customClass="Web">
-            <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
-            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
-        </view>
         <viewController storyboardIdentifier="webBoard" id="YTk-HY-Atv" customClass="WebViewController">
             <layoutGuides>
                 <viewControllerLayoutGuide type="top" id="52v-vq-9bE"/>
@@ -31,7 +27,7 @@
                             <barButtonItem style="plain" systemItem="flexibleSpace" id="0RI-0Q-DJv"/>
                             <barButtonItem title="Item" style="done" systemItem="done" id="nvS-ng-7pU">
                                 <connections>
-                                    <action selector="donPressed:" destination="-1" id="ruU-td-cyA"/>
+                                    <action selector="donPressed:" destination="-1" id="7Ei-jf-iEY"/>
                                 </connections>
                             </barButtonItem>
                         </items>
@@ -40,19 +36,20 @@
                         <rect key="frame" x="0.0" y="64" width="600" height="536"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <connections>
-                            <outlet property="delegate" destination="-1" id="0rt-Zp-HXP"/>
+                            <outlet property="delegate" destination="-1" id="zfH-dU-kSM"/>
                         </connections>
                     </webView>
                 </subviews>
                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                 <constraints>
-                    <constraint firstItem="Fi5-18-5Mo" firstAttribute="top" secondItem="KKU-Xf-QPm" secondAttribute="bottom" id="S4k-Sq-V6Y"/>
-                    <constraint firstItem="ftC-Ki-tiH" firstAttribute="top" secondItem="Fi5-18-5Mo" secondAttribute="bottom" id="Tro-WJ-eT3"/>
-                    <constraint firstAttribute="trailingMargin" secondItem="KKU-Xf-QPm" secondAttribute="trailing" constant="-16" id="VpG-dM-r4n"/>
-                    <constraint firstItem="Fi5-18-5Mo" firstAttribute="leading" secondItem="jFx-hY-oIy" secondAttribute="leadingMargin" constant="-16" id="eA0-iT-AS8"/>
-                    <constraint firstAttribute="trailingMargin" secondItem="Fi5-18-5Mo" secondAttribute="trailing" constant="-16" id="hVZ-1b-N4u"/>
-                    <constraint firstItem="KKU-Xf-QPm" firstAttribute="top" secondItem="52v-vq-9bE" secondAttribute="bottom" id="siE-eE-rwv"/>
-                    <constraint firstItem="KKU-Xf-QPm" firstAttribute="leading" secondItem="jFx-hY-oIy" secondAttribute="leadingMargin" constant="-16" id="zZ5-wf-LAV"/>
+                    <constraint firstItem="Fi5-18-5Mo" firstAttribute="top" secondItem="KKU-Xf-QPm" secondAttribute="bottom" id="AkN-RX-8dS"/>
+                    <constraint firstItem="Fi5-18-5Mo" firstAttribute="top" secondItem="KKU-Xf-QPm" secondAttribute="bottom" id="H57-w2-hep"/>
+                    <constraint firstItem="Fi5-18-5Mo" firstAttribute="leading" secondItem="jFx-hY-oIy" secondAttribute="leadingMargin" constant="-16" id="Llq-j3-jCL"/>
+                    <constraint firstAttribute="trailingMargin" secondItem="KKU-Xf-QPm" secondAttribute="trailing" constant="-16" id="Mnt-KR-fBe"/>
+                    <constraint firstItem="KKU-Xf-QPm" firstAttribute="top" secondItem="52v-vq-9bE" secondAttribute="bottom" id="Uda-Vf-6Li"/>
+                    <constraint firstItem="ftC-Ki-tiH" firstAttribute="top" secondItem="Fi5-18-5Mo" secondAttribute="bottom" id="mGZ-8W-4GI"/>
+                    <constraint firstItem="KKU-Xf-QPm" firstAttribute="leading" secondItem="jFx-hY-oIy" secondAttribute="leadingMargin" constant="-16" id="mVH-AY-Z0d"/>
+                    <constraint firstAttribute="trailingMargin" secondItem="Fi5-18-5Mo" secondAttribute="trailing" constant="-16" id="nlo-ls-8DF"/>
                 </constraints>
             </view>
             <point key="canvasLocation" x="-485" y="1670"/>
