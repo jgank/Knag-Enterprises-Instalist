@@ -38,6 +38,8 @@
 -(void)cardSwipedLeft:(UIView *)card;
 -(void)cardSwipedRight:(UIView *)card;
 -(void)cardTapped:(UIView *)card;
+-(void)leftPanel;
+-(void)rightPanel;
 
 @end
 @interface DraggableViewBackground : UIView <DraggableViewDelegate> {
@@ -49,6 +51,7 @@
 -(void)cardSwipedLeft:(UIView *)card;
 -(void)cardSwipedRight:(UIView *)card;
 -(void)loadCards;
+-(void)undoPressed;
 -(DraggableView*)topObject;
 -(DraggableView *)createDraggableViewWithDataAtIndex:(NSInteger)index;
 - (id)initWithFrame:(CGRect)frame setArr:(NSArray*)arr;

@@ -26,7 +26,7 @@
 
 #import "JALeftViewController.h"
 #import "JASidePanelController.h"
-
+#import "JACenterViewController.h"
 #import "UIViewController+JASidePanel.h"
 #import "JARightViewController.h"
 #import "JACenterViewController.h"
@@ -61,8 +61,8 @@
     UIButton *button = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     button.frame = CGRectMake(20.0f, 70.0f, 200.0f, 40.0f);
     button.autoresizingMask = UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleBottomMargin;
-    [button setTitle:@"Hide Center" forState:UIControlStateNormal];
-    [button addTarget:self action:@selector(_hideTapped:) forControlEvents:UIControlEventTouchUpInside];
+    [button setTitle:@"Undo" forState:UIControlStateNormal];
+    [button addTarget:self action:@selector(_undoTapped:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:button];
     self.hide = button;
     
@@ -108,10 +108,11 @@
 
 #pragma mark - Button Actions
 
-- (void)_hideTapped:(id)sender {
-    [self.sidePanelController setCenterPanelHidden:YES animated:YES duration:0.2f];
-    self.hide.hidden = YES;
-    self.show.hidden = NO;
+- (void)_undoTapped:(id)sender {
+    [(JACenterViewController*)self.sidePanelController.centerPanel undoPressed];
+//    [self.sidePanelController setCenterPanelHidden:YES animated:YES duration:0.2f];
+//    self.hide.hidden = YES;
+//    self.show.hidden = NO;
 }
 
 - (void)_showTapped:(id)sender {

@@ -14,6 +14,7 @@
     NSInteger cardsLoadedIndex; //%%% the index of the card you have loaded into the loadedCards array last
     NSMutableArray *loadedCards; //%%% the array of card loaded (change max_buffer_size to increase or decrease the number of cards this holds)
     
+    NSMutableArray *undoItems;
     UIButton* menuButton;
     UIButton* messageButton;
     UIButton* checkButton;
@@ -40,6 +41,7 @@ static const float CARD_WIDTH = 290; //%%% width of the draggable card
         //exampleCardLabels = [[NSArray alloc]initWithObjects:@"first",@"second",@"third",@"fourth",@"last", nil]; //%%% placeholder for card-specific information
         loadedCards = [[NSMutableArray alloc] init];
         allCards = [[NSMutableArray alloc] init];
+        undoItems = [[NSMutableArray alloc] init];
         cardsLoadedIndex = 0;
         [self loadCards];
     }
@@ -53,8 +55,10 @@ static const float CARD_WIDTH = 290; //%%% width of the draggable card
     self.backgroundColor = [UIColor colorWithRed:.92 green:.93 blue:.95 alpha:1]; //the gray background colors
     menuButton = [[UIButton alloc]initWithFrame:CGRectMake(17, 34, 22, 15)];
     [menuButton setImage:[UIImage imageNamed:@"menuButton"] forState:UIControlStateNormal];
+    [menuButton addTarget:self action:@selector(showLeftPanel) forControlEvents:UIControlEventTouchUpInside];
     messageButton = [[UIButton alloc]initWithFrame:CGRectMake(284, 34, 18, 18)];
     [messageButton setImage:[UIImage imageNamed:@"messageButton"] forState:UIControlStateNormal];
+    [messageButton addTarget:self action:@selector(showRightPanel) forControlEvents:UIControlEventTouchUpInside];
     xButton = [[UIButton alloc]initWithFrame:CGRectMake(60, 485, 59, 59)];
     [xButton setImage:[UIImage imageNamed:@"xButton"] forState:UIControlStateNormal];
     [xButton addTarget:self action:@selector(swipeLeft) forControlEvents:UIControlEventTouchUpInside];
@@ -142,6 +146,7 @@ static const float CARD_WIDTH = 290; //%%% width of the draggable card
     //do whatever you want with the card that was swiped
     //    DraggableView *c = (DraggableView *)card;
     
+    [undoItems addObject:[(DraggableView*)[loadedCards firstObject] item]];
     [loadedCards removeObjectAtIndex:0]; //%%% card was swiped, so it's no longer a "loaded card"
     
     if (cardsLoadedIndex < [allCards count]) { //%%% if we haven't reached the end of all cards, put another into the loaded cards
@@ -161,6 +166,17 @@ static const float CARD_WIDTH = 290; //%%% width of the draggable card
 {
     //do whatever you want with the card that was swiped
     //    DraggableView *c = (DraggableView *)card;
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString  *arrayPath = [[paths objectAtIndex:0] stringByAppendingPathComponent:@"fav.out"];
+    NSArray *arrayFromFile = [NSArray arrayWithContentsOfFile:arrayPath];
+    if (!arrayFromFile)
+        arrayFromFile = [[NSArray alloc] init];
+    NSMutableArray *favArray = [[NSMutableArray alloc] initWithArray:arrayFromFile];
+    [favArray addObject:[(DraggableView*)[loadedCards firstObject] item]];
+    [favArray writeToFile:arrayPath atomically:NO];
+    NSLog(@"favarrya %@", favArray);
+    
+    [undoItems addObject:[(DraggableView*)[loadedCards firstObject] item]];
     
     [loadedCards removeObjectAtIndex:0]; //%%% card was swiped, so it's no longer a "loaded card"
     
@@ -208,7 +224,27 @@ static const float CARD_WIDTH = 290; //%%% width of the draggable card
     
     return [loadedCards firstObject];
 }
+-(void)showLeftPanel {
+    [_delegate leftPanel];
+}
+-(void)showRightPanel {
+    
+    [_delegate rightPanel];
+}
 
+-(void)undoPressed {
+    NSLog(@"background view insert undo vidww");
+    
+    if ([undoItems count] == 0)
+        return;
+    DraggableView *d = [self createDraggableViewWithDataAtIndex:0];
+    [d setItem:[undoItems lastObject]];
+    titleLabel.text = [[[undoItems lastObject] objectForKey:@"Title"] objectForKey:@"text"];
+    [self insertSubview:d aboveSubview:[loadedCards firstObject]];
+    [undoItems removeObject:[undoItems lastObject]];
+    [loadedCards removeObject:[loadedCards lastObject]];
+    [loadedCards insertObject:d atIndex:0];
+}
 /*
 // Only override drawRect: if you perform custom drawing.
 // An empty implementation adversely affects performance during animation.

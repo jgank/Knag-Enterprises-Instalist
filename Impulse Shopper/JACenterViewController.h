@@ -28,5 +28,6 @@
 #import <WebKit/WebKit.h>
 
 @interface JACenterViewController : JADebugViewController <WKUIDelegate, WKNavigationDelegate, WKScriptMessageHandler>
+-(void)undoPressed;
 
 @end

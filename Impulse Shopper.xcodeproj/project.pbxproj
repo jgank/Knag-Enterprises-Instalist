@@ -31,6 +31,7 @@
 		EF0B8A6119E6590700EA1B6E /* Electronics.xml in Resources */ = {isa = PBXBuildFile; fileRef = EF0B8A6019E6590700EA1B6E /* Electronics.xml */; };
 		EF0B8A6419E7387B00EA1B6E /* WebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EF0B8A6319E7387B00EA1B6E /* WebViewController.m */; };
 		EF0B8A6619E738A500EA1B6E /* WebViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = EF0B8A6519E738A500EA1B6E /* WebViewController.xib */; };
+		EF70B3EC19EC74C600AA55FA /* SavedCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = EF70B3EB19EC74C600AA55FA /* SavedCell.xib */; };
 		EF86F90619BEE84A0023A507 /* DraggableViewBackground.m in Sources */ = {isa = PBXBuildFile; fileRef = EF86F90119BEE84A0023A507 /* DraggableViewBackground.m */; };
 		EF86F90719BEE84A0023A507 /* DraggableView.m in Sources */ = {isa = PBXBuildFile; fileRef = EF86F90319BEE84A0023A507 /* DraggableView.m */; };
 		EF86F90819BEE84A0023A507 /* OverlayView.m in Sources */ = {isa = PBXBuildFile; fileRef = EF86F90519BEE84A0023A507 /* OverlayView.m */; };
@@ -91,6 +92,7 @@
 		EF0B8A6219E7387B00EA1B6E /* WebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WebViewController.h; sourceTree = "<group>"; };
 		EF0B8A6319E7387B00EA1B6E /* WebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WebViewController.m; sourceTree = "<group>"; };
 		EF0B8A6519E738A500EA1B6E /* WebViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WebViewController.xib; sourceTree = "<group>"; };
+		EF70B3EB19EC74C600AA55FA /* SavedCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SavedCell.xib; sourceTree = "<group>"; };
 		EF86F90019BEE84A0023A507 /* DraggableViewBackground.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DraggableViewBackground.h; sourceTree = "<group>"; };
 		EF86F90119BEE84A0023A507 /* DraggableViewBackground.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DraggableViewBackground.m; sourceTree = "<group>"; };
 		EF86F90219BEE84A0023A507 /* DraggableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DraggableView.h; sourceTree = "<group>"; };
@@ -187,6 +189,7 @@
 				EFEE5C6119E4A98A009BD5D2 /* PureLayoutDefines.h */,
 				EF86F90019BEE84A0023A507 /* DraggableViewBackground.h */,
 				EF86F90119BEE84A0023A507 /* DraggableViewBackground.m */,
+				EF70B3EB19EC74C600AA55FA /* SavedCell.xib */,
 				EF86F90219BEE84A0023A507 /* DraggableView.h */,
 				EF86F90319BEE84A0023A507 /* DraggableView.m */,
 				EF86F90419BEE84A0023A507 /* OverlayView.h */,
@@ -332,6 +335,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				52CCC66419AE90FD00464A46 /* Images.xcassets in Resources */,
+				EF70B3EC19EC74C600AA55FA /* SavedCell.xib in Resources */,
 				5245030119B8BF5800103542 /* View.xib in Resources */,
 				EFBB10E219E75B8E000FBB38 /* UIWebViewController.xib in Resources */,
 				524502FE19B8BB4200103542 /* Main.storyboard in Resources */,

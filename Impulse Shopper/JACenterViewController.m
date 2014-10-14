@@ -32,6 +32,7 @@
 #import "XMLReader.h"
 #import "WebViewController.h"
 #import "UIWebViewController.h"
+#import "UIViewController+JASidePanel.h"
 
 @interface JACenterViewController ()
 
@@ -287,7 +288,10 @@ createWebViewWithConfiguration:(WKWebViewConfiguration *)configuration
     
 }
 -(void)cardSwipedRight:(UIView *)card {
+
     
+        
+ 
 }
 -(void)cardTapped:(UIView *)card {
 //    WebViewController *w = [[WebViewController alloc] init];
@@ -300,6 +304,15 @@ createWebViewWithConfiguration:(WKWebViewConfiguration *)configuration
 //    UIWebViewController *w = [[UIWebViewController alloc] init];
 //    [w.webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@", [[[(DraggableView*)card item] objectForKey:@"LargeImage"] objectForKey:@"text"]]]]];
 //    [self presentViewController:w animated:YES completion:nil];
+}
+-(void)leftPanel {
+    [self.sidePanelController showLeftPanelAnimated:YES];
+}
+-(void)rightPanel {
+    [self.sidePanelController showRightPanelAnimated:YES];
+}
+-(void)undoPressed {
+    [self.draggableView undoPressed];
 }
 
 @end
