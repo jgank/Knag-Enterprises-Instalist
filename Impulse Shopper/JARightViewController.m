@@ -30,9 +30,9 @@
 #import "UIViewController+JASidePanel.h"
 
 @interface JARightViewController ()
-@property (nonatomic, strong) UITableView *tableView;
-@property (strong, nonatomic) NSArray *favArray;
-
+@property (strong,nonatomic) UIToolbar *toolBar;
+@property (strong,nonatomic) UIBarButtonItem *backButton;
+@property (strong,nonatomic) UIBarButtonItem *editButton;
 @end
 
 @implementation JARightViewController
@@ -40,17 +40,24 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
 	self.view.backgroundColor = [UIColor redColor];
+    self.toolBar = [[UIToolbar alloc] initWithFrame:CGRectMake(self.view.bounds.origin.x, self.view.bounds.origin.y, self.view.bounds.size.width, 44.0f)];
+    self.backButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRewind target:self action:@selector(showCenterPanelAnimated:)];
+    UIBarButtonItem *flexSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:self action:nil];
+
+    self.editButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemEdit target:self action:@selector(editTab)];
+    [self.toolBar setItems:[NSArray arrayWithObjects:_backButton, flexSpace, _editButton, nil]];
     self.label.text = @"Right Panel";
     [self.label sizeToFit];
     self.hide.frame = CGRectMake(self.view.bounds.size.width - 220.0f, 70.0f, 200.0f, 40.0f);
     self.hide.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleBottomMargin;
     self.show.frame = self.hide.frame;
     self.show.autoresizingMask = self.hide.autoresizingMask;
-    self.tableView = [[UITableView alloc] initWithFrame:self.view.frame];
+    self.tableView = [[UITableView alloc] initWithFrame:CGRectMake(self.view.bounds.origin.x, self.view.bounds.origin.y + 44.0f, self.view.bounds.size.width, self.view.bounds.size.height - 44.0f)];
     self.tableView.dataSource = self;
     self.tableView.delegate = self;
     [self.view addSubview:self.tableView];
     
+    self.label.hidden = YES;
     self.removeRightPanel.hidden = YES;
     self.addRightPanel.hidden = YES;
     self.changeCenterPanel.hidden = YES;
@@ -59,18 +66,21 @@
 -(void)viewDidAppear:(BOOL)animated {
     
     [super viewDidAppear:animated];
-    NSLog(@"right view will appear");
-    self.label.center = CGPointMake(floorf((self.view.bounds.size.width - self.sidePanelController.rightVisibleWidth) + self.sidePanelController.rightVisibleWidth/2.0f), 25.0f);
-    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    NSString  *arrayPath = [[paths objectAtIndex:0] stringByAppendingPathComponent:@"fav.out"];
-    self.favArray = [NSArray arrayWithContentsOfFile:arrayPath];
-    if (!self.favArray)
-        self.favArray = [[NSArray alloc] init];
-    NSLog(@"fav array %@", self.favArray);
-    [self.tableView reloadData];
+//    NSLog(@"right view will appear");
+//    self.label.center = CGPointMake(floorf((self.view.bounds.size.width - self.sidePanelController.rightVisibleWidth) + self.sidePanelController.rightVisibleWidth/2.0f), 25.0f);
+//    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+//    NSString  *arrayPath = [[paths objectAtIndex:0] stringByAppendingPathComponent:@"fav.out"];
+//    self.favArray = [NSArray arrayWithContentsOfFile:arrayPath];
+//    if (!self.favArray)
+//        self.favArray = [[NSArray alloc] init];
+//    NSLog(@"fav array %@", self.favArray);
+//    [self.tableView reloadData];
 }
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
+}
+-(void)editTable {
+    _tableView.editing = !_tableView.editing;
 }
 #pragma mark - Table view data source
 
@@ -110,6 +120,7 @@
         }
     }
     UIImageView *imageView = (UIImageView*)[cell.contentView viewWithTag:1];
+    imageView.backgroundColor = [UIColor blueColor];
     [imageView setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@", [[_favArray[indexPath.row] objectForKey:@"SmallImage"] objectForKey:@"text"]]] placeholderImage:nil options:SDWebImageRefreshCached];
 //    imageView.frame = CGRectMake(self.view.bounds.size.width*.2, 2, imageView.frame.size.width, imageView.frame.size.height);
     UILabel *label = (UILabel*)[cell.contentView viewWithTag:2];

@@ -24,16 +24,19 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     
+//    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+//    NSString  *arrayPath = [[paths objectAtIndex:0] stringByAppendingPathComponent:@"fav.out"];
+//    NSFileManager *fileManager = [NSFileManager defaultManager];
+//    [fileManager removeItemAtPath:arrayPath error:NULL];
     self.viewController = [[JASidePanelController alloc] init];
     self.viewController.leftPanel = [[JALeftViewController alloc] init];
     //self.viewController.centerPanel = [[UINavigationController alloc] initWithRootViewController:[[JACenterViewController alloc] init]];
-    self.viewController.centerPanel = [[JACenterViewController alloc] init];
     self.viewController.rightPanel = [[JARightViewController alloc] init];
+    self.viewController.centerPanel = [[JACenterViewController alloc] init];
     
     self.window.rootViewController = self.viewController;
     [self.window makeKeyAndVisible];
-    [[PSSClient sharedClient] setPartnerID:@"uid8484-25567022-57"];
-    
+ 
     return YES;
 }
 

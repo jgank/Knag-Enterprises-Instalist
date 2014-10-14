@@ -79,18 +79,18 @@
     _imageView.layer.shadowOpacity = 0.2;
     _imageView.layer.shadowOffset = CGSizeMake(1, 1);
     _imageView.contentMode = UIViewContentModeScaleAspectFit;
+    _imageView.bounds = self.bounds;
 //    _imageView.backgroundColor = [UIColor blackColor];
 //    panGestureRecognizer = [[UIPanGestureRecognizer alloc]initWithTarget:self action:@selector(beingDragged:)];
     
     [self addSubview:_imageView];
-//    [_imageView addGestureRecognizer:panGestureRecognizer];
     [_imageView autoMatchDimension:ALDimensionHeight toDimension:ALDimensionHeight ofView:self];
     [_imageView autoMatchDimension:ALDimensionWidth toDimension:ALDimensionWidth ofView:self];
     [_imageView autoCenterInSuperview];
 
     
     UIView *v = [[UIView alloc] initWithFrame:CGRectMake((_imageView.frame.size.width-_imageView.image.size.width)/2.0,(_imageView.frame.size.height-_imageView.image.size.height)/2.0, _imageView.image.size.width, _imageView.image.size.height)];
-    v.backgroundColor = [UIColor blackColor];
+//    v.backgroundColor = [UIColor blackColor];
 //    v.frame = _imageView.frame;
     v.layer.zPosition = 10;
     [_imageView addSubview:v];

@@ -29,5 +29,7 @@
 #import "JALeftViewController.h"
 
 @interface JARightViewController : JALeftViewController
+@property (nonatomic, strong) UITableView *tableView;
+@property (weak, nonatomic) NSArray *favArray;
 
 @end

@@ -32,6 +32,8 @@
 		EF0B8A6419E7387B00EA1B6E /* WebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EF0B8A6319E7387B00EA1B6E /* WebViewController.m */; };
 		EF0B8A6619E738A500EA1B6E /* WebViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = EF0B8A6519E738A500EA1B6E /* WebViewController.xib */; };
 		EF70B3EC19EC74C600AA55FA /* SavedCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = EF70B3EB19EC74C600AA55FA /* SavedCell.xib */; };
+		EF70B3EE19ED4C4D00AA55FA /* combined.xml in Resources */ = {isa = PBXBuildFile; fileRef = EF70B3ED19ED4C4D00AA55FA /* combined.xml */; };
+		EF70B3F019ED538700AA55FA /* aws_signed_request.py in Resources */ = {isa = PBXBuildFile; fileRef = EF70B3EF19ED538700AA55FA /* aws_signed_request.py */; };
 		EF86F90619BEE84A0023A507 /* DraggableViewBackground.m in Sources */ = {isa = PBXBuildFile; fileRef = EF86F90119BEE84A0023A507 /* DraggableViewBackground.m */; };
 		EF86F90719BEE84A0023A507 /* DraggableView.m in Sources */ = {isa = PBXBuildFile; fileRef = EF86F90319BEE84A0023A507 /* DraggableView.m */; };
 		EF86F90819BEE84A0023A507 /* OverlayView.m in Sources */ = {isa = PBXBuildFile; fileRef = EF86F90519BEE84A0023A507 /* OverlayView.m */; };
@@ -93,6 +95,8 @@
 		EF0B8A6319E7387B00EA1B6E /* WebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WebViewController.m; sourceTree = "<group>"; };
 		EF0B8A6519E738A500EA1B6E /* WebViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WebViewController.xib; sourceTree = "<group>"; };
 		EF70B3EB19EC74C600AA55FA /* SavedCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SavedCell.xib; sourceTree = "<group>"; };
+		EF70B3ED19ED4C4D00AA55FA /* combined.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = combined.xml; sourceTree = "<group>"; };
+		EF70B3EF19ED538700AA55FA /* aws_signed_request.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = aws_signed_request.py; sourceTree = "<group>"; };
 		EF86F90019BEE84A0023A507 /* DraggableViewBackground.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DraggableViewBackground.h; sourceTree = "<group>"; };
 		EF86F90119BEE84A0023A507 /* DraggableViewBackground.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DraggableViewBackground.m; sourceTree = "<group>"; };
 		EF86F90219BEE84A0023A507 /* DraggableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DraggableView.h; sourceTree = "<group>"; };
@@ -168,6 +172,8 @@
 		52CCC65219AE90FD00464A46 /* Impulse Shopper */ = {
 			isa = PBXGroup;
 			children = (
+				EF70B3EF19ED538700AA55FA /* aws_signed_request.py */,
+				EF70B3ED19ED4C4D00AA55FA /* combined.xml */,
 				EF0B8A6019E6590700EA1B6E /* Electronics.xml */,
 				EF0B8A5C19E62FB400EA1B6E /* combine.xml */,
 				EFEE5C5219E47B18009BD5D2 /* XMLReader.h */,
@@ -334,11 +340,13 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				EF70B3F019ED538700AA55FA /* aws_signed_request.py in Resources */,
 				52CCC66419AE90FD00464A46 /* Images.xcassets in Resources */,
 				EF70B3EC19EC74C600AA55FA /* SavedCell.xib in Resources */,
 				5245030119B8BF5800103542 /* View.xib in Resources */,
 				EFBB10E219E75B8E000FBB38 /* UIWebViewController.xib in Resources */,
 				524502FE19B8BB4200103542 /* Main.storyboard in Resources */,
+				EF70B3EE19ED4C4D00AA55FA /* combined.xml in Resources */,
 				EF0B8A6619E738A500EA1B6E /* WebViewController.xib in Resources */,
 				EF0B8A5D19E62FB400EA1B6E /* combine.xml in Resources */,
 				EF0B8A6119E6590700EA1B6E /* Electronics.xml in Resources */,

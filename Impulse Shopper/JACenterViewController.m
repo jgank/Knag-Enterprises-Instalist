@@ -33,14 +33,14 @@
 #import "WebViewController.h"
 #import "UIWebViewController.h"
 #import "UIViewController+JASidePanel.h"
+#import "JARightViewController.h"
 
-@interface JACenterViewController ()
+@interface JACenterViewController () <DraggableViewBackgroundDelegate>
 
 @property (nonatomic, retain) NSLayoutConstraint *containerTopSpaceConstraint;
 @property (nonatomic, retain) WKWebView *webView;
 @property (nonatomic, retain) UIView *contentView;
 @property (nonatomic, strong) NSArray *products;
-@property (nonatomic, strong) NSArray *detailURLs;
 @property (nonatomic, strong) DraggableViewBackground *draggableView;
 @property (readwrite, assign) int productIndex;
 
@@ -61,220 +61,53 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    NSString *str=[[NSBundle mainBundle] pathForResource:@"Electronics" ofType:@"xml"];
+    NSString *str=[[NSBundle mainBundle] pathForResource:@"combined" ofType:@"xml"];
  
     NSData *data = [NSData dataWithContentsOfFile:str];
     NSError *error = nil;
+    NSLog(@"read xmlfile");
     NSDictionary *dict = [XMLReader dictionaryForXMLData:data options:XMLReaderOptionsProcessNamespaces error:&error];
+    NSLog(@"done xmfile");
+    NSLog(@"dict reading root");
     NSDictionary *list = [dict objectForKey:@"root"];
+    NSLog(@"done read root");
+    NSLog(@"reading items");
     NSArray *arg = [list objectForKey:@"Item"];
+    NSLog(@"done item");
     NSMutableArray *pics = [[NSMutableArray alloc] init];
-    NSMutableArray *dURLs = [[NSMutableArray alloc] init];
     
     
-    NSLog(@"%i", [arg count]);
+    NSLog(@"%lu", (unsigned long)[arg count]);
+    NSLog(@"finding xml with LargeImage");
     for (id i in arg) {
         if(![i objectForKey:@"LargeImage"])
             continue;
-//        NSLog(@"%@", [[i objectForKey:@"LargeImage"] objectForKey:@"text"]);
-//        [pics addObject:[NSString stringWithFormat:@"%@", [[i objectForKey:@"LargeImage"] objectForKey:@"text"]]];
-//        [dURLs addObject:[NSString stringWithFormat:@"%@", [[i objectForKey:@"DetailPageURL"] objectForKey:@"text"]]];
         [pics addObject:i];
-//        NSLog(@"%@", [[i objectForKey:@"ASIN"] objectForKey:@"text"]);
     }
+    NSLog(@"done with LargeImage");
     _products = pics;
-    _detailURLs = dURLs;
     _productIndex = 0;
     [self showProduct];
     NSLog(@"%i", [arg count]);
     
-    for (id i in list) {
-        //NSLog(@"%@", [[i valueForKey:@"ASIN"] valueForKey:@"text"]);
-        //jNSLog(@"%@", i);
-    }
-    
-    
-    /*
-    if (![list isKindOfClass:[NSArray class]])
-    {
-        // if 'list' isn't an array, we create a new array containing our object
-        list = [NSArray arrayWithObject:list];
-        //NSLog(@"%i", [list count]);
-        for (id i in list) {
-            NSLog(@"%@", [[[i valueForKey:@"Item"] valueForKey:@"ASIN"] valueForKey:@"text"]);
-            NSLog(@"%@", i);
-        }
-    }
-     */
 
-    return;
-    
-    PSSProductQuery *productQuery = [[PSSProductQuery alloc] init];
-    productQuery.searchTerm = @"jeans";
-    __weak typeof (self) weakSelf = self;
-    [[PSSClient sharedClient] searchProductsWithQuery:productQuery offset:nil limit:nil success:^(NSUInteger totalCount, NSArray *availableHistogramTypes, NSArray *products) {
-        weakSelf.products = products;
-        for(PSSProduct *p in products)
-            NSLog(p.name);
-        
-        if(totalCount >= 1)
-            _productIndex = 0;
-        [self showProduct];
-        //[weakSelf.tableView reloadData];
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        NSLog(@"Request failed with error: %@", error);
-    }];
-    
-    
-    WKUserContentController *contentController = [[WKUserContentController alloc] init];
-    [contentController addScriptMessageHandler:self name:@"callbackHandler"];
-    WKWebViewConfiguration *webConfig = [[WKWebViewConfiguration alloc] init];
-    [webConfig.userContentController addScriptMessageHandler:self name:@"interOp"];
-    
-    _webView = [[WKWebView alloc] initWithFrame:self.view.frame configuration:webConfig];
-    //_webView = [[WKWebView alloc] initWithFrame:CGRectMake(0, 20, self.view.frame.size.width, self.view.frame.size.height-20)];
-    //[_webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:@"http://windowshopper.me"]]];
-    //[_webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:@"http://127.0.0.1:8080/user.php"]]];
-    //__weak typeof (self) weakSelf = self;
-    //[_webView setUIDelegate:weakSelf];
-    //webView.navigationDelegate = self;
-    //[self presentViewController:webView animated:NO completion:nil];
-    //[_contentView addSubview:webView];
-    //[self.view addSubview:webView];
-    [self.view addSubview:_webView];
-    self.view = _webView;
-    
-    if ([self respondsToSelector:@selector(topLayoutGuide)]) {
-        [self.view removeConstraint:self.containerTopSpaceConstraint];
-        
-        self.containerTopSpaceConstraint =
-        [NSLayoutConstraint constraintWithItem:self.webView
-                                     attribute:NSLayoutAttributeTop
-                                     relatedBy:NSLayoutRelationEqual
-                                        toItem:self.topLayoutGuide
-                                     attribute:NSLayoutAttributeBottom
-                                    multiplier:1
-                                      constant:0];
-        
-        [self.view addConstraint:self.containerTopSpaceConstraint];
-        
-        [self.view setNeedsUpdateConstraints];
-        [self.view layoutIfNeeded];
-    }
-    
-    
-    
-    
-    
-}
--(void)go {
-    /*
-    self.draggableView.alpha = 0.0f;
-    [UIView animateWithDuration:1.0f animations:^ {
-        self.draggableView.alpha = 1.0f;
-    }];
-    [NSTimer scheduledTimerWithTimeInterval:4.0f target:self selector:@selector(go) userInfo:nil repeats:NO];
-     */
 }
 -(void)showProduct {
     
     if([_products count] > 0) {
-        DraggableViewBackground *back = [[DraggableViewBackground alloc] initWithFrame:self.view.frame setArr:_products];
-        back.delegate = self;
-        for(int i = 0; i < [_products count]; i++) {
-            DraggableView *b = [back.allCards objectAtIndex:i];
-//            [b setProduct:[_products objectAtIndex:i]];
-            [b setItem:[_products objectAtIndex:i]];
-        }
+        DraggableViewBackground *back = [[DraggableViewBackground alloc] initWithFrame:self.view.frame setArr:_products delegate:self];
+//        back.delegate = self;
+        NSLog(@"add draggableviews");
+//        for(int i = 0; i < [_products count]; i++) {
+//            DraggableView *b = [back.allCards objectAtIndex:i];
+//            [b setItem:[_products objectAtIndex:i]];
+//        }
         self.draggableView = back;
         [self.view addSubview:self.draggableView];
+        NSLog(@"done adding draggable views");
         
         
-        [NSTimer scheduledTimerWithTimeInterval:4.0f target:self selector:@selector(go) userInfo:nil repeats:NO];
     }
-    
-    return;
-    PSSProduct *p = [_products objectAtIndex:_productIndex];
-    UIImageView *imgView = [[UIImageView alloc] initWithFrame:CGRectMake(((self.view.frame.size.width - 227)/2.), ((self.view.frame.size.height - 330)/2.), 227, 330)];
-    [imgView setImageWithURL:[p.image imageURLWithSize:PSSProductImageSizeIPhone] placeholderImage:nil options:SDWebImageRefreshCached];
-    [self.view addSubview:imgView];
-    
-}
-
-- (void)webView:(WKWebView *)webView decidePolicyForNavigationAction:(WKNavigationAction *)navigationAction decisionHandler:(void (^)(WKNavigationActionPolicy))decisionHandler {
-    
-    NSLog(@"decide poligy");
-    NSLog(navigationAction.request.description);
-}
-- (void)webView:(WKWebView *)webView decidePolicyForNavigationResponse:(WKNavigationResponse *)navigationResponse decisionHandler:(void (^)(WKNavigationResponsePolicy))decisionHandler {
-    
-    NSLog(@"decide policy nav response");
-    NSLog(navigationResponse.description);
-    
-}
-- (void)webView:(WKWebView *)webView
-didCommitNavigation:(WKNavigation *)navigation {
-    NSLog(@"didcommitnav");
-}
-- (void)webView:(WKWebView *)webView
-didFailNavigation:(WKNavigation *)navigation
-      withError:(NSError *)error {
-    NSLog(@"didfailnav");
-}
-- (void)webView:(WKWebView *)webView
-didFailProvisionalNavigation:(WKNavigation *)navigation
-      withError:(NSError *)error {
-    NSLog(@"fail nav provision");
-    
-}
-- (void)webView:(WKWebView *)webView
-didFinishNavigation:(WKNavigation *)navigation {
-    NSLog(@"did finish navigation");
-}
-- (void)webView:(WKWebView *)webView didReceiveServerRedirectForProvisionalNavigation:(WKNavigation *)navigation {
-    //NSLog(@"trying to load %@", navigation.request.URL.absoluteString);
-}
-- (void)userContentController:(WKUserContentController *)userContentController didReceiveScriptMessage:(WKScriptMessage *)message {
-    NSLog(@"user content controller %@", message.body);
-}
-- (void)webView:(WKWebView *)webView
-runJavaScriptAlertPanelWithMessage:(NSString *)message
-initiatedByFrame:(WKFrameInfo *)frame
-completionHandler:(void (^)(void))completionHandler {
-    NSLog(message);
-}
-- (void)webView:(WKWebView *)webView
-runJavaScriptConfirmPanelWithMessage:(NSString *)message
-initiatedByFrame:(WKFrameInfo *)frame
-completionHandler:(void (^)(BOOL result))completionHandler {
-    NSLog(message);
-}
-- (void)webView:(WKWebView *)webView
-runJavaScriptTextInputPanelWithPrompt:(NSString *)prompt
-    defaultText:(NSString *)defaultText
-initiatedByFrame:(WKFrameInfo *)frame
-completionHandler:(void (^)(NSString *result))completionHandler {
-    NSLog(prompt);
-}
-- (WKWebView *)webView:(WKWebView *)webView
-createWebViewWithConfiguration:(WKWebViewConfiguration *)configuration
-   forNavigationAction:(WKNavigationAction *)navigationAction
-        windowFeatures:(WKWindowFeatures *)windowFeatures {
-    
-    /*
-    //[_webView removeFromSuperview];
-    NSLog(@"create web view %@", navigationAction.request.URL.absoluteString);
-    _webView = [[WKWebView alloc] initWithFrame:_webView.frame configuration:configuration];
-     */
-    NSLog(@"create web view %@", navigationAction.request.URL.absoluteString);
-    [_webView loadRequest:navigationAction.request];
-    return nil;
-    /*
-    //[wView loadRequest:navigationAction.request];
-    [_webView setUIDelegate:self];
-    [self.view addSubview:_webView];
-    return _webView;
-     */
 }
 - (void) touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event {
     NSLog(@"touches ended");
@@ -294,16 +127,7 @@ createWebViewWithConfiguration:(WKWebViewConfiguration *)configuration
  
 }
 -(void)cardTapped:(UIView *)card {
-//    WebViewController *w = [[WebViewController alloc] init];
     [[UIApplication sharedApplication] openURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@", [[[(DraggableView*)card item] objectForKey:@"DetailPageURL"] objectForKey:@"text"]]]];
-    
-//    UIWebView *wv = [[UIWebView alloc] initWithFrame:self.view.frame];
-//    [wv loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@", [[[(DraggableView*)card item] objectForKey:@"DetailPageURL"] objectForKey:@"text"]]]]];
-//    [self.view addSubview:wv];
-//    
-//    UIWebViewController *w = [[UIWebViewController alloc] init];
-//    [w.webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@", [[[(DraggableView*)card item] objectForKey:@"LargeImage"] objectForKey:@"text"]]]]];
-//    [self presentViewController:w animated:YES completion:nil];
 }
 -(void)leftPanel {
     [self.sidePanelController showLeftPanelAnimated:YES];
@@ -313,6 +137,14 @@ createWebViewWithConfiguration:(WKWebViewConfiguration *)configuration
 }
 -(void)undoPressed {
     [self.draggableView undoPressed];
+}
+-(void)sendFav:(NSArray*)arr {
+    
+    JARightViewController *right = (JARightViewController*)self.sidePanelController.rightPanel;
+    if (right.favArray == nil)
+        right.favArray = arr;
+    [right.tableView reloadData];
+    
 }
 
 @end
