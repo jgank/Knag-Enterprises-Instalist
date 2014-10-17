@@ -26,8 +26,10 @@
 
 #import "JARightViewController.h"
 #import "JASidePanelController.h"
+#import "JACenterViewController.h"
 #import <SDWebImage/UIImageView+WebCache.h>
 #import "UIViewController+JASidePanel.h"
+#import "PureLayout.h"
 
 @interface JARightViewController ()
 @property (strong,nonatomic) UIToolbar *toolBar;
@@ -39,28 +41,51 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-	self.view.backgroundColor = [UIColor redColor];
-    self.toolBar = [[UIToolbar alloc] initWithFrame:CGRectMake(self.view.bounds.origin.x, self.view.bounds.origin.y, self.view.bounds.size.width, 44.0f)];
-    self.backButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRewind target:self action:@selector(showCenterPanelAnimated:)];
+    self.toolBar = [UIToolbar newAutoLayoutView];
+    self.view.backgroundColor = [UIColor greenColor];
+//    self.toolBar = [[UIToolbar alloc] initWithFrame:CGRectMake(self.view.bounds.origin.x, self.view.bounds.origin.y, self.view.bounds.size.width, 44.0f)];
+    self.backButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRewind target:self action:@selector(showCenter)];
     UIBarButtonItem *flexSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:self action:nil];
 
-    self.editButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemEdit target:self action:@selector(editTab)];
+    self.editButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemEdit target:self action:@selector(editTable)];
     [self.toolBar setItems:[NSArray arrayWithObjects:_backButton, flexSpace, _editButton, nil]];
+    [self.view addSubview:_toolBar];
+    
+    [_toolBar setTintColor:[UIColor blueColor]];
+    _toolBar.backgroundColor = [UIColor greenColor];
+    
+    [_toolBar autoPinEdgeToSuperviewEdge:ALEdgeTop withInset:20.0f];
+    [_toolBar autoPinEdgeToSuperviewEdge:ALEdgeLeft];
+    [_toolBar autoPinEdgeToSuperviewEdge:ALEdgeRight];
+    [_toolBar autoMatchDimension:ALDimensionWidth toDimension:ALDimensionWidth ofView:self.view];
+    [_toolBar autoSetDimension:ALDimensionHeight toSize:44];
+//    [_toolBar autoPinEdgesToSuperviewMarginsExcludingEdge:ALEdgeBottom];
     self.label.text = @"Right Panel";
     [self.label sizeToFit];
     self.hide.frame = CGRectMake(self.view.bounds.size.width - 220.0f, 70.0f, 200.0f, 40.0f);
     self.hide.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleBottomMargin;
     self.show.frame = self.hide.frame;
     self.show.autoresizingMask = self.hide.autoresizingMask;
-    self.tableView = [[UITableView alloc] initWithFrame:CGRectMake(self.view.bounds.origin.x, self.view.bounds.origin.y + 44.0f, self.view.bounds.size.width, self.view.bounds.size.height - 44.0f)];
+//    self.tableView = [[UITableView alloc] initWithFrame:CGRectMake(self.view.bounds.origin.x, self.view.bounds.origin.y + 44.0f, self.view.bounds.size.width, self.view.bounds.size.height - 44.0f)];
+    self.tableView = [UITableView newAutoLayoutView];
     self.tableView.dataSource = self;
     self.tableView.delegate = self;
     [self.view addSubview:self.tableView];
+    [_tableView autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:_toolBar];
+    [_tableView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero excludingEdge:ALEdgeTop];
     
     self.label.hidden = YES;
     self.removeRightPanel.hidden = YES;
     self.addRightPanel.hidden = YES;
     self.changeCenterPanel.hidden = YES;
+    
+    
+    if(!_favArray ) {
+        JACenterViewController *cPanel = (JACenterViewController*) self.sidePanelController.centerPanel;
+        self.favArray = cPanel.draggableView.favArray;
+        [_tableView reloadData];
+        NSLog(@"no favarray in right controller");
+    }
 }
 
 -(void)viewDidAppear:(BOOL)animated {
@@ -79,6 +104,9 @@
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
 }
+-(void)showCenter {
+    [self.sidePanelController showCenterPanelAnimated:YES];
+}
 -(void)editTable {
     _tableView.editing = !_tableView.editing;
 }
@@ -96,8 +124,8 @@
 }
 
 - (void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-//    WebViewController *wvc = [[WebViewController alloc] init];
-//    [self presentViewController:wvc animated:YES completion:nil];
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:[[_favArray[0] objectForKey:@"DetailPageURL"] objectForKey:@"text"]]];
 }
 //- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
 //    if (![self.result[indexPath.row][@"type"] isEqualToString:@"image"]) {
@@ -111,6 +139,14 @@
     static NSString *CellIdentifier = @"SavedCell";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if(!cell) {
+        
+        
+//        cell = [UITableViewCell newAutoLayoutView];
+//        [cell autoSetDimension:ALDimensionHeight toSize:115.0f];
+//        [cell setRestorationIdentifier:CellIdentifier];
+        
+//        cell.reuseIdentifier = CellIdentifier;
+        
         NSArray* topLevelObjects = [[NSBundle mainBundle] loadNibNamed:@"SavedCell" owner:self options:nil];
         for (id currentObject in topLevelObjects) {
             if ([currentObject isKindOfClass:[UITableViewCell class]]) {
@@ -120,18 +156,47 @@
         }
     }
     UIImageView *imageView = (UIImageView*)[cell.contentView viewWithTag:1];
+    UILabel *label = (UILabel*)[cell.contentView viewWithTag:2];
+    [imageView autoRemoveConstraintsAffectingView];
+    [label autoRemoveConstraintsAffectingView];
+//    UIImageView *imageView = [UIImageView newAutoLayoutView];
+//    [cell.contentView addSubview:imageView];
+    
     imageView.backgroundColor = [UIColor blueColor];
     [imageView setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@", [[_favArray[indexPath.row] objectForKey:@"SmallImage"] objectForKey:@"text"]]] placeholderImage:nil options:SDWebImageRefreshCached];
 //    imageView.frame = CGRectMake(self.view.bounds.size.width*.2, 2, imageView.frame.size.width, imageView.frame.size.height);
-    UILabel *label = (UILabel*)[cell.contentView viewWithTag:2];
+    NSLog(@"fdas %f %f",[[[_favArray[indexPath.row] objectForKey:@"SmallImage"] objectForKey:@"Width"] floatValue], [[[_favArray[indexPath.row] objectForKey:@"SmallImage"] objectForKey:@"Height"] floatValue]);
+    CGSize imageSizze = CGSizeMake([[[_favArray[indexPath.row] objectForKey:@"SmallImage"] objectForKey:@"Width"] floatValue], [[[_favArray[indexPath.row] objectForKey:@"SmallImage"] objectForKey:@"Height"] floatValue]);
+    [imageView autoSetDimensionsToSize:imageSizze];
+    [imageView autoPinEdgeToSuperviewEdge:ALEdgeLeft withInset:11.0f];
+//    [imageView autoPinEdgeToSuperviewEdge:ALEdgeTop withInset:5];
+//    [imageView autoPinEdgeToSuperviewEdge:ALEdgeBottom withInset:5];
+    [imageView autoAlignAxisToSuperviewAxis:ALAxisHorizontal];
+    imageView.contentMode = UIViewContentModeScaleAspectFit;
+//    UILabel *label = [UILabel newAutoLayoutView];
+//    [cell.contentView addSubview:label];
+//    label.numberOfLines = 0;
+//    label.lineBreakMode = NSLineBreakByWordWrapping;
+//    label.font = [UIFont systemFontOfSize:12.0f];
+    [label autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsMake(11, 0, 11, 11) excludingEdge:ALEdgeLeft];
+    [label autoMatchDimension:ALDimensionWidth toDimension:ALDimensionWidth ofView:cell.contentView withMultiplier:(2/3.0f) relation:NSLayoutRelationLessThanOrEqual];
+//    UILabel *label = (UILabel*)[cell.contentView viewWithTag:2];
     
     NSString *lText = [NSString stringWithFormat:@"%@\n%@",
                        [[_favArray[indexPath.row] objectForKey:@"Title"] objectForKey:@"text"],
                        [[_favArray[indexPath.row] objectForKey:@"FormattedPrice"] objectForKey:@"text"]];
     label.attributedText = [[NSAttributedString alloc] initWithString:lText attributes:nil];
-    label.sizeToFit;
-                        
+    
     return cell;
     
 }
+
+- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
+    if (editingStyle == UITableViewCellEditingStyleDelete) {
+        [_favArray removeObject:_favArray[indexPath.row]];
+        [_tableView reloadData];
+    }
+}
+
+
 @end

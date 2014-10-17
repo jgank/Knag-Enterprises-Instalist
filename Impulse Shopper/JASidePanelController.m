@@ -813,7 +813,7 @@ static char ja_kvoContext;
 }
 
 - (CGFloat)rightVisibleWidth {
-//        return self.view.bounds.size.width;
+        return self.view.bounds.size.width;
     if (self.centerPanelHidden && self.shouldResizeRightPanel) {
         return self.view.bounds.size.width;
     } else {

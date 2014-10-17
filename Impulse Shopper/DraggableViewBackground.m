@@ -46,6 +46,7 @@ static const float CARD_WIDTH = 290; //%%% width of the draggable card
         undoItems = [[NSMutableArray alloc] init];
         cardsLoadedIndex = 0;
         _delegate = d;
+        [self loadCards];
         paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
         arrayPath = [[paths objectAtIndex:0] stringByAppendingPathComponent:@"fav.out"];
         NSArray *arrayFromFile = [NSArray arrayWithContentsOfFile:arrayPath];
@@ -53,10 +54,10 @@ static const float CARD_WIDTH = 290; //%%% width of the draggable card
             arrayFromFile = [[NSArray alloc] init];
         self.favArray = [[NSMutableArray alloc] initWithArray:arrayFromFile];
         [_delegate sendFav:_favArray];
-        [self loadCards];
     }
     return self;
 }
+
 
 //%%% sets up the extra buttons on the screen
 -(void)setupView
@@ -76,17 +77,25 @@ static const float CARD_WIDTH = 290; //%%% width of the draggable card
     [checkButton setImage:[UIImage imageNamed:@"checkButton"] forState:UIControlStateNormal];
     [checkButton addTarget:self action:@selector(swipeRight) forControlEvents:UIControlEventTouchUpInside];
     titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(self.frame.size.width/2.0, 34, self.frame.size.width/3.0*2, 46)];
+    titleLabel = [UILabel newAutoLayoutView];
     titleLabel.numberOfLines = 0;
     titleLabel.font = [UIFont systemFontOfSize:12];
+    titleLabel.sizeToFit;
     titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
     titleLabel.textAlignment = NSTextAlignmentCenter;
-    titleLabel.sizeToFit;
+//    titleLabel.layoutMargins = UIEdgeInsetsMake(0, 3, 0, 3);
     
     [self addSubview:menuButton];
     [self addSubview:messageButton];
     [self addSubview:xButton];
     [self addSubview:checkButton];
     [self addSubview:titleLabel];
+    [titleLabel autoPinEdgeToSuperviewEdge:ALEdgeTop withInset:30.0f];
+//    [titleLabel autoPinEdge:ALEdgeTop toEdge:ALEdgeTop ofView:menuButton withOffset:0];
+    [titleLabel autoPinEdge:ALEdgeLeft toEdge:ALEdgeRight ofView:menuButton withOffset:3.0f];
+    [titleLabel autoPinEdge:ALEdgeRight toEdge:ALEdgeLeft ofView:messageButton withOffset:-3.0f];
+//    [titleLabel autoPinEdge:ALEdgeRight toEdge:ALEdgeLeading ofView:messageButton withOffset:3.0f];
+    [titleLabel autoSetDimension:ALDimensionHeight toSize:(self.bounds.size.height - CARD_HEIGHT)/2.0 - menuButton.frame.origin.y relation:NSLayoutRelationLessThanOrEqual];
 }
 
 #warning include own card customization here!
@@ -135,13 +144,15 @@ static const float CARD_WIDTH = 290; //%%% width of the draggable card
         NSLog([[[(DraggableView*)loadedCards[0] item] objectForKey:@"ProductGroup"] objectForKey:@"text"]);
         [titleLabel autoPinEdge:ALEdgeTop toEdge:ALEdgeTop ofView:menuButton];
 //        [titleLabel autoPinToTopLayoutGuideOfViewController:self withInset:5.0f];
-        [titleLabel autoPinEdge:ALEdgeBottom toEdge:ALEdgeTop ofView:[loadedCards firstObject]];
+//        [titleLabel autoPinEdge:ALEdgeBottom toEdge:ALEdgeTop ofView:[loadedCards firstObject]];
 //        [self autoConstrainAttribute:ALEdgeLeft toAttribute:ALEdgeRight ofView:menuButton withOffset:5.0f relation:NSLayoutRelationGreaterThanOrEqual];
 //        [self autoConstrainAttribute:ALEdgeRight toAttribute:ALEdgeLeft ofView:messageButton withOffset:5.0f relation:NSLayoutRelationLessThanOrEqual];
-        [titleLabel autoPinEdge:ALEdgeLeft toEdge:ALEdgeRight ofView:menuButton];
-        [titleLabel autoPinEdge:ALEdgeRight toEdge:ALEdgeLeft ofView:messageButton];
+//        [titleLabel autoPinEdge:ALEdgeLeft toEdge:ALEdgeRight ofView:menuButton];
+//        [titleLabel autoPinEdge:ALEdgeRight toEdge:ALEdgeLeft ofView:messageButton];
     }
     titleLabel.text = [[[(DraggableView*)loadedCards[0] item] objectForKey:@"Title"] objectForKey:@"text"];
+//    titleLabel.text = [NSString stringWithFormat:@"%@\n%@", [[[(DraggableView*)loadedCards[0] item] objectForKey:@"ProductGroup"] objectForKey:@"text"],
+//     [[[(DraggableView*)loadedCards[0] item] objectForKey:@"Title"] objectForKey:@"text"]];
 }
 
 #warning include own action here!

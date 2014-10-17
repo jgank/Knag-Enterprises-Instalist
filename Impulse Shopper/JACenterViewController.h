@@ -26,8 +26,10 @@
 
 #import "JADebugViewController.h"
 #import <WebKit/WebKit.h>
+#import "DraggableViewBackground.h"
 
 @interface JACenterViewController : JADebugViewController <WKUIDelegate, WKNavigationDelegate, WKScriptMessageHandler>
+@property (nonatomic, strong) DraggableViewBackground *draggableView;
 -(void)undoPressed;
 
 @end

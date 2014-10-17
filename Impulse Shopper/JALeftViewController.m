@@ -30,8 +30,9 @@
 #import "UIViewController+JASidePanel.h"
 #import "JARightViewController.h"
 #import "JACenterViewController.h"
+#import <MessageUI/MessageUI.h>
 
-@interface JALeftViewController ()
+@interface JALeftViewController () <MFMailComposeViewControllerDelegate>
 
 @property (nonatomic, weak) UILabel *label;
 @property (nonatomic, weak) UIButton *hide;
@@ -65,20 +66,12 @@
     [self.view addSubview:button];
     self.hide = button;
     
-    button = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    button.frame = self.hide.frame;
-    button.autoresizingMask = UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleBottomMargin;
-    [button setTitle:@"Show Center" forState:UIControlStateNormal];
-    [button addTarget:self action:@selector(_showTapped:) forControlEvents:UIControlEventTouchUpInside];
-    button.hidden = YES;
-    [self.view addSubview:button];
-    self.show = button;
     
     button = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     button.frame = CGRectMake(20.0f, 120.0f, 200.0f, 40.0f);
     button.autoresizingMask = UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleBottomMargin;
-    [button setTitle:@"Remove Right Panel" forState:UIControlStateNormal];
-    [button addTarget:self action:@selector(_removeRightPanelTapped:) forControlEvents:UIControlEventTouchUpInside];
+    [button setTitle:@"Email List" forState:UIControlStateNormal];
+    [button addTarget:self action:@selector(_emailTapped:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:button];
     self.removeRightPanel = button;
     
@@ -114,10 +107,33 @@
 //    self.show.hidden = NO;
 }
 
-- (void)_showTapped:(id)sender {
-    [self.sidePanelController setCenterPanelHidden:NO animated:YES duration:0.2f];
-    self.hide.hidden = NO;
-    self.show.hidden = YES;
+- (void)_emailTapped:(id)sender {
+    if ([MFMailComposeViewController canSendMail]) {
+        MFMailComposeViewController  *mailer = [[MFMailComposeViewController alloc] init];
+        mailer.mailComposeDelegate = self;
+        [mailer setSubject:@"Gift Wish List"];
+        NSString *body = @"";
+        NSArray *arr = ((JACenterViewController*)self.sidePanelController.centerPanel).draggableView.favArray;
+        for (NSDictionary *d in arr) {
+            
+            body = [body stringByAppendingString:[NSString stringWithFormat:@"%@, %@, %@\n",
+            [[d objectForKey:@"Title"] objectForKey:@"text"],
+            [[d objectForKey:@"FormattedPrice"] objectForKey:@"text"],
+            [[d objectForKey:@"DetailPageURL"] objectForKey:@"text"]]];
+        }
+        body = [body stringByAppendingString:@"\n Created by iPhone Christmas List Creator"];
+        NSLog(body);
+        [mailer setMessageBody:body isHTML:NO];
+        [self presentViewController:mailer animated:YES completion:nil];
+    }
+    else {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Failure"
+                                                        message:@"Your device doesn't support the composer sheet"
+                                                       delegate:nil
+                                              cancelButtonTitle:@"OK"
+                                              otherButtonTitles:nil];
+        [alert show];
+    }
 }
 
 - (void)_removeRightPanelTapped:(id)sender {
@@ -134,6 +150,9 @@
 
 - (void)_changeCenterPanelTapped:(id)sender {
     self.sidePanelController.centerPanel = [[UINavigationController alloc] initWithRootViewController:[[JACenterViewController alloc] init]];
+}
+- (void)mailComposeController:(MFMailComposeViewController *)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError *)error {
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 @end

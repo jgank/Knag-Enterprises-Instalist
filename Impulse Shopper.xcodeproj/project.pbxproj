@@ -31,6 +31,9 @@
 		EF0B8A6119E6590700EA1B6E /* Electronics.xml in Resources */ = {isa = PBXBuildFile; fileRef = EF0B8A6019E6590700EA1B6E /* Electronics.xml */; };
 		EF0B8A6419E7387B00EA1B6E /* WebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EF0B8A6319E7387B00EA1B6E /* WebViewController.m */; };
 		EF0B8A6619E738A500EA1B6E /* WebViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = EF0B8A6519E738A500EA1B6E /* WebViewController.xib */; };
+		EF4B164E19F05D1F00083B72 /* apparel.xml in Resources */ = {isa = PBXBuildFile; fileRef = EF4B164D19F05D1F00083B72 /* apparel.xml */; };
+		EF4B165019F061B400083B72 /* Toys.xml in Resources */ = {isa = PBXBuildFile; fileRef = EF4B164F19F061B400083B72 /* Toys.xml */; };
+		EF51278B19EF521C007C636A /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EF51278A19EF521C007C636A /* MessageUI.framework */; };
 		EF70B3EC19EC74C600AA55FA /* SavedCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = EF70B3EB19EC74C600AA55FA /* SavedCell.xib */; };
 		EF70B3EE19ED4C4D00AA55FA /* combined.xml in Resources */ = {isa = PBXBuildFile; fileRef = EF70B3ED19ED4C4D00AA55FA /* combined.xml */; };
 		EF70B3F019ED538700AA55FA /* aws_signed_request.py in Resources */ = {isa = PBXBuildFile; fileRef = EF70B3EF19ED538700AA55FA /* aws_signed_request.py */; };
@@ -94,6 +97,9 @@
 		EF0B8A6219E7387B00EA1B6E /* WebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WebViewController.h; sourceTree = "<group>"; };
 		EF0B8A6319E7387B00EA1B6E /* WebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WebViewController.m; sourceTree = "<group>"; };
 		EF0B8A6519E738A500EA1B6E /* WebViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WebViewController.xib; sourceTree = "<group>"; };
+		EF4B164D19F05D1F00083B72 /* apparel.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = apparel.xml; sourceTree = "<group>"; };
+		EF4B164F19F061B400083B72 /* Toys.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = Toys.xml; sourceTree = "<group>"; };
+		EF51278A19EF521C007C636A /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
 		EF70B3EB19EC74C600AA55FA /* SavedCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SavedCell.xib; sourceTree = "<group>"; };
 		EF70B3ED19ED4C4D00AA55FA /* combined.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = combined.xml; sourceTree = "<group>"; };
 		EF70B3EF19ED538700AA55FA /* aws_signed_request.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = aws_signed_request.py; sourceTree = "<group>"; };
@@ -124,6 +130,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				EF51278B19EF521C007C636A /* MessageUI.framework in Frameworks */,
 				52F1900A19AF9F4D00606C5C /* WebKit.framework in Frameworks */,
 				52CCC68F19AE93CB00464A46 /* CoreGraphics.framework in Frameworks */,
 				52CCC69019AE93CB00464A46 /* Foundation.framework in Frameworks */,
@@ -173,8 +180,10 @@
 			isa = PBXGroup;
 			children = (
 				EF70B3EF19ED538700AA55FA /* aws_signed_request.py */,
+				EF4B164D19F05D1F00083B72 /* apparel.xml */,
 				EF70B3ED19ED4C4D00AA55FA /* combined.xml */,
 				EF0B8A6019E6590700EA1B6E /* Electronics.xml */,
+				EF4B164F19F061B400083B72 /* Toys.xml */,
 				EF0B8A5C19E62FB400EA1B6E /* combine.xml */,
 				EFEE5C5219E47B18009BD5D2 /* XMLReader.h */,
 				EFEE5C5319E47B18009BD5D2 /* XMLReader.m */,
@@ -253,6 +262,7 @@
 		69FA8F7A7BCB409C94DE4E12 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				EF51278A19EF521C007C636A /* MessageUI.framework */,
 				89FAADAE8CAB497B9353AD67 /* libPods.a */,
 			);
 			name = Frameworks;
@@ -344,11 +354,13 @@
 				52CCC66419AE90FD00464A46 /* Images.xcassets in Resources */,
 				EF70B3EC19EC74C600AA55FA /* SavedCell.xib in Resources */,
 				5245030119B8BF5800103542 /* View.xib in Resources */,
+				EF4B164E19F05D1F00083B72 /* apparel.xml in Resources */,
 				EFBB10E219E75B8E000FBB38 /* UIWebViewController.xib in Resources */,
 				524502FE19B8BB4200103542 /* Main.storyboard in Resources */,
 				EF70B3EE19ED4C4D00AA55FA /* combined.xml in Resources */,
 				EF0B8A6619E738A500EA1B6E /* WebViewController.xib in Resources */,
 				EF0B8A5D19E62FB400EA1B6E /* combine.xml in Resources */,
+				EF4B165019F061B400083B72 /* Toys.xml in Resources */,
 				EF0B8A6119E6590700EA1B6E /* Electronics.xml in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -523,9 +535,11 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				INFOPLIST_FILE = "Impulse Shopper/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -535,9 +549,11 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				INFOPLIST_FILE = "Impulse Shopper/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};

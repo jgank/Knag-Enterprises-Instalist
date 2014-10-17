@@ -27,7 +27,6 @@
 #import <WebKit/WebKit.h>
 #import <POPSUGARShopSense.h>
 #import <SDWebImage/UIImageView+WebCache.h>
-#import "DraggableViewBackground.h"
 #import "DraggableView.h"
 #import "XMLReader.h"
 #import "WebViewController.h"
@@ -41,7 +40,6 @@
 @property (nonatomic, retain) WKWebView *webView;
 @property (nonatomic, retain) UIView *contentView;
 @property (nonatomic, strong) NSArray *products;
-@property (nonatomic, strong) DraggableViewBackground *draggableView;
 @property (readwrite, assign) int productIndex;
 
 @end
@@ -62,40 +60,53 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     NSString *str=[[NSBundle mainBundle] pathForResource:@"combined" ofType:@"xml"];
+//    NSString *str=[[NSBundle mainBundle] pathForResource:@"Toys" ofType:@"xml"];
  
     NSData *data = [NSData dataWithContentsOfFile:str];
     NSError *error = nil;
     NSLog(@"read xmlfile");
-    NSDictionary *dict = [XMLReader dictionaryForXMLData:data options:XMLReaderOptionsProcessNamespaces error:&error];
+    NSDictionary *dict = [[[XMLReader dictionaryForXMLData:data options:XMLReaderOptionsProcessNamespaces error:&error] objectForKey:@"root"] objectForKey:@"Item"];
     NSLog(@"done xmfile");
     NSLog(@"dict reading root");
-    NSDictionary *list = [dict objectForKey:@"root"];
+//    NSDictionary *list = [dict objectForKey:@"root"];
     NSLog(@"done read root");
     NSLog(@"reading items");
-    NSArray *arg = [list objectForKey:@"Item"];
+//    NSArray *arg = [list objectForKey:@"Item"];
     NSLog(@"done item");
     NSMutableArray *pics = [[NSMutableArray alloc] init];
     
     
-    NSLog(@"%lu", (unsigned long)[arg count]);
+    NSLog(@"%lu", (unsigned long)[dict count]);
     NSLog(@"finding xml with LargeImage");
-    for (id i in arg) {
+    for (id i in dict) {
         if(![i objectForKey:@"LargeImage"])
             continue;
         [pics addObject:i];
     }
+    
+    
+    
+    
+    
     NSLog(@"done with LargeImage");
     _products = pics;
     _productIndex = 0;
     [self showProduct];
-    NSLog(@"%i", [arg count]);
+    NSLog(@"%i", [dict count]);
+    
+    
+    NSLog(@"dict");
+    printf("%p\n", dict);
+    printf("%p\n", _products);
     
 
+    
 }
 -(void)showProduct {
     
     if([_products count] > 0) {
         DraggableViewBackground *back = [[DraggableViewBackground alloc] initWithFrame:self.view.frame setArr:_products delegate:self];
+        self.products = nil;
 //        back.delegate = self;
         NSLog(@"add draggableviews");
 //        for(int i = 0; i < [_products count]; i++) {
@@ -138,11 +149,15 @@
 -(void)undoPressed {
     [self.draggableView undoPressed];
 }
--(void)sendFav:(NSArray*)arr {
+-(void)sendFav:(NSMutableArray*)arr {
     
+    NSLog(@"sendFAv");
     JARightViewController *right = (JARightViewController*)self.sidePanelController.rightPanel;
-    if (right.favArray == nil)
+    if (right.favArray == nil) {
+        NSLog(@"ARRAY NIL");
         right.favArray = arr;
+    }
+        NSLog(@"arr size %i", [arr count]);
     [right.tableView reloadData];
     
 }

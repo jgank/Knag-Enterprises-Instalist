@@ -30,6 +30,6 @@
 
 @interface JARightViewController : JALeftViewController
 @property (nonatomic, strong) UITableView *tableView;
-@property (weak, nonatomic) NSArray *favArray;
+@property (weak, nonatomic) NSMutableArray *favArray;
 
 @end
