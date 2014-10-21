@@ -42,7 +42,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.toolBar = [UIToolbar newAutoLayoutView];
-    self.view.backgroundColor = [UIColor greenColor];
+    self.view.backgroundColor = [UIColor grayColor];
 //    self.toolBar = [[UIToolbar alloc] initWithFrame:CGRectMake(self.view.bounds.origin.x, self.view.bounds.origin.y, self.view.bounds.size.width, 44.0f)];
     self.backButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRewind target:self action:@selector(showCenter)];
     UIBarButtonItem *flexSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:self action:nil];
@@ -52,7 +52,7 @@
     [self.view addSubview:_toolBar];
     
     [_toolBar setTintColor:[UIColor blueColor]];
-    _toolBar.backgroundColor = [UIColor greenColor];
+    _toolBar.backgroundColor = [UIColor grayColor];
     
     [_toolBar autoPinEdgeToSuperviewEdge:ALEdgeTop withInset:20.0f];
     [_toolBar autoPinEdgeToSuperviewEdge:ALEdgeLeft];
@@ -163,7 +163,7 @@
 //    [cell.contentView addSubview:imageView];
     
     imageView.backgroundColor = [UIColor blueColor];
-    [imageView setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@", [[_favArray[indexPath.row] objectForKey:@"SmallImage"] objectForKey:@"text"]]] placeholderImage:nil options:SDWebImageRefreshCached];
+    [imageView setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@", [[_favArray[indexPath.row] objectForKey:@"SmallImage"] objectForKey:@"text"]]] placeholderImage:nil options:SDWebImageContinueInBackground];
 //    imageView.frame = CGRectMake(self.view.bounds.size.width*.2, 2, imageView.frame.size.width, imageView.frame.size.height);
     NSLog(@"fdas %f %f",[[[_favArray[indexPath.row] objectForKey:@"SmallImage"] objectForKey:@"Width"] floatValue], [[[_favArray[indexPath.row] objectForKey:@"SmallImage"] objectForKey:@"Height"] floatValue]);
     CGSize imageSizze = CGSizeMake([[[_favArray[indexPath.row] objectForKey:@"SmallImage"] objectForKey:@"Width"] floatValue], [[[_favArray[indexPath.row] objectForKey:@"SmallImage"] objectForKey:@"Height"] floatValue]);

@@ -33,7 +33,6 @@
 
 #import <UIKit/UIKit.h>
 #import "OverlayView.h"
-#import <POPSUGARShopSense.h>
 
 @protocol DraggableViewDelegate <NSObject>
 
@@ -52,7 +51,6 @@
 @property (nonatomic)CGPoint imagePoint;
 @property (nonatomic,strong)OverlayView* overlayView;
 @property (nonatomic,strong)UIImageView *imageView;
-@property (nonatomic,strong)PSSProduct *product;
 @property (nonatomic,strong)NSDictionary *item;
 
 -(void)leftClickAction;

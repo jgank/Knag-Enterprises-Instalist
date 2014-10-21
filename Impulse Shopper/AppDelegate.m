@@ -11,7 +11,8 @@
 #import "JACenterViewController.h"
 #import "JALeftViewController.h"
 #import "JARightViewController.h"
-#import <POPSUGARShopSense.h>
+#import <FacebookSDK/FacebookSDK.h>
+
 
 @interface AppDelegate ()
 
@@ -61,7 +62,13 @@
     // Saves changes in the application's managed object context before the application terminates.
     [self saveContext];
 }
-
+- (BOOL)application:(UIApplication *)application
+            openURL:(NSURL *)url
+  sourceApplication:(NSString *)sourceApplication
+         annotation:(id)annotation {
+    // attempt to extract a token from the url
+    return [FBAppCall handleOpenURL:url sourceApplication:sourceApplication];
+}
 #pragma mark - Core Data stack
 
 @synthesize managedObjectContext = _managedObjectContext;

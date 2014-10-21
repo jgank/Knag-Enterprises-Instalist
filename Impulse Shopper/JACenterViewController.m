@@ -25,7 +25,6 @@
 
 #import "JACenterViewController.h"
 #import <WebKit/WebKit.h>
-#import <POPSUGARShopSense.h>
 #import <SDWebImage/UIImageView+WebCache.h>
 #import "DraggableView.h"
 #import "XMLReader.h"

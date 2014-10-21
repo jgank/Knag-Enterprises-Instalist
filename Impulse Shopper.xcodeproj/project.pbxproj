@@ -59,7 +59,6 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		21341CA531534A25B117131A /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = "<group>"; };
 		524502FD19B8BB4200103542 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 		5245030019B8BF5800103542 /* View.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = View.xib; sourceTree = "<group>"; };
 		52CCC65019AE90FD00464A46 /* Impulse Shopper.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Impulse Shopper.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -91,7 +90,9 @@
 		52CCC68D19AE93CB00464A46 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		52CCC68E19AE93CB00464A46 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		52F1900919AF9F4D00606C5C /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
+		68E31D891A53852CD5B33B96 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 		89FAADAE8CAB497B9353AD67 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		A7431BC226B812FEB6FB096E /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 		EF0B8A5C19E62FB400EA1B6E /* combine.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = combine.xml; sourceTree = "<group>"; };
 		EF0B8A6019E6590700EA1B6E /* Electronics.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = Electronics.xml; sourceTree = "<group>"; };
 		EF0B8A6219E7387B00EA1B6E /* WebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WebViewController.h; sourceTree = "<group>"; };
@@ -162,8 +163,8 @@
 				52CCC65219AE90FD00464A46 /* Impulse Shopper */,
 				52CCC66C19AE90FD00464A46 /* Impulse ShopperTests */,
 				52CCC65119AE90FD00464A46 /* Products */,
-				21341CA531534A25B117131A /* Pods.xcconfig */,
 				69FA8F7A7BCB409C94DE4E12 /* Frameworks */,
+				B0A774A2403D1EE57FDE5ED4 /* Pods */,
 			);
 			sourceTree = "<group>";
 		};
@@ -268,6 +269,15 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		B0A774A2403D1EE57FDE5ED4 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				A7431BC226B812FEB6FB096E /* Pods.debug.xcconfig */,
+				68E31D891A53852CD5B33B96 /* Pods.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -319,6 +329,7 @@
 				TargetAttributes = {
 					52CCC64F19AE90FD00464A46 = {
 						CreatedOnToolsVersion = 6.0;
+						DevelopmentTeam = QVT76MD88U;
 					};
 					52CCC66819AE90FD00464A46 = {
 						CreatedOnToolsVersion = 6.0;
@@ -387,7 +398,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Pods-resources.sh\"\n";
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods/Pods-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		B33A1C2B311A4B2295E164A8 /* Check Pods Manifest.lock */ = {
@@ -531,12 +542,13 @@
 		};
 		52CCC67419AE90FD00464A46 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 21341CA531534A25B117131A /* Pods.xcconfig */;
+			baseConfigurationReference = A7431BC226B812FEB6FB096E /* Pods.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				INFOPLIST_FILE = "Impulse Shopper/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TARGETED_DEVICE_FAMILY = 1;
@@ -545,12 +557,13 @@
 		};
 		52CCC67519AE90FD00464A46 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 21341CA531534A25B117131A /* Pods.xcconfig */;
+			baseConfigurationReference = 68E31D891A53852CD5B33B96 /* Pods.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				INFOPLIST_FILE = "Impulse Shopper/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TARGETED_DEVICE_FAMILY = 1;

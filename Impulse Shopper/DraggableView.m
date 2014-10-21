@@ -41,8 +41,9 @@
         
         self.backgroundColor = [UIColor whiteColor];
         
-        self.imageView = [[UIImageView alloc] init];
-        self.backgroundColor = [UIColor clearColor];
+//        self.imageView = [[UIImageView alloc] init];
+        self.imageView = [UIImageView newAutoLayoutView];
+//        self.backgroundColor = [UIColor clearColor];
 #warning placeholder stuff, replace with card-specific information }
         
         
@@ -72,38 +73,35 @@
 -(void)setItem:(NSDictionary *)item {
     _item = item;
     _imageView.frame = self.frame;
-    [_imageView setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@", [[item objectForKey:@"LargeImage"] objectForKey:@"text"]]] placeholderImage:nil options:SDWebImageRefreshCached];
-    _imageView.frame = CGRectMake(0, 0, 160, 360);
-    _imageView.layer.cornerRadius = 4;
-    _imageView.layer.shadowRadius = 3;
-    _imageView.layer.shadowOpacity = 0.2;
-    _imageView.layer.shadowOffset = CGSizeMake(1, 1);
+    [_imageView setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@", [[item objectForKey:@"LargeImage"] objectForKey:@"text"]]] placeholderImage:nil options:SDWebImageContinueInBackground];
+//    _imageView.frame = CGRectMake(0, 0, 160, 360);
+//    _imageView.layer.cornerRadius = 4;
+//    _imageView.layer.shadowRadius = 3;
+//    _imageView.layer.shadowOpacity = 0.2;
+//    _imageView.layer.shadowOffset = CGSizeMake(1, 1);
     _imageView.contentMode = UIViewContentModeScaleAspectFit;
     _imageView.bounds = self.bounds;
 //    _imageView.backgroundColor = [UIColor blackColor];
 //    panGestureRecognizer = [[UIPanGestureRecognizer alloc]initWithTarget:self action:@selector(beingDragged:)];
     
     [self addSubview:_imageView];
-    [_imageView autoMatchDimension:ALDimensionHeight toDimension:ALDimensionHeight ofView:self];
-    [_imageView autoMatchDimension:ALDimensionWidth toDimension:ALDimensionWidth ofView:self];
-    [_imageView autoCenterInSuperview];
+    [_imageView autoPinEdgeToSuperviewEdge:ALEdgeTop];
+    [_imageView autoPinEdgeToSuperviewEdge:ALEdgeBottom];
+    [_imageView autoPinEdgeToSuperviewEdge:ALEdgeLeft];
+    [_imageView autoPinEdgeToSuperviewEdge:ALEdgeRight];
+//    [_imageView autoPinEdgesToSuperviewMargins];
+//    [_imageView autoMatchDimension:ALDimensionHeight toDimension:ALDimensionHeight ofView:self];
+//    [_imageView autoMatchDimension:ALDimensionWidth toDimension:ALDimensionWidth ofView:self];
+//    [_imageView autoCenterInSuperview];
 
     
-    UIView *v = [[UIView alloc] initWithFrame:CGRectMake((_imageView.frame.size.width-_imageView.image.size.width)/2.0,(_imageView.frame.size.height-_imageView.image.size.height)/2.0, _imageView.image.size.width, _imageView.image.size.height)];
-//    v.backgroundColor = [UIColor blackColor];
-//    v.frame = _imageView.frame;
-    v.layer.zPosition = 10;
-    [_imageView addSubview:v];
-    
-    [v autoCenterInSuperview];
-}
--(void)setProduct:(PSSProduct *)product {
-    _product = product;
-    [_imageView setImageWithURL:[_product.image imageURLWithSize:PSSProductImageSizeIPhone] placeholderImage:nil options:SDWebImageRefreshCached];
-    [self addSubview:_imageView];
-    NSLog(@"%@", [[_product.image imageURLWithSize:PSSProductImageSizeIPhone] absoluteString]);
-    [_imageView autoCenterInSuperview];
-
+//    UIView *v = [[UIView alloc] initWithFrame:CGRectMake((_imageView.frame.size.width-_imageView.image.size.width)/2.0,(_imageView.frame.size.height-_imageView.image.size.height)/2.0, _imageView.image.size.width, _imageView.image.size.height)];
+////    v.backgroundColor = [UIColor blackColor];
+////    v.frame = _imageView.frame;
+//    v.layer.zPosition = 10;
+//    [_imageView addSubview:v];
+//    
+//    [v autoCenterInSuperview];
 }
 
 /*
@@ -120,6 +118,7 @@
 -(void)beingDragged:(UIPanGestureRecognizer *)gestureRecognizer
 {
     NSLog(@"guesture recognizer");
+//    self.backgroundColor = [UIColor clearColor];
     //%%% this extracts the coordinate data from your swipe movement. (i.e. How much did you move?)
     xFromCenter = [gestureRecognizer translationInView:self].x; //%%% positive for right swipe, negative for left
     yFromCenter = [gestureRecognizer translationInView:self].y; //%%% positive for up, negative for down
@@ -199,6 +198,7 @@
 //                             _imageView.transform = CGAffineTransformMakeRotation(0);
                              overlayView.alpha = 0;
                          }];
+        self.backgroundColor = [UIColor whiteColor];
     }
 }
 

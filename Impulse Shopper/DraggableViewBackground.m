@@ -7,10 +7,11 @@
 //
 
 #import "DraggableViewBackground.h"
-#import <POPSUGARShopSense.h>
 #import "PureLayout.h"
 #import "JACenterViewController.h"
 #import "JARightViewController.h"
+#import <BitlyForiOS/SSTURLShortener.h>
+#import "AFNetworking.h"
 
 @implementation DraggableViewBackground{
     NSInteger cardsLoadedIndex; //%%% the index of the card you have loaded into the loadedCards array last
@@ -23,6 +24,7 @@
     UILabel *titleLabel;
     NSArray *paths;
     NSString  *arrayPath;
+    UILabel *catLabel;
 
 }
 //this makes it so only two cards are loaded at a time to
@@ -54,6 +56,11 @@ static const float CARD_WIDTH = 290; //%%% width of the draggable card
             arrayFromFile = [[NSArray alloc] init];
         self.favArray = [[NSMutableArray alloc] initWithArray:arrayFromFile];
         [_delegate sendFav:_favArray];
+        
+        NSLog(@"self height width %f %f", self.frame.size.height, self.frame.size.width);
+        NSLog(@"percent %f %f", CARD_HEIGHT/ self.frame.size.height, CARD_WIDTH / self.frame.size.width);
+        
+        
     }
     return self;
 }
@@ -70,32 +77,56 @@ static const float CARD_WIDTH = 290; //%%% width of the draggable card
     messageButton = [[UIButton alloc]initWithFrame:CGRectMake(284, 34, 18, 18)];
     [messageButton setImage:[UIImage imageNamed:@"messageButton"] forState:UIControlStateNormal];
     [messageButton addTarget:self action:@selector(showRightPanel) forControlEvents:UIControlEventTouchUpInside];
-    xButton = [[UIButton alloc]initWithFrame:CGRectMake(60, 485, 59, 59)];
+//    xButton = [[UIButton alloc]initWithFrame:CGRectMake(60, 485, 59, 59)];
+    xButton = [UIButton newAutoLayoutView];
     [xButton setImage:[UIImage imageNamed:@"xButton"] forState:UIControlStateNormal];
     [xButton addTarget:self action:@selector(swipeLeft) forControlEvents:UIControlEventTouchUpInside];
-    checkButton = [[UIButton alloc]initWithFrame:CGRectMake(200, 485, 59, 59)];
+//    checkButton = [[UIButton alloc]initWithFrame:CGRectMake(200, 485, 59, 59)];
+    checkButton = [UIButton newAutoLayoutView];
     [checkButton setImage:[UIImage imageNamed:@"checkButton"] forState:UIControlStateNormal];
     [checkButton addTarget:self action:@selector(swipeRight) forControlEvents:UIControlEventTouchUpInside];
-    titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(self.frame.size.width/2.0, 34, self.frame.size.width/3.0*2, 46)];
+    catLabel = [UILabel newAutoLayoutView];
+    [self addSubview:catLabel];
+    [catLabel autoPinEdgeToSuperviewEdge:ALEdgeBottom withInset:5];
+    [catLabel autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsMake(0, 5, 5, 5) excludingEdge:ALEdgeTop];
+    catLabel.textAlignment = NSTextAlignmentCenter;
+    
     titleLabel = [UILabel newAutoLayoutView];
+    
+    
     titleLabel.numberOfLines = 0;
     titleLabel.font = [UIFont systemFontOfSize:12];
     titleLabel.sizeToFit;
     titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
     titleLabel.textAlignment = NSTextAlignmentCenter;
+    titleLabel.layer.zPosition = 10;
+//    [titleLabel setBackgroundColor:[UIColor blueColor]];
 //    titleLabel.layoutMargins = UIEdgeInsetsMake(0, 3, 0, 3);
     
+//    [titleLabel setBackgroundColor:[UIColor blueColor]];
     [self addSubview:menuButton];
     [self addSubview:messageButton];
     [self addSubview:xButton];
     [self addSubview:checkButton];
     [self addSubview:titleLabel];
+    
+    
+    [xButton autoPinEdgeToSuperviewEdge:ALEdgeBottom withInset:23.0f];
+    [xButton autoPinEdgeToSuperviewEdge:ALEdgeLeft withInset:60.0f];
+    
+    [checkButton autoPinEdgeToSuperviewEdge:ALEdgeBottom withInset:23.0f];
+    [checkButton autoPinEdgeToSuperviewEdge:ALEdgeRight withInset:60.0f];
+    
+    
     [titleLabel autoPinEdgeToSuperviewEdge:ALEdgeTop withInset:30.0f];
+//    [titleLabel setBackgroundColor:[UIColor colorWithRed:0 green:0 blue:0 alpha:1]];
 //    [titleLabel autoPinEdge:ALEdgeTop toEdge:ALEdgeTop ofView:menuButton withOffset:0];
     [titleLabel autoPinEdge:ALEdgeLeft toEdge:ALEdgeRight ofView:menuButton withOffset:3.0f];
     [titleLabel autoPinEdge:ALEdgeRight toEdge:ALEdgeLeft ofView:messageButton withOffset:-3.0f];
+    [titleLabel autoSetDimension:ALDimensionHeight toSize:38.0f relation:NSLayoutRelationEqual];
+//    [titleLabel autoSetDimension:ALDimensionHeight toSize:(self.frame.size.height - (self.frame.size.height * 0.679577))/2 - 8];
 //    [titleLabel autoPinEdge:ALEdgeRight toEdge:ALEdgeLeading ofView:messageButton withOffset:3.0f];
-    [titleLabel autoSetDimension:ALDimensionHeight toSize:(self.bounds.size.height - CARD_HEIGHT)/2.0 - menuButton.frame.origin.y relation:NSLayoutRelationLessThanOrEqual];
+//    [titleLabel autoSetDimension:ALDimensionHeight toSize:(self.bounds.size.height - (self.frame.size.height * 0.679577))/2.0 - menuButton.frame.origin.y relation:NSLayoutRelationLessThanOrEqual];
 }
 
 #warning include own card customization here!
@@ -104,7 +135,7 @@ static const float CARD_WIDTH = 290; //%%% width of the draggable card
 // to get rid of it (eg: if you are building cards from data from the internet)
 -(DraggableView *)createDraggableViewWithDataAtIndex:(NSInteger)index
 {
-    DraggableView *draggableView = [[DraggableView alloc]initWithFrame:CGRectMake((self.frame.size.width - CARD_WIDTH)/2, (self.frame.size.height - CARD_HEIGHT)/2, CARD_WIDTH, CARD_HEIGHT)];
+    DraggableView *draggableView = [[DraggableView alloc]initWithFrame:CGRectMake((self.frame.size.width - (self.frame.size.width *0.906250))/2, (self.frame.size.height - (self.frame.size.height * 0.679577))/2 - 8, (self.frame.size.width *0.906250), (self.frame.size.height * 0.679577))];
     draggableView.delegate = self;
     return draggableView;
 }
@@ -142,7 +173,7 @@ static const float CARD_WIDTH = 290; //%%% width of the draggable card
             cardsLoadedIndex++; //%%% we loaded a card into loaded cards, so we have to increment
         }
         NSLog([[[(DraggableView*)loadedCards[0] item] objectForKey:@"ProductGroup"] objectForKey:@"text"]);
-        [titleLabel autoPinEdge:ALEdgeTop toEdge:ALEdgeTop ofView:menuButton];
+//        [titleLabel autoPinEdge:ALEdgeTop toEdge:ALEdgeTop ofView:menuButton];
 //        [titleLabel autoPinToTopLayoutGuideOfViewController:self withInset:5.0f];
 //        [titleLabel autoPinEdge:ALEdgeBottom toEdge:ALEdgeTop ofView:[loadedCards firstObject]];
 //        [self autoConstrainAttribute:ALEdgeLeft toAttribute:ALEdgeRight ofView:menuButton withOffset:5.0f relation:NSLayoutRelationGreaterThanOrEqual];
@@ -150,7 +181,9 @@ static const float CARD_WIDTH = 290; //%%% width of the draggable card
 //        [titleLabel autoPinEdge:ALEdgeLeft toEdge:ALEdgeRight ofView:menuButton];
 //        [titleLabel autoPinEdge:ALEdgeRight toEdge:ALEdgeLeft ofView:messageButton];
     }
+    NSLog([[[(DraggableView*)loadedCards[0] item] objectForKey:@"Title"] objectForKey:@"text"]);
     titleLabel.text = [[[(DraggableView*)loadedCards[0] item] objectForKey:@"Title"] objectForKey:@"text"];
+    catLabel.text = [[[(DraggableView*)loadedCards[0] item] objectForKey:@"Category"] objectForKey:@"text"];
 //    titleLabel.text = [NSString stringWithFormat:@"%@\n%@", [[[(DraggableView*)loadedCards[0] item] objectForKey:@"ProductGroup"] objectForKey:@"text"],
 //     [[[(DraggableView*)loadedCards[0] item] objectForKey:@"Title"] objectForKey:@"text"]];
 }
@@ -167,8 +200,10 @@ static const float CARD_WIDTH = 290; //%%% width of the draggable card
     cardsLoadedIndex = arc4random() % [Items count];
     //        cardsLoadedIndex++;//%%% loaded a card, so have to increment count
     titleLabel.text = [[[(DraggableView*)loadedCards[0] item] objectForKey:@"Title"] objectForKey:@"text"];
+//    titleLabel.text = [[[(DraggableView*)loadedCards[0] item] objectForKey:@"Cateogry"] objectForKey:@"text"];
     NSLog([[[(DraggableView*)loadedCards[0] item] objectForKey:@"ProductGroup"] objectForKey:@"text"]);
     [self insertSubview:[loadedCards objectAtIndex:(MAX_BUFFER_SIZE-1)] belowSubview:[loadedCards objectAtIndex:(MAX_BUFFER_SIZE-2)]];
+        catLabel.text = [[[(DraggableView*)loadedCards[0] item] objectForKey:@"Category"] objectForKey:@"text"];
 }
 
 #warning include own action here!
@@ -179,6 +214,17 @@ static const float CARD_WIDTH = 290; //%%% width of the draggable card
     [_favArray addObject:[(DraggableView*)[loadedCards firstObject] item]];
     [_favArray writeToFile:arrayPath atomically:YES];
     [_delegate sendFav:_favArray];
+    
+    
+    NSString *urlEsc = [[[[_favArray lastObject] objectForKey:@"DetailPageURL"] objectForKey:@"text"] stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+    [SSTURLShortener shortenURL:[NSURL URLWithString:urlEsc] username:@"justinknag" apiKey:@"R_a5f42d4c62ac1253dc0cdb2f8d02f912" withCompletionBlock:^(NSURL *shortenedURL, NSError *error) {
+        NSLog(@"short url %@", shortenedURL.absoluteString);
+        NSLog(@"error %@", [error description]);
+        if(!error)
+           [[[_favArray lastObject] objectForKey:@"DetailPageURL"] setObject:shortenedURL.absoluteString forKey:@"text"];
+    }];
+    
+    
     NSLog(@"favarrya %@", _favArray);
     [undoItems addObject:[(DraggableView*)[loadedCards firstObject] item]];
     [loadedCards removeObjectAtIndex:0]; //%%% card was swiped, so it's no longer a "loaded card"
@@ -187,9 +233,12 @@ static const float CARD_WIDTH = 290; //%%% width of the draggable card
     NSLog(@"card size %f, %f", [(DraggableView*)[loadedCards firstObject] imageView].image.size.width, [(DraggableView*)[loadedCards firstObject] imageView].image.size.height);
     cardsLoadedIndex = arc4random() % [Items count];
     titleLabel.text = [[[(DraggableView*)loadedCards[0] item] objectForKey:@"Title"] objectForKey:@"text"];
+//    titleLabel.text = [[[(DraggableView*)loadedCards[0] item] objectForKey:@"Cateogry"] objectForKey:@"text"];
     NSLog([[[(DraggableView*)loadedCards[0] item] objectForKey:@"ProductGroup"] objectForKey:@"text"]);
+        NSLog([[[(DraggableView*)loadedCards[0] item] objectForKey:@"Title"] objectForKey:@"text"]);
     //        cardsLoadedIndex++;//%%% loaded a card, so have to increment count
     [self insertSubview:[loadedCards objectAtIndex:(MAX_BUFFER_SIZE-1)] belowSubview:[loadedCards objectAtIndex:(MAX_BUFFER_SIZE-2)]];
+        catLabel.text = [[[(DraggableView*)loadedCards[0] item] objectForKey:@"Category"] objectForKey:@"text"];
 }
 
 //%%% when you hit the right button, this is called and substitutes the swipe
