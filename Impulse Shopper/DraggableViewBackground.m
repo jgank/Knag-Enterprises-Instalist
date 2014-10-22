@@ -29,7 +29,7 @@
 }
 //this makes it so only two cards are loaded at a time to
 //avoid performance and memory costs
-static const int MAX_BUFFER_SIZE = 2; //%%% max number of cards loaded at any given time, must be greater than 1
+static const int MAX_BUFFER_SIZE = 5; //%%% max number of cards loaded at any given time, must be greater than 1
 static const float CARD_HEIGHT = 386; //%%% height of the draggable card
 static const float CARD_WIDTH = 290; //%%% width of the draggable card
 
@@ -71,11 +71,20 @@ static const float CARD_WIDTH = 290; //%%% width of the draggable card
 {
 #warning customize all of this.  These are just place holders to make it look pretty
     self.backgroundColor = [UIColor colorWithRed:.92 green:.93 blue:.95 alpha:1]; //the gray background colors
-    menuButton = [[UIButton alloc]initWithFrame:CGRectMake(17, 34, 22, 15)];
+//    menuButton = [[UIButton alloc]initWithFrame:CGRectMake(17, 34, 22, 15)];
+    menuButton = [[UIButton alloc]initWithFrame:CGRectMake(12, 26, 40, 40)];
+    menuButton.imageView.contentMode = UIViewContentModeTopLeft;
+//    menuButton.backgroundColor = [UIColor blueColor];
     [menuButton setImage:[UIImage imageNamed:@"menuButton"] forState:UIControlStateNormal];
     [menuButton addTarget:self action:@selector(showLeftPanel) forControlEvents:UIControlEventTouchUpInside];
-    messageButton = [[UIButton alloc]initWithFrame:CGRectMake(284, 34, 18, 18)];
-    [messageButton setImage:[UIImage imageNamed:@"messageButton"] forState:UIControlStateNormal];
+//    [menuButton addTarget:self action:@selector(showLeftPanel) forControlEvents:UIControlEventTouchDown];
+//    [menuButton addTarget:self action:@selector(showLeftPanel) forControlEvents:UIControlEventTouchDownRepeat];
+//    [menuButton addTarget:self action:@selector(showLeftPanel) forControlEvents:UIControlEventTouchUpOutside];
+//    messageButton = [[UIButton alloc]initWithFrame:CGRectMake(284, 34, 40, 40)];
+    messageButton = [[UIButton alloc]initWithFrame:CGRectMake(self.frame.size.width-40-12, 26, 40, 40)];
+    messageButton.imageView.contentMode = UIViewContentModeTopLeft;
+//    messageButton.backgroundColor = [UIColor blueColor];
+    [messageButton setImage:[UIImage imageNamed:@"sample-321-like"] forState:UIControlStateNormal];
     [messageButton addTarget:self action:@selector(showRightPanel) forControlEvents:UIControlEventTouchUpInside];
 //    xButton = [[UIButton alloc]initWithFrame:CGRectMake(60, 485, 59, 59)];
     xButton = [UIButton newAutoLayoutView];
@@ -90,6 +99,7 @@ static const float CARD_WIDTH = 290; //%%% width of the draggable card
     [catLabel autoPinEdgeToSuperviewEdge:ALEdgeBottom withInset:5];
     [catLabel autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsMake(0, 5, 5, 5) excludingEdge:ALEdgeTop];
     catLabel.textAlignment = NSTextAlignmentCenter;
+    [catLabel setFont:[UIFont systemFontOfSize:10.0f]];
     
     titleLabel = [UILabel newAutoLayoutView];
     
@@ -111,10 +121,10 @@ static const float CARD_WIDTH = 290; //%%% width of the draggable card
     [self addSubview:titleLabel];
     
     
-    [xButton autoPinEdgeToSuperviewEdge:ALEdgeBottom withInset:23.0f];
+    [xButton autoPinEdgeToSuperviewEdge:ALEdgeBottom withInset:20.0f];
     [xButton autoPinEdgeToSuperviewEdge:ALEdgeLeft withInset:60.0f];
     
-    [checkButton autoPinEdgeToSuperviewEdge:ALEdgeBottom withInset:23.0f];
+    [checkButton autoPinEdgeToSuperviewEdge:ALEdgeBottom withInset:20.0f];
     [checkButton autoPinEdgeToSuperviewEdge:ALEdgeRight withInset:60.0f];
     
     
@@ -142,21 +152,97 @@ static const float CARD_WIDTH = 290; //%%% width of the draggable card
 
 //%%% loads all the cards and puts the first x in the "loaded cards" array
 -(void)addToAll {
+    [undoItems addObject:[(DraggableView*)[loadedCards firstObject] item]];
+    [loadedCards removeObjectAtIndex:0]; //%%% card was swiped, so it's no longer a "loaded card"
     DraggableView* newCard = [self createDraggableViewWithDataAtIndex:0];
+    
+    
+    
+    while (1) {
+        cardsLoadedIndex = arc4random() % [Items count];
+        
+        if([[Items[cardsLoadedIndex] objectForKey:@"Sex"] objectForKey:@"text"] == nil) {
+            NSLog(@"blank sex");
+            break;
+        }
+        else if([[[Items[cardsLoadedIndex] objectForKey:@"Sex"] objectForKey:@"text"] isEqualToString:@"mens"] &&
+               [[NSUserDefaults standardUserDefaults] boolForKey:@"male"] == YES) {
+            NSLog(@"mens sex");
+            break;
+        }
+        else if([[[Items[cardsLoadedIndex] objectForKey:@"Sex"] objectForKey:@"text"] isEqualToString:@"womens"] &&
+               [[NSUserDefaults standardUserDefaults] boolForKey:@"male"] == NO) {
+            NSLog(@"womens sex");
+            break;
+        }
+        else if([[[Items[cardsLoadedIndex] objectForKey:@"Category"] objectForKey:@"text"] isEqualToString:@"Toys"] &&
+               [[[Items[cardsLoadedIndex] objectForKey:@"Sex"] objectForKey:@"text"] isEqualToString:@"boys"] &&
+                [[NSUserDefaults standardUserDefaults] boolForKey:@"toys"] == YES){
+            NSLog(@"boy toy");
+            break;
+        }
+        else if([[[Items[cardsLoadedIndex] objectForKey:@"Category"] objectForKey:@"text"] isEqualToString:@"Toys"] &&
+               [[[Items[cardsLoadedIndex] objectForKey:@"Sex"] objectForKey:@"text"] isEqualToString:@"girls"] &&
+               [[NSUserDefaults standardUserDefaults] boolForKey:@"male"] == NO &&
+                [[NSUserDefaults standardUserDefaults] boolForKey:@"toys"] == YES){
+            NSLog(@"girl toy");
+            break;
+        }
+        
+    }
+    
+    
+    
+    
     [newCard setItem:Items[cardsLoadedIndex]];
     [allCards addObject:newCard];
     [loadedCards addObject:[allCards lastObject]];
+    NSLog(@"loaded index %i", cardsLoadedIndex);
+    NSLog(@"card size %f, %f", [(DraggableView*)[loadedCards firstObject] imageView].image.size.width, [(DraggableView*)[loadedCards firstObject] imageView].image.size.height);
+    titleLabel.text = [[[(DraggableView*)loadedCards[0] item] objectForKey:@"Title"] objectForKey:@"text"];
+    NSLog(@"%@",[[[(DraggableView*)loadedCards[0] item] objectForKey:@"ProductGroup"] objectForKey:@"text"]);
+    NSLog(@"%@",[[[(DraggableView*)loadedCards[0] item] objectForKey:@"Title"] objectForKey:@"text"]);
+    [self insertSubview:[loadedCards objectAtIndex:(MAX_BUFFER_SIZE-1)] belowSubview:[loadedCards objectAtIndex:(MAX_BUFFER_SIZE-2)]];
+    catLabel.text = [[[(DraggableView*)loadedCards[0] item] objectForKey:@"Category"] objectForKey:@"text"];
 }
 -(void)loadCards
 {
     if([Items count] > 0) {
         NSInteger numLoadedCardsCap =(([Items count] > MAX_BUFFER_SIZE)?MAX_BUFFER_SIZE:[Items count]);
-        //%%% if the buffer size is greater than the data size, there will be an array error, so this makes sure that doesn't happen
-        
-        //%%% loops through the exampleCardsLabels array to create a card for each label.  This should be customized by removing "exampleCardLabels" with your own array of data
         for (int i = 0; i< numLoadedCardsCap; i++) {
             DraggableView* newCard = [self createDraggableViewWithDataAtIndex:i];
-            cardsLoadedIndex = arc4random() % [Items count];
+            while (1) {
+                cardsLoadedIndex = arc4random() % [Items count];
+                
+                if([[Items[cardsLoadedIndex] objectForKey:@"Sex"] objectForKey:@"text"] == nil) {
+                    NSLog(@"blank sex");
+                    break;
+                }
+                else if([[[Items[cardsLoadedIndex] objectForKey:@"Sex"] objectForKey:@"text"] isEqualToString:@"mens"] &&
+                        [[NSUserDefaults standardUserDefaults] boolForKey:@"male"] == YES) {
+                    NSLog(@"mens sex");
+                    break;
+                }
+                else if([[[Items[cardsLoadedIndex] objectForKey:@"Sex"] objectForKey:@"text"] isEqualToString:@"womens"] &&
+                        [[NSUserDefaults standardUserDefaults] boolForKey:@"male"] == NO) {
+                    NSLog(@"womens sex");
+                    break;
+                }
+                else if([[[Items[cardsLoadedIndex] objectForKey:@"Category"] objectForKey:@"text"] isEqualToString:@"Toys"] &&
+                        [[[Items[cardsLoadedIndex] objectForKey:@"Sex"] objectForKey:@"text"] isEqualToString:@"boys"] &&
+                        [[NSUserDefaults standardUserDefaults] boolForKey:@"toys"] == YES){
+                    NSLog(@"boy toy");
+                    break;
+                }
+                else if([[[Items[cardsLoadedIndex] objectForKey:@"Category"] objectForKey:@"text"] isEqualToString:@"Toys"] &&
+                        [[[Items[cardsLoadedIndex] objectForKey:@"Sex"] objectForKey:@"text"] isEqualToString:@"girls"] &&
+                        [[NSUserDefaults standardUserDefaults] boolForKey:@"male"] == NO &&
+                        [[NSUserDefaults standardUserDefaults] boolForKey:@"toys"] == YES){
+                    NSLog(@"girl toy");
+                    break;
+                }
+                
+            }
             [newCard setItem:Items[cardsLoadedIndex]];
             [allCards addObject:newCard];
             [loadedCards addObject:[allCards lastObject]];
@@ -172,20 +258,11 @@ static const float CARD_WIDTH = 290; //%%% width of the draggable card
             }
             cardsLoadedIndex++; //%%% we loaded a card into loaded cards, so we have to increment
         }
-        NSLog([[[(DraggableView*)loadedCards[0] item] objectForKey:@"ProductGroup"] objectForKey:@"text"]);
-//        [titleLabel autoPinEdge:ALEdgeTop toEdge:ALEdgeTop ofView:menuButton];
-//        [titleLabel autoPinToTopLayoutGuideOfViewController:self withInset:5.0f];
-//        [titleLabel autoPinEdge:ALEdgeBottom toEdge:ALEdgeTop ofView:[loadedCards firstObject]];
-//        [self autoConstrainAttribute:ALEdgeLeft toAttribute:ALEdgeRight ofView:menuButton withOffset:5.0f relation:NSLayoutRelationGreaterThanOrEqual];
-//        [self autoConstrainAttribute:ALEdgeRight toAttribute:ALEdgeLeft ofView:messageButton withOffset:5.0f relation:NSLayoutRelationLessThanOrEqual];
-//        [titleLabel autoPinEdge:ALEdgeLeft toEdge:ALEdgeRight ofView:menuButton];
-//        [titleLabel autoPinEdge:ALEdgeRight toEdge:ALEdgeLeft ofView:messageButton];
+        NSLog(@"%@",[[[(DraggableView*)loadedCards[0] item] objectForKey:@"ProductGroup"] objectForKey:@"text"]);
     }
-    NSLog([[[(DraggableView*)loadedCards[0] item] objectForKey:@"Title"] objectForKey:@"text"]);
+    NSLog(@"%@",[[[(DraggableView*)loadedCards[0] item] objectForKey:@"Title"] objectForKey:@"text"]);
     titleLabel.text = [[[(DraggableView*)loadedCards[0] item] objectForKey:@"Title"] objectForKey:@"text"];
     catLabel.text = [[[(DraggableView*)loadedCards[0] item] objectForKey:@"Category"] objectForKey:@"text"];
-//    titleLabel.text = [NSString stringWithFormat:@"%@\n%@", [[[(DraggableView*)loadedCards[0] item] objectForKey:@"ProductGroup"] objectForKey:@"text"],
-//     [[[(DraggableView*)loadedCards[0] item] objectForKey:@"Title"] objectForKey:@"text"]];
 }
 
 #warning include own action here!
@@ -193,17 +270,7 @@ static const float CARD_WIDTH = 290; //%%% width of the draggable card
 // This should be customized with your own action
 -(void)cardSwipedLeft:(UIView *)card;
 {
-    [undoItems addObject:[(DraggableView*)[loadedCards firstObject] item]];
-    [loadedCards removeObjectAtIndex:0]; //%%% card was swiped, so it's no longer a "loaded card"
     [self addToAll];
-    NSLog(@"loaded index %i", cardsLoadedIndex);
-    cardsLoadedIndex = arc4random() % [Items count];
-    //        cardsLoadedIndex++;//%%% loaded a card, so have to increment count
-    titleLabel.text = [[[(DraggableView*)loadedCards[0] item] objectForKey:@"Title"] objectForKey:@"text"];
-//    titleLabel.text = [[[(DraggableView*)loadedCards[0] item] objectForKey:@"Cateogry"] objectForKey:@"text"];
-    NSLog([[[(DraggableView*)loadedCards[0] item] objectForKey:@"ProductGroup"] objectForKey:@"text"]);
-    [self insertSubview:[loadedCards objectAtIndex:(MAX_BUFFER_SIZE-1)] belowSubview:[loadedCards objectAtIndex:(MAX_BUFFER_SIZE-2)]];
-        catLabel.text = [[[(DraggableView*)loadedCards[0] item] objectForKey:@"Category"] objectForKey:@"text"];
 }
 
 #warning include own action here!
@@ -216,29 +283,14 @@ static const float CARD_WIDTH = 290; //%%% width of the draggable card
     [_delegate sendFav:_favArray];
     
     
-    NSString *urlEsc = [[[[_favArray lastObject] objectForKey:@"DetailPageURL"] objectForKey:@"text"] stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
-    [SSTURLShortener shortenURL:[NSURL URLWithString:urlEsc] username:@"justinknag" apiKey:@"R_a5f42d4c62ac1253dc0cdb2f8d02f912" withCompletionBlock:^(NSURL *shortenedURL, NSError *error) {
-        NSLog(@"short url %@", shortenedURL.absoluteString);
-        NSLog(@"error %@", [error description]);
-        if(!error)
-           [[[_favArray lastObject] objectForKey:@"DetailPageURL"] setObject:shortenedURL.absoluteString forKey:@"text"];
-    }];
-    
-    
-    NSLog(@"favarrya %@", _favArray);
-    [undoItems addObject:[(DraggableView*)[loadedCards firstObject] item]];
-    [loadedCards removeObjectAtIndex:0]; //%%% card was swiped, so it's no longer a "loaded card"
+//    NSString *urlEsc = [[[[_favArray lastObject] objectForKey:@"DetailPageURL"] objectForKey:@"text"] stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+//    [SSTURLShortener shortenURL:[NSURL URLWithString:urlEsc] username:@"justinknag" apiKey:@"R_a5f42d4c62ac1253dc0cdb2f8d02f912" withCompletionBlock:^(NSURL *shortenedURL, NSError *error) {
+//        NSLog(@"short url %@", shortenedURL.absoluteString);
+//        NSLog(@"error %@", [error description]);
+//        if(!error)
+//           [[[_favArray lastObject] objectForKey:@"DetailPageURL"] setObject:shortenedURL.absoluteString forKey:@"text"];
+//    }];
     [self addToAll];
-    NSLog(@"loaded index %i", cardsLoadedIndex);
-    NSLog(@"card size %f, %f", [(DraggableView*)[loadedCards firstObject] imageView].image.size.width, [(DraggableView*)[loadedCards firstObject] imageView].image.size.height);
-    cardsLoadedIndex = arc4random() % [Items count];
-    titleLabel.text = [[[(DraggableView*)loadedCards[0] item] objectForKey:@"Title"] objectForKey:@"text"];
-//    titleLabel.text = [[[(DraggableView*)loadedCards[0] item] objectForKey:@"Cateogry"] objectForKey:@"text"];
-    NSLog([[[(DraggableView*)loadedCards[0] item] objectForKey:@"ProductGroup"] objectForKey:@"text"]);
-        NSLog([[[(DraggableView*)loadedCards[0] item] objectForKey:@"Title"] objectForKey:@"text"]);
-    //        cardsLoadedIndex++;//%%% loaded a card, so have to increment count
-    [self insertSubview:[loadedCards objectAtIndex:(MAX_BUFFER_SIZE-1)] belowSubview:[loadedCards objectAtIndex:(MAX_BUFFER_SIZE-2)]];
-        catLabel.text = [[[(DraggableView*)loadedCards[0] item] objectForKey:@"Category"] objectForKey:@"text"];
 }
 
 //%%% when you hit the right button, this is called and substitutes the swipe

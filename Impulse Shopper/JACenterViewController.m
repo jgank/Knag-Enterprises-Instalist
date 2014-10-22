@@ -32,6 +32,7 @@
 #import "UIWebViewController.h"
 #import "UIViewController+JASidePanel.h"
 #import "JARightViewController.h"
+#import "PureLayout.h"
 
 @interface JACenterViewController () <DraggableViewBackgroundDelegate>
 
@@ -90,34 +91,82 @@
     NSLog(@"done with LargeImage");
     _products = pics;
     _productIndex = 0;
-    [self showProduct];
-    NSLog(@"%i", [dict count]);
+    
+    if([_products count] > 0) {
+        DraggableViewBackground *back = [[DraggableViewBackground alloc] initWithFrame:self.view.frame setArr:_products delegate:self];
+        self.products = nil;
+        NSLog(@"add draggableviews");
+        self.draggableView = back;
+        [self.view addSubview:self.draggableView];
+        NSLog(@"done adding draggable views");
+    }
     
     
     NSLog(@"dict");
     printf("%p\n", dict);
     printf("%p\n", _products);
     
-
+    if([[NSUserDefaults standardUserDefaults] objectForKey:@"firstRun"] == NULL) {
+        UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Gender:" message:@"For showing appropriate gift" delegate:self cancelButtonTitle:@"Female" otherButtonTitles:@"Male", nil];
+        [av setTag:1];
+        [av show];
+    }
     
+
+//        NSLog(@"first run null");
+//        
+//        UIAlertController *av = [UIAlertController alertControllerWithTitle:@"Gender:" message:@"For shoing appropriate gift" preferredStyle:UIAlertControllerStyleAlert];
+//        UIAlertAction *maleAction = [UIAlertAction
+//                                       actionWithTitle:NSLocalizedString(@"Male", @"Male action")
+//                                       style:UIAlertActionStyleCancel
+//                                       handler:^(UIAlertAction *action)
+//                                       {
+//                                           [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"MALE"];
+//                                       }];
+//        
+//        UIAlertAction *femaleAction = [UIAlertAction
+//                                   actionWithTitle:NSLocalizedString(@"Female", @"Female action")
+//                                   style:UIAlertActionStyleDefault
+//                                   handler:^(UIAlertAction *action)
+//                                   {
+//                                       [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"MALE"];
+//                                   }];
+//        [av addAction:maleAction];
+//        [av addAction:femaleAction];
+//    
+//        
+//        [self presentViewController:av animated:YES completion:^(void) {
+//            UIAlertController *toysAV = [UIAlertController alertControllerWithTitle:@"Toy Gifts?" message:@"Do you want the app to display toys?" preferredStyle:UIAlertControllerStyleAlert];
+//            UIAlertAction *yesAction = [UIAlertAction
+//                                        actionWithTitle:NSLocalizedString(@"Yes", @"Yes action")
+//                                        style:UIAlertActionStyleCancel
+//                                        handler:^(UIAlertAction *action)
+//                                        {
+//                                            [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"toys"];
+//                                        }];
+//            
+//            UIAlertAction *noAction = [UIAlertAction
+//                                       actionWithTitle:NSLocalizedString(@"No", @"No action")
+//                                       style:UIAlertActionStyleDefault
+//                                       handler:^(UIAlertAction *action)
+//                                       {
+//                                           [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"toys"];
+//                                       }];
+//            [toysAV addAction:yesAction];
+//            [toysAV addAction:noAction];
+//            
+//            [self presentViewController:toysAV animated:YES completion:^{
+//                [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"firstRun"];
+//            }];
+//            
+//            
+//        }];
+//        
+//        
+//    }
 }
 -(void)showProduct {
     
-    if([_products count] > 0) {
-        DraggableViewBackground *back = [[DraggableViewBackground alloc] initWithFrame:self.view.frame setArr:_products delegate:self];
-        self.products = nil;
-//        back.delegate = self;
-        NSLog(@"add draggableviews");
-//        for(int i = 0; i < [_products count]; i++) {
-//            DraggableView *b = [back.allCards objectAtIndex:i];
-//            [b setItem:[_products objectAtIndex:i]];
-//        }
-        self.draggableView = back;
-        [self.view addSubview:self.draggableView];
-        NSLog(@"done adding draggable views");
-        
-        
-    }
 }
 - (void) touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event {
     NSLog(@"touches ended");
@@ -160,5 +209,31 @@
     [right.tableView reloadData];
     
 }
-
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
+    if(alertView.tag == 1) {
+        if (buttonIndex == 0) {
+            NSLog(@"female selected");
+            [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"male"];
+        }
+        else {
+            [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"male"];
+        }
+    UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Show Toys?" message:@"Would you like to see toys as gift ideas?" delegate:self cancelButtonTitle:@"Yes" otherButtonTitles:@"No", nil];
+    [av setTag:2];
+    [av show];
+    }
+    else if(alertView.tag == 2) {
+        if (buttonIndex == 0) {
+            NSLog(@"female selected");
+            [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"toys"];
+        }
+        else {
+            [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"toys"];
+        }
+        [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"firstRun"];
+        
+    }
+    
+    
+}
 @end

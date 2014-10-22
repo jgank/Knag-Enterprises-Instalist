@@ -13,6 +13,7 @@ import xml.etree.ElementTree as ET
 from xml.etree import ElementTree as et
 import codecs
 import xml.etree.cElementTree as EF
+from datetime import date
 #import bitly_api
 
 def aws_signed_request(region, params, public_key, private_key, associate_tag=None, version='2011-08-01'):
@@ -91,12 +92,6 @@ class XMLCombiner(object):
                     one.append(el)
 
 
-p = {}
-p['Operation'] = 'ItemSearch'
-p['BrowseNode'] = '468642'
-p['SearchIndex'] = 'VideoGames'
-p['Sort'] = 'salesrank'
-p['ItemPage'] = str(1)
 
 cat =["Electronics", "GourmetFood", "Industrial", "Jewelry", "KindleStore", "Kitchen", "LawnGarden", "Magazines", "Miscellaneous", "MobileApps", "MP3Downloads", "Music", "MusicalInstruments", "OfficeProducts", "OutdoorLiving", "PCHardware", "PetSupplies", "Photo", "Software", "SportingGoods", "Tools", "Toys", "VHS", "Video", "VideoGames", "Watches", "Wireless", "WirelessAccessories"]
 
@@ -116,7 +111,6 @@ mainItems = {"Electronics":"172282",
 "MP3Downloads":"195211011",
 "Music":"301668",
 "MusicalInstruments":"11091801",
-"OfficeProducts":"1084128",
 "OutdoorLiving":"286168",
 "PCHardware":"541966",
 "PetSupplies":"12923371",
@@ -131,6 +125,11 @@ mainItems = {"Electronics":"172282",
 "Watches":"377110011",
 "Wireless":"508494",
 "WirelessAccessories":"13900851"}
+
+
+
+
+
 category = {"165993011": "Action & Toy Figures",
 "166057011": "Arts & Crafts",
 "196601011": "Baby & Toddler Toys",
@@ -196,6 +195,14 @@ category = {"165993011": "Action & Toy Figures",
 "1048186": "Women's shorts, Skorts, Culottes, Bermuda shorts, Women's clothing",
 "1044460": "Women's suits, Women's suit separates, Women's blazers, Skirt suits, Suit jackets",
 "1044456": "Women's sweaters, Vests, Cardigans, Ponchos, Turtlenecks",
+
+
+
+
+"11056761" : "Mens Frangrance",
+"11056891" : "Womens Frangrance",
+
+
 
 
 "172282":"Electronics",
@@ -268,6 +275,70 @@ apparelItems = {"Accessories": "2474937011",
 "Women's suits, Women's suit separates, Women's blazers, Skirt suits, Suit jackets": "1044460",
 "Women's sweaters, Vests, Cardigans, Ponchos, Turtlenecks": "1044456"}
 
+
+
+
+
+
+
+"""
+    fullItems = {"172282": "Electronics",
+    "1000": "Books",
+    "3580501": "GourmetFood",
+    "228239": "Industrial",
+    "3880591": "Jewelry",
+    "133141011": "KindleStore",
+    "284507": "Kitchen",
+    "2972638011": "LawnGarden",
+    "599872": "Magazines",
+    "10304191": "Miscellaneous",
+    "2350149011": "MobileApps",
+    "195211011": "Mp3Downloads",
+    "301668": "Music",
+    "11091801": "MusicalInstruments",
+    "286168": "OutdoorLiving",
+    "541966": "PCHardware",
+    "12923371": "PetSupplies",
+    "502394": "Photo",
+    "409488": "Software",
+    "3375251": "SportingGoods",
+    "468240": "Tools",
+    "165793011": "Toys",
+    "404272": "Vhs",
+    "130": "Video",
+    "468642": "VideoGames",
+    "377110011": "Watches",
+    "508494": "Wireless",
+    "13900851": "WirelessAccessories",
+    "5417873011": "Apparel",
+    "1045024": "Apparel",
+    "1044454": "Apparel",
+    "14333511": "Apparel",
+    "1048188": "Apparel",
+    "1285228011": "Apparel",
+    "5605243011": "Apparel",
+    "1045022": "Apparel",
+    "2376202011": "Apparel",
+    "1046622": "Apparel",
+    "2368343011": "Apparel",
+    "1288627011": "Apparel",
+    "1044646": "Apparel",
+    "1258603011": "Apparel",
+    "1044886": "Apparel",
+    "2381887011": "Apparel",
+    "1258967011": "Apparel",
+    "1048184": "Apparel",
+    "1048186": "Apparel",
+    "1044460": "Apparel",
+    "1044456": "Apparel",
+    "165793011": "Toys"}
+    """
+
+
+
+
+
+
 apparelGender = {"2474937011": "mens",
 "3455821": "mens",
 "1045684": "mens",
@@ -331,6 +402,87 @@ toyItems = {"Action & Toy Figures": "165993011",
 "Puzzles": "166359011",
 "Sports & Outdoor Play": "166420011",
 "Stuffed Animals & Plush": "166461011"}
+
+
+
+gender = {"2474937011": "mens",
+"3455821": "mens",
+"1045684": "mens",
+"1045830": "mens",
+"1258644011": "mens",
+"1045564": "mens",
+"1045558": "mens",
+"1044440": "mens",
+"1045560": "mens",
+"3455861": "mens",
+"1045708": "mens",
+"1044442": "mens",
+"1045706": "mens",
+"1046670": "mens",
+"2476517011": "mens",
+"3456051": "mens",
+"1045112": "mens",
+"5417873011": "womens",
+"1045024": "womens",
+"1044454": "womens",
+"14333511": "womens",
+"1048188": "womens",
+"1285228011": "womens",
+"5605243011": "womens",
+"1045022": "womens",
+"2376202011": "womens",
+"1046622": "womens",
+"2368343011": "womens",
+"1288627011": "womens",
+"1044646": "womens",
+"1258603011": "womens",
+"1044886": "womens",
+"2381887011": "womens",
+"1258967011": "womens",
+"1048184": "womens",
+"1048186": "womens",
+"1044460": "womens",
+"1044456": "womens",
+
+
+
+
+"3880591": "womens",
+"3887881": "mens",
+
+
+"11056761" : "mens",
+"11056891" : "womens",
+
+
+"165993011": "boy",
+"166057011": "boy",
+"196601011": "boy",
+"166224011": "boy",
+"256994011": "boy",
+"166092011": "boy",
+"166508011": "boy",
+"166309011": "boy",
+"166316011": "boy",
+"166164011": "boy",
+"166220011": "boy",
+"3226142011": "boy",
+"276729011": "boy",
+"166210011": "boy",
+"166269011": "boy",
+"166326011": "boy",
+"166027011": "boy",
+"1266203011": "boy",
+"166333011": "boy",
+"166359011": "boy",
+"166420011": "boy",
+"166461011": "boy",
+"165793011": "boy",
+"166310011": "girl",
+"166118011": "girl"}
+
+
+
 toyGender = {"165993011": "boy",
 "166057011": "boy",
 "196601011": "boy",
@@ -353,100 +505,186 @@ toyGender = {"165993011": "boy",
 "166359011": "boy",
 "166420011": "boy",
 "166461011": "boy",
+
+"165793011": "boy",
+
 "166310011": "girl",
 "166118011": "girl"}
 
-fullItems = {"Electronics":"172282",
-"Books": "1000",
-"GourmetFood":"3580501",
-"Industrial":"228239",
-"Jewelry":"3880591",
-"KindleStore":"133141011",
-"Kitchen":"284507",
-"LawnGarden":"2972638011",
-"Magazines":"599872",
-"Miscellaneous":"10304191",
-"MobileApps":"2350149011",
-"MP3Downloads":"195211011",
-"Music":"301668",
-"MusicalInstruments":"11091801",
-"OfficeProducts":"1084128",
-"OutdoorLiving":"286168",
-"PCHardware":"541966",
-"PetSupplies":"12923371",
-"Photo":"502394",
-"Software":"409488",
-"SportingGoods":"3375251",
-"Tools":"468240",
-"Toys":"165793011",
-"VHS":"404272",
-"Video":"130",
-"VideoGames":"468642",
-"Watches":"377110011",
-"Wireless":"508494",
-"WirelessAccessories":"13900851",
-"Apparel": "2474937011",
-"Apparel": "3455821",
-"Apparel": "1045684",
-"Apparel": "1045830",
-"Apparel": "1258644011",
-"Apparel": "1045564",
-"Apparel": "1045558",
-"Apparel": "1044440",
-"Apparel": "1045560",
-"Apparel": "3455861",
-"Apparel": "1045708",
-"Apparel": "1044442",
-"Apparel": "1045706",
-"Apparel": "1046670",
-"Apparel": "2476517011",
-"Apparel": "3456051",
-"Apparel": "1045112",
-"Apparel": "5417873011",
-"Apparel": "1045024",
-"Apparel": "1044454",
-"Apparel": "14333511",
-"Apparel": "1048188",
-"Apparel": "1285228011",
-"Apparel": "5605243011",
-"Apparel": "1045022",
-"Apparel": "2376202011",
-"Apparel": "1046622",
-"Apparel": "2368343011",
-"Apparel": "1288627011",
-"Apparel": "1044646",
-"Apparel": "1258603011",
-"Apparel": "1044886",
-"Apparel": "2381887011",
-"Apparel": "1258967011",
-"Apparel": "1048184",
-"Apparel": "1048186",
-"Apparel": "1044460",
-"Apparel": "1044456",
-"Toys": "165993011",
-"Toys": "166057011",
-"Toys": "196601011",
-"Toys": "166224011",
-"Toys": "166310011",
-"Toys": "256994011",
-"Toys": "166092011",
-"Toys": "166508011",
-"Toys": "166118011",
-"Toys": "166309011",
-"Toys": "166316011",
-"Toys": "166164011",
-"Toys": "166220011",
-"Toys": "3226142011",
-"Toys": "276729011",
-"Toys": "166210011",
-"Toys": "166269011",
-"Toys": "166326011",
-"Toys": "166027011",
-"Toys": "1266203011",
-"Toys": "166333011",
-"Toys": "166359011",
-"Toys": "166420011",
-"Toys": "166461011"}
+fullItems = {"172282": "Electronics",
+"1000": "Books",
+"3580501": "GourmetFood",
+"228239": "Industrial",
+"3880591": "Jewelry",
+"133141011": "KindleStore",
+"284507": "Kitchen",
+"2972638011": "LawnGarden",
+"599872": "Magazines",
+"10304191": "Miscellaneous",
+"2350149011": "MobileApps",
+"195211011": "Mp3Downloads",
+"301668": "Music",
+"11091801": "MusicalInstruments",
+"1084128": "OfficeProducts",
+"286168": "OutdoorLiving",
+"541966": "PCHardware",
+"12923371": "PetSupplies",
+"502394": "Photo",
+"409488": "Software",
+"3375251": "SportingGoods",
+"468240": "Tools",
+"165793011": "Toys",
+"404272": "Vhs",
+"130": "Video",
+"468642": "VideoGames",
+"377110011": "Watches",
+"508494": "Wireless",
+"13900851": "WirelessAccessories",
+"2474937011": "Apparel",
+
+
+"11056761" : "Beauty",
+"11056891" : "Beauty",
+
+"3455821": "Apparel",
+"1045684": "Apparel",
+"1045830": "Apparel",
+"1258644011": "Apparel",
+"1045564": "Apparel",
+"1045558": "Apparel",
+"1044440": "Apparel",
+"1045560": "Apparel",
+"3455861": "Apparel",
+"1045708": "Apparel",
+"1044442": "Apparel",
+"1045706": "Apparel",
+"1046670": "Apparel",
+"2476517011": "Apparel",
+"3456051": "Apparel",
+"1045112": "Apparel",
+"5417873011": "Apparel",
+"1045024": "Apparel",
+"1044454": "Apparel",
+"14333511": "Apparel",
+"1048188": "Apparel",
+"1285228011": "Apparel",
+"5605243011": "Apparel",
+"1045022": "Apparel",
+"2376202011": "Apparel",
+"1046622": "Apparel",
+"2368343011": "Apparel",
+"1288627011": "Apparel",
+"1044646": "Apparel",
+"1258603011": "Apparel",
+"1044886": "Apparel",
+"2381887011": "Apparel",
+"1258967011": "Apparel",
+"1048184": "Apparel",
+"1048186": "Apparel",
+"1044460": "Apparel",
+"1044456": "Apparel",
+"165993011": "Toys",
+"166057011": "Toys",
+"196601011": "Toys",
+"166224011": "Toys",
+"166310011": "Toys",
+"256994011": "Toys",
+"166092011": "Toys",
+"166508011": "Toys",
+"166118011": "Toys",
+"166309011": "Toys",
+"166316011": "Toys",
+"166164011": "Toys",
+"166220011": "Toys",
+"3226142011": "Toys",
+"276729011": "Toys",
+"166210011": "Toys",
+"166269011": "Toys",
+"166326011": "Toys",
+"166027011": "Toys",
+"1266203011": "Toys",
+"166333011": "Toys",
+"166359011": "Toys",
+"166420011": "Toys",
+"166461011": "Toys"}
+
+
+
+tags = ["knag_baby-20",
+        "knag_video-20",
+        "knag_p_hardware-20",
+        "knag_lawngarden-20",
+        "knag_videogames-20",
+        "jdt03-20",
+        "knag_musical_instruments-20",
+        "knag_tools-20",
+        "knag_wireless-20",
+        "knag_musicalinstruments-20",
+        "knag_appliances-20",
+        "knag_books-20",
+        "knag_collectibles-20",
+        "knag_foreign_books-20",
+        "knag_home-20",
+        "knag_jewlery-20",
+        "knag_lighting-20",
+        "knag_luggage_bags-20",
+        "knag_outdoor_living-20",
+        "knag_pc_hardware-20",
+        "knag_pet_supplies-20",
+        "knag_photo-20",
+        "knag_software_video_games-20",
+        "knag_vhs-20",
+        "knag_p_chardware-20",
+        "knag_automotive-20",
+        "knag_beauty-20",
+        "knag_classical-20",
+        "knag_dvd-20",
+        "knag_garden-20",
+        "knag_home_garden-20",
+        "knag_home_improvement-20",
+        "knag_home_kitchen-20",
+        "knag_kindle_store-20",
+        "knag_kitchen-20",
+        "knag_toys-20",
+        "knag_video_games-20",
+        "knag_watches-20",
+        "knag_boy_toys-20",
+        "knag_girl_toys-20",
+        "knag_v_hs-20",
+        "knag_outdoorliving-20",
+        "knag_pchardware-20",
+        "knag_wirelessaccessories-20",
+        "knag_jewelry-20",
+        "knagapparel-20",
+        "knag_apparel-20",
+        "knag_arts_and_crafts-20",
+        "knag_health_personal_care-20",
+        "knag_hobbies-20",
+        "knag_industrial-20",
+        "knag_magazines-20",
+        "knag_miscellaneous-20",
+        "knag_mp3_downloads-20",
+        "knag_music-20",
+        "knag_office_products-20",
+        "knag_sporting_goods-20",
+        "knag_womens_beauty-20",
+        "knag_petsupplies-20",
+        "knag_grocery-20",
+        "knag_lawn_garden-20",
+        "knag_mobile_apps-20",
+        "knag_shoes-20",
+        "knag_software-20",
+        "knag_kindlestore-20",
+        "knag_officeproducts-20",
+        "knag_mens_apparel-20",
+        "knag_womens_apparel-20",
+        "knag_digital_music-20",
+        "knag_wireless_accessories-20",
+        "knag_mens_beauty-20",
+        "knag_electronics-20",
+        "knag_gourmet_food-20",
+        "knag_mobileapps-20",
+        "knag_sportinggoods-20"]
 
 #p['ResponseGroup'] = 'MostWishedFor'
 #p['ResponseGroup'] = 'OfferSummary,Images'
@@ -457,35 +695,46 @@ pukey = 'AKIAI2MKYF4J4Q2JH4WA'
 prkey = 'Oahq9neCrb2U0yNt9fyzHFNrn+eOU38KRDEgXSO4'
 
 
+p = {}
+p['Operation'] = 'ItemSearch'
+p['Sort'] = 'salesrank'
+p['ItemPage'] = str(1)
 
 #bitly = bitly_api.Connection(access_token='ceb45471511fbdaee0e1518a06e6a111928cd4ee')
 
 rootM = EF.Element("root")
 #for catInd in range(len(cat)):
-for k, dk in fullItems.iteritems():
-    p['SearchIndex'] = k
-    p['BrowseNode'] = dk
+for key, dk in fullItems.iteritems():
+    p['SearchIndex'] = dk
+    p['BrowseNode'] = key
     p['Operation'] = 'ItemSearch'
     
-    atag = k
+    atag = dk
     if atag == 'Apparel':
-        atag = apparelGender[dk] + atag
-        sex = apparelGender[dk]
+        atag = gender[key] + atag
     elif atag == 'Toys':
-        atag = toyGender[dk] + atag
-        sex = toyGender[dk]
+        atag = gender[key] + atag
+    elif atag == 'Beauty':
+        atag = gender[key] + atag
+    
+    if key in gender:
+        sex = gender[key]
     else:
         sex = ''
-
+    
+    
     atag = 'knag_' + re.sub(r"(\w)([A-Z])", r"\1_\2", atag).lower() + '-20'
 
-a = []
+print atag
+    print atag in tags
+    assert atag in tags
+    a = []
     acount = 0
     acountt = 0
     for q in range(1,11):
         p['ItemPage'] = str(q)
         r = requests.get(aws_signed_request('com', p, pukey, prkey, atag))
-        time.sleep(1)
+        time.sleep(.25)
         
         #print r.url
         ju = str(r.text.encode('utf8', 'replace'))
@@ -500,8 +749,9 @@ a = []
                                 acountt += 1
                                 a.append(k.text)
 
-a = list(set(a))
-    print a
+#a = list(set(a))
+#print a
+print category[key]
     print len(a)
     p['Operation'] = 'ItemLookup'
     p['ResponseGroup'] = 'Large'
@@ -522,7 +772,7 @@ a = list(set(a))
                     p['ItemId'] += ',' + a[las]
             else:
                 p['ItemId'] = a[i]+','+a[i-1]+','+a[i-2]+','+a[i-3]+','+a[i-4]
-            print p['ItemId']
+            #print p['ItemId']
             r = requests.get(aws_signed_request('com', p, pukey, prkey, atag))
             
             ju = str(r.text.encode('utf8', 'replace'))
@@ -634,10 +884,10 @@ a = list(set(a))
                             field1 = EF.SubElement(docM, "Sex")
                             field1.text = sex
                             field1 = EF.SubElement(doc, "Category")
-                            field1.text = category[dk]
+                            field1.text = category[key]
                             field1 = EF.SubElement(docM, "Category")
-                            field1.text = category[dk]
-    time.sleep(1)
+                            field1.text = category[key]
+    time.sleep(.25)
         #print r.url
         ju = str(r.text.encode('utf8', 'replace'))
             #print ju
@@ -646,8 +896,9 @@ a = list(set(a))
 tree1 = EF.ElementTree(root1)
     #tree1.write(cat[catInd] + ".xml")
     tree1 = EF.ElementTree(rootM)
+    tree1.write(str(date.today()) + ".xml")
     tree1.write("combined.xml")
     #tree1.write("/Users/jgank/Dropbox/Impulse Shopper/Impulse Shopper/combined.xml")
     
-    print fd
     f.close()
+

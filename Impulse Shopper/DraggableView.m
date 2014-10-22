@@ -39,11 +39,12 @@
         
 #warning placeholder stuff, replace with card-specific information {
         
-        self.backgroundColor = [UIColor whiteColor];
+//        self.backgroundColor = [UIColor whiteColor];
         
 //        self.imageView = [[UIImageView alloc] init];
         self.imageView = [UIImageView newAutoLayoutView];
-//        self.backgroundColor = [UIColor clearColor];
+        self.backgroundColor = [UIColor clearColor];
+//        self.backgroundColor = [UIColor colorWithRed:0.971 green:0.000 blue:0.298 alpha:1.000];
 #warning placeholder stuff, replace with card-specific information }
         
         
@@ -54,10 +55,14 @@
         [self addGestureRecognizer:panGestureRecognizer];
         
         overlayView = [[OverlayView alloc]initWithFrame:CGRectMake(self.frame.size.width/2-100, self.frame.size.height/2.0-100, 100, 100)];
+//        overlayView = [OverlayView newAutoLayoutView];
         overlayView.layer.zPosition = 1;
         overlayView.alpha = 0;
         overlayView.backgroundColor = [UIColor clearColor];
         [self addSubview:overlayView];
+//        [overlayView autoAlignAxisToSuperviewAxis:ALAxisVertical];
+//        [overlayView autoAlignAxisToSuperviewAxis:ALAxisHorizontal];
+//        [overlayView autoCenterInSuperview];
     }
     return self;
 }
@@ -72,24 +77,43 @@
 
 -(void)setItem:(NSDictionary *)item {
     _item = item;
-    _imageView.frame = self.frame;
+//    _imageView.frame = self.frame;
     [_imageView setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@", [[item objectForKey:@"LargeImage"] objectForKey:@"text"]]] placeholderImage:nil options:SDWebImageContinueInBackground];
-//    _imageView.frame = CGRectMake(0, 0, 160, 360);
-//    _imageView.layer.cornerRadius = 4;
-//    _imageView.layer.shadowRadius = 3;
-//    _imageView.layer.shadowOpacity = 0.2;
-//    _imageView.layer.shadowOffset = CGSizeMake(1, 1);
+    _imageView.frame = CGRectMake(0, 0, 160, 360);
+    _imageView.layer.cornerRadius = 4;
+    _imageView.layer.shadowRadius = 3;
+    _imageView.layer.shadowOpacity = 0.2;
+    _imageView.layer.shadowOffset = CGSizeMake(1, 1);
     _imageView.contentMode = UIViewContentModeScaleAspectFit;
-    _imageView.bounds = self.bounds;
+//    _imageView.bounds = self.bounds;
+    [_imageView setBackgroundColor:[UIColor whiteColor]];
 //    _imageView.backgroundColor = [UIColor blackColor];
 //    panGestureRecognizer = [[UIPanGestureRecognizer alloc]initWithTarget:self action:@selector(beingDragged:)];
     
+    
     [self addSubview:_imageView];
+//    _imageView.contentMode = UIViewContentModeCenter;
     [_imageView autoPinEdgeToSuperviewEdge:ALEdgeTop];
     [_imageView autoPinEdgeToSuperviewEdge:ALEdgeBottom];
     [_imageView autoPinEdgeToSuperviewEdge:ALEdgeLeft];
     [_imageView autoPinEdgeToSuperviewEdge:ALEdgeRight];
+    
+    
+    [_imageView autoConstrainAttribute:ALDimensionHeight toAttribute:ALDimensionHeight ofView:self];
+    [_imageView autoConstrainAttribute:ALDimensionWidth toAttribute:ALDimensionWidth ofView:self];
+    
+    
+    [_imageView autoCenterInSuperview];
+//    [_imageView autoAlignAxisToSuperviewAxis:ALAxisHorizontal];
+//    [_imageView autoAlignAxisToSuperviewAxis:ALAxisVertical];
+    
+    
+    
 //    [_imageView autoPinEdgesToSuperviewMargins];
+    
+    
+    
+    
 //    [_imageView autoMatchDimension:ALDimensionHeight toDimension:ALDimensionHeight ofView:self];
 //    [_imageView autoMatchDimension:ALDimensionWidth toDimension:ALDimensionWidth ofView:self];
 //    [_imageView autoCenterInSuperview];
@@ -144,6 +168,7 @@
             
             //%%% move the object's center by center + gesture coordinate
             self.center = CGPointMake(self.originalPoint.x + xFromCenter, self.originalPoint.y + yFromCenter);
+            _imageView.center = CGPointMake(self.originalPoint.x + xFromCenter, self.originalPoint.y + yFromCenter);
 //            _imageView.center = CGPointMake(self.imagePoint.x + xFromCenter, self.imagePoint.y + yFromCenter);
             
             //%%% rotate by certain amount
@@ -154,6 +179,7 @@
             
             //%%% apply transformations
             self.transform = scaleTransform;
+            _imageView.transform = scaleTransform;
 //            _imageView.transform = scaleTransform;
             [self updateOverlay:xFromCenter];
             
@@ -193,9 +219,9 @@
         [UIView animateWithDuration:0.3
                          animations:^{
                              self.center = self.originalPoint;
-//                             _imageView.center = self.imagePoint;
+                             _imageView.center = self.originalPoint;
                              self.transform = CGAffineTransformMakeRotation(0);
-//                             _imageView.transform = CGAffineTransformMakeRotation(0);
+                             _imageView.transform = CGAffineTransformMakeRotation(0);
                              overlayView.alpha = 0;
                          }];
         self.backgroundColor = [UIColor whiteColor];

@@ -1,0 +1,20 @@
+//
+//  Impulse Shopper.pch
+//  Impulse Shopper
+//
+//  Created by Justin Knag on 10/21/14.
+//  Copyright (c) 2014 Justin Knag. All rights reserved.
+//
+
+#ifndef Impulse_Shopper_Impulse_Shopper_pch
+#define Impulse_Shopper_Impulse_Shopper_pch
+
+// Include any system framework and library headers here that should be included in all compilation units.
+// You will also need to set the Prefix Header build setting of one or more of your targets to reference this file.
+
+
+#import "TestFlight.h"
+//#define NSLog(__FORMAT__, ...) TFLog((@"%s [Line %d] " __FORMAT__), __PRETTY_FUNCTION__, __LINE__, ##__VA_ARGS__)
+
+
+#endif

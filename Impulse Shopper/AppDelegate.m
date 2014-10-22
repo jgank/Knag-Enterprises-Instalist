@@ -24,11 +24,11 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-    
-    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    NSString  *arrayPath = [[paths objectAtIndex:0] stringByAppendingPathComponent:@"fav.out"];
-    NSFileManager *fileManager = [NSFileManager defaultManager];
-    [fileManager removeItemAtPath:arrayPath error:NULL];
+    [TestFlight takeOff:@"477c76e5-10ed-4299-823a-96435bf1eef9"]; 
+//    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+//    NSString  *arrayPath = [[paths objectAtIndex:0] stringByAppendingPathComponent:@"fav.out"];
+//    NSFileManager *fileManager = [NSFileManager defaultManager];
+//    [fileManager removeItemAtPath:arrayPath error:NULL];
     self.viewController = [[JASidePanelController alloc] init];
     self.viewController.leftPanel = [[JALeftViewController alloc] init];
     //self.viewController.centerPanel = [[UINavigationController alloc] initWithRootViewController:[[JACenterViewController alloc] init]];
@@ -62,11 +62,9 @@
     // Saves changes in the application's managed object context before the application terminates.
     [self saveContext];
 }
-- (BOOL)application:(UIApplication *)application
-            openURL:(NSURL *)url
-  sourceApplication:(NSString *)sourceApplication
-         annotation:(id)annotation {
+- (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation {
     // attempt to extract a token from the url
+    NSLog(@"openURL %@ %@ %@", url.absoluteString, sourceApplication, annotation);
     return [FBAppCall handleOpenURL:url sourceApplication:sourceApplication];
 }
 #pragma mark - Core Data stack

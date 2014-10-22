@@ -32,6 +32,9 @@
 #import "JACenterViewController.h"
 #import <MessageUI/MessageUI.h>
 #import <FacebookSDK/FacebookSDK.h>
+#import <AFNetworking/AFNetworking.h>
+#import <Twitter/Twitter.h>
+#import <Accounts/Accounts.h>
 
 @interface JALeftViewController () <MFMailComposeViewControllerDelegate>
 
@@ -85,26 +88,44 @@
     [self.view addSubview:button];
     self.addRightPanel = button;
     
-    button = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    button.frame = CGRectMake(20.0f, 170.0f, 200.0f, 40.0f);
-    button.autoresizingMask = UIViewAutoresizingFlexibleRightMargin;
-    [button setTitle:@"Facebook" forState:UIControlStateNormal];
-    [button addTarget:self action:@selector(_changeCenterPanelTapped:) forControlEvents:UIControlEventTouchUpInside];
-    [self.view addSubview:button];
-    self.changeCenterPanel = button;
-    
-    FBLoginView *loginView = [[FBLoginView alloc] init];
-    loginView.center = button.center;
-    [self.view addSubview:loginView];
+//    button = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+//    button.frame = CGRectMake(20.0f, 170.0f, 200.0f, 40.0f);
+//    button.autoresizingMask = UIViewAutoresizingFlexibleRightMargin;
+//    [button setTitle:@"Facebook" forState:UIControlStateNormal];
+//    [button addTarget:self action:@selector(_changeCenterPanelTapped:) forControlEvents:UIControlEventTouchUpInside];
+//    [self.view addSubview:button];
+//    self.changeCenterPanel = button;
+//    
+//    FBLoginView *loginView = [[FBLoginView alloc] init];
+////    loginView.tooltipBehavior = FBLoginViewTooltipBehaviorForceDisplay;
+////    loginView.loginBehavior = FBSessionDefaultAudienceOnlyMe;
+////    loginView.loginBehavior = FBSessionDefaultAudienceEveryone;
+//    loginView.center = button.center;
+//    [self.view addSubview:loginView];
 
     button = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    button.frame = CGRectMake(20.0f, 220.0f, 200.0f, 40.0f);
+    button.frame = CGRectMake(20.0f, 170.0f, 200.0f, 40.0f);
     button.autoresizingMask = UIViewAutoresizingFlexibleRightMargin;
     [button setTitle:@"Post to Facebook" forState:UIControlStateNormal];
     [button addTarget:self action:@selector(_postToFacebook:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:button];
     self.changeCenterPanel = button;
     
+    button = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    button.frame = CGRectMake(20.0f, 220.0f, 200.0f, 40.0f);
+    button.autoresizingMask = UIViewAutoresizingFlexibleRightMargin;
+    [button setTitle:@"SMS Text Message" forState:UIControlStateNormal];
+    [button addTarget:self action:@selector(_postSMS:) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:button];
+    self.changeCenterPanel = button;
+    
+    button = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    button.frame = CGRectMake(20.0f, 270.0f, 200.0f, 40.0f);
+    button.autoresizingMask = UIViewAutoresizingFlexibleRightMargin;
+    [button setTitle:@"Create Pastebin Link" forState:UIControlStateNormal];
+    [button addTarget:self action:@selector(_postPasteBin:) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:button];
+    self.changeCenterPanel = button;
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -140,7 +161,7 @@
             [[d objectForKey:@"DetailPageURL"] objectForKey:@"text"]]];
         }
         body = [body stringByAppendingString:@"\n Created by iPhone Christmas List Creator"];
-        NSLog(body);
+//        NSLog(@"%@",body);
         [mailer setMessageBody:body isHTML:NO];
         [self presentViewController:mailer animated:YES completion:nil];
     }
@@ -180,6 +201,108 @@
     }
     
 }
+- (void)_postSMS:(id)sender {
+    NSArray *arr = ((JACenterViewController*)self.sidePanelController.centerPanel).draggableView.favArray;
+    if ([arr count] == 0) {
+        [[[UIAlertView alloc] initWithTitle:@"Alert" message:@"Please favorite some items first" delegate:nil cancelButtonTitle:@"Okay" otherButtonTitles:nil] show];
+        return;
+    }
+    if ([MFMessageComposeViewController canSendText]) {
+        MFMessageComposeViewController  *mailer = [[MFMessageComposeViewController alloc] init];
+        mailer.messageComposeDelegate = self;
+        [mailer setSubject:@"Gift Wish List"];
+        NSString *body = @"";
+        NSArray *arr = ((JACenterViewController*)self.sidePanelController.centerPanel).draggableView.favArray;
+        for (NSDictionary *d in arr) {
+            body = [body stringByAppendingString:[NSString stringWithFormat:@"%@, %@, %@\n",
+                                                  [[d objectForKey:@"Title"] objectForKey:@"text"],
+                                                  [[d objectForKey:@"FormattedPrice"] objectForKey:@"text"],
+                                                  [[d objectForKey:@"DetailPageURL"] objectForKey:@"text"]]];
+        }
+        body = [body stringByAppendingString:@"\n Created by iPhone Christmas List Creator"];
+//        NSLog(@"%@",body);
+        [mailer setBody:body];
+        [self presentViewController:mailer animated:YES completion:nil];
+    }
+    else {
+        UIAlertView *warningAlert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Your device doesn't support SMS!" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+        [warningAlert show];
+    }
+}
+
+- (void)_postPasteBin:(id)sender {
+    
+    NSArray *arr = ((JACenterViewController*)self.sidePanelController.centerPanel).draggableView.favArray;
+    if ([arr count] == 0) {
+        [[[UIAlertView alloc] initWithTitle:@"Alert" message:@"Please favorite some items first" delegate:nil cancelButtonTitle:@"Okay" otherButtonTitles:nil] show];
+        return;
+    }
+    NSString *body = @"";
+    for (NSDictionary *d in arr) {
+        body = [body stringByAppendingString:[NSString stringWithFormat:@"%@, %@, %@\n",
+                                              [[d objectForKey:@"Title"] objectForKey:@"text"],
+                                              [[d objectForKey:@"FormattedPrice"] objectForKey:@"text"],
+                                              [[d objectForKey:@"DetailPageURL"] objectForKey:@"text"]]];
+    }
+    body = [body stringByAppendingString:@"\n Created by iPhone Christmas List Creator"];
+    body = [body stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+//    NSLog(@"%@",body);
+    
+    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    
+//    manager.requestSerializer = [AFJSONRequestSerializer serializer];
+//    manager.responseSerializer = [AFJSONResponseSerializer serializer];
+    manager.responseSerializer = [AFHTTPResponseSerializer serializer];
+    [manager.responseSerializer.acceptableContentTypes setByAddingObject:@"text/html"];
+    NSDictionary *params = @{
+    @"api_option" : @"paste",
+    @"api_user_key":@"" ,
+    @"api_paste_private":@"0",
+    @"api_paste_name":[@"Impulse Wish List" stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding],
+    @"api_paste_expire_date":@"N",
+    @"api_paste_format":@"text",
+    @"api_dev_key":@"71515aa1aa95e6358902c69e76d602ed",
+    @"api_paste_code":[body stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding]};
+
+    [manager POST:@"http://pastebin.com/api/api_post.php" parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        NSLog(@"JSON: %@", responseObject);
+        NSLog(@"%@",operation.responseString);
+        
+        if([operation.responseString rangeOfString:@"http://"].location != NSNotFound) {
+            TWTweetComposeViewController *twitter = [[TWTweetComposeViewController alloc] init];
+            
+            [twitter setInitialText:[NSString stringWithFormat:@"Impulse Wishlist %@", operation.responseString]];
+            
+            [self presentViewController:twitter animated:YES completion:nil];
+            
+            twitter.completionHandler = ^(TWTweetComposeViewControllerResult res) {
+                
+                if(res == TWTweetComposeViewControllerResultDone) {
+                    
+                    UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"Success" message:@"The Tweet was posted successfully." delegate:self cancelButtonTitle:@"Dismiss" otherButtonTitles: nil];
+                    
+                    [alert show];
+                    
+                }
+                if(res == TWTweetComposeViewControllerResultCancelled) {
+                    
+                    UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"Cancelled" message:@"You Cancelled posting the Tweet." delegate:self cancelButtonTitle:@"Dismiss" otherButtonTitles: nil];
+                    
+                    [alert show];    
+                    
+                }
+                [self dismissModalViewControllerAnimated:YES];
+                
+            };
+
+        }
+        
+        
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        NSLog(@"%@",operation.responseString);
+        NSLog(@"Error: %@", error);
+    }];
+}
 - (void)_postToFacebook:(id)sender {
     NSArray *arr = ((JACenterViewController*)self.sidePanelController.centerPanel).draggableView.favArray;
     if ([arr count] == 0) {
@@ -189,11 +312,10 @@
     if (FBSession.activeSession.isOpen)
     {
         // Post a status update to the user's feed via the Graph API, and display an alert view
+        NSLog(@"%@",FBSession.activeSession.permissions);
         [self performPublishAction:^{
             NSString *message = @"";
             NSArray *arr = ((JACenterViewController*)self.sidePanelController.centerPanel).draggableView.favArray;
-            
-            
             
             
             for (NSDictionary *d in arr) {
@@ -203,7 +325,7 @@
                                                             [[d objectForKey:@"DetailPageURL"] objectForKey:@"text"]]];
             }
             message = [message stringByAppendingString:@"\n Created by iPhone Christmas List Creator"];
-            NSLog(message);
+            NSLog(@"%@",message);
             
             FBRequestConnection *connection = [[FBRequestConnection alloc] init];
             
@@ -213,6 +335,7 @@
             
             [connection addRequest:[FBRequest requestForPostStatusUpdate:message]
                  completionHandler:^(FBRequestConnection *innerConnection, id result, NSError *error) {
+                     NSLog(@"post completetion");
                      [self showAlert:message result:result error:error];
                      //                         self.buttonPostStatus.enabled = YES;
                  }];
@@ -224,20 +347,16 @@
     else {
         // try to open session with existing valid token
         NSArray *permissions = [[NSArray alloc] initWithObjects:
-                                @"user_likes",
-                                @"read_stream",
+                                @"public_profile",
                                 @"publish_actions",
                                 nil];
         FBSession *session = [[FBSession alloc] initWithPermissions:permissions];
         [FBSession setActiveSession:session];
-        if([FBSession openActiveSessionWithAllowLoginUI:NO]) {
+        if([FBSession openActiveSessionWithAllowLoginUI:YES]) {
             
-            // Post a status update to the user's feed via the Graph API, and display an alert view
             [self performPublishAction:^{
                 NSString *message = @"";
                 NSArray *arr = ((JACenterViewController*)self.sidePanelController.centerPanel).draggableView.favArray;
-                
-                
                 
                 
                 for (NSDictionary *d in arr) {
@@ -247,7 +366,7 @@
                                                                 [[d objectForKey:@"DetailPageURL"] objectForKey:@"text"]]];
                 }
                 message = [message stringByAppendingString:@"\n Created by iPhone Christmas List Creator"];
-                NSLog(message);
+                NSLog(@"%@",message);
                 
                 FBRequestConnection *connection = [[FBRequestConnection alloc] init];
                 
@@ -257,11 +376,11 @@
                 
                 [connection addRequest:[FBRequest requestForPostStatusUpdate:message]
                      completionHandler:^(FBRequestConnection *innerConnection, id result, NSError *error) {
+                         NSLog(@"login complettion post");
                          [self showAlert:message result:result error:error];
                          //                         self.buttonPostStatus.enabled = YES;
                      }];
                 [connection start];
-                NSLog(@"login in and posting");
                 
                 //                self.buttonPostStatus.enabled = NO;
             }];
@@ -331,6 +450,9 @@
     self.sidePanelController.centerPanel = [[UINavigationController alloc] initWithRootViewController:[[JACenterViewController alloc] init]];
 }
 - (void)mailComposeController:(MFMailComposeViewController *)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError *)error {
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
+- (void)messageComposeViewController:(MFMessageComposeViewController *)controller didFinishWithResult:(MessageComposeResult)result {
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
