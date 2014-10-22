@@ -30,14 +30,14 @@ def aws_signed_request(region, params, public_key, private_key, associate_tag=No
     params['Version'] = version
     if associate_tag:
         params['AssociateTag'] = associate_tag
-
+    
     # create the canonicalized query
     canonicalized_query = [urllib.quote(param).replace('%7E', '~') + '=' + urllib.quote(params[param]).replace('%7E', '~')
-                           for param in sorted(params.keys())]
-canonicalized_query = '&'.join(canonicalized_query)
+                            for param in sorted(params.keys())]
+    canonicalized_query = '&'.join(canonicalized_query)
     
     # create the string to sign
-    string_to_sign = method + '\n' + host + '\n' + uri + '\n' + canonicalized_query;
+    string_to_sign = method + '\n' + host + '\n' + uri + '\n' + canonicalized_query
     #print string_to_sign
     
     # calculate HMAC with SHA256 and base64-encoding
@@ -45,7 +45,7 @@ canonicalized_query = '&'.join(canonicalized_query)
     
     # encode the signature for the request
     signature = urllib.quote(signature).replace('%7E', '~')
-    
+
     #print 'http://' + host + uri + '?' + canonicalized_query + '&Signature=' + signature
     return 'http://' + host + uri + '?' + canonicalized_query + '&Signature=' + signature
 
@@ -54,20 +54,20 @@ class XMLCombiner(object):
         assert len(filenames) > 0, 'No filenames!'
         # save all the roots, in order, to be processed later
         self.roots = [et.parse(f).getroot() for f in filenames]
-    
+
     def combine(self):
         for r in self.roots[1:]:
             # combine each element with the first one, and update that
             self.combine_element(self.roots[0], r)
         # return the string representation
         return et.tostring(self.roots[0])
-    
+
     def combine_element(self, one, other):
         """
-            This function recursively updates either the text or the children
-            of an element if another element is found in `one`, or adds it
-            from `other` if not found.
-            """
+        This function recursively updates either the text or the children
+        of an element if another element is found in `one`, or adds it
+        from `other` if not found.
+        """
         # Create a mapping from tag name to element, as that's what we are fltering with
         mapping = {el.tag: el for el in one}
         for el in other:
@@ -282,57 +282,57 @@ apparelItems = {"Accessories": "2474937011",
 
 
 """
-    fullItems = {"172282": "Electronics",
-    "1000": "Books",
-    "3580501": "GourmetFood",
-    "228239": "Industrial",
-    "3880591": "Jewelry",
-    "133141011": "KindleStore",
-    "284507": "Kitchen",
-    "2972638011": "LawnGarden",
-    "599872": "Magazines",
-    "10304191": "Miscellaneous",
-    "2350149011": "MobileApps",
-    "195211011": "Mp3Downloads",
-    "301668": "Music",
-    "11091801": "MusicalInstruments",
-    "286168": "OutdoorLiving",
-    "541966": "PCHardware",
-    "12923371": "PetSupplies",
-    "502394": "Photo",
-    "409488": "Software",
-    "3375251": "SportingGoods",
-    "468240": "Tools",
-    "165793011": "Toys",
-    "404272": "Vhs",
-    "130": "Video",
-    "468642": "VideoGames",
-    "377110011": "Watches",
-    "508494": "Wireless",
-    "13900851": "WirelessAccessories",
-    "5417873011": "Apparel",
-    "1045024": "Apparel",
-    "1044454": "Apparel",
-    "14333511": "Apparel",
-    "1048188": "Apparel",
-    "1285228011": "Apparel",
-    "5605243011": "Apparel",
-    "1045022": "Apparel",
-    "2376202011": "Apparel",
-    "1046622": "Apparel",
-    "2368343011": "Apparel",
-    "1288627011": "Apparel",
-    "1044646": "Apparel",
-    "1258603011": "Apparel",
-    "1044886": "Apparel",
-    "2381887011": "Apparel",
-    "1258967011": "Apparel",
-    "1048184": "Apparel",
-    "1048186": "Apparel",
-    "1044460": "Apparel",
-    "1044456": "Apparel",
-    "165793011": "Toys"}
-    """
+fullItems = {"172282": "Electronics",
+"1000": "Books",
+"3580501": "GourmetFood",
+"228239": "Industrial",
+"3880591": "Jewelry",
+"133141011": "KindleStore",
+"284507": "Kitchen",
+"2972638011": "LawnGarden",
+"599872": "Magazines",
+"10304191": "Miscellaneous",
+"2350149011": "MobileApps",
+"195211011": "Mp3Downloads",
+"301668": "Music",
+"11091801": "MusicalInstruments",
+"286168": "OutdoorLiving",
+"541966": "PCHardware",
+"12923371": "PetSupplies",
+"502394": "Photo",
+"409488": "Software",
+"3375251": "SportingGoods",
+"468240": "Tools",
+"165793011": "Toys",
+"404272": "Vhs",
+"130": "Video",
+"468642": "VideoGames",
+"377110011": "Watches",
+"508494": "Wireless",
+"13900851": "WirelessAccessories",
+"5417873011": "Apparel",
+"1045024": "Apparel",
+"1044454": "Apparel",
+"14333511": "Apparel",
+"1048188": "Apparel",
+"1285228011": "Apparel",
+"5605243011": "Apparel",
+"1045022": "Apparel",
+"2376202011": "Apparel",
+"1046622": "Apparel",
+"2368343011": "Apparel",
+"1288627011": "Apparel",
+"1044646": "Apparel",
+"1258603011": "Apparel",
+"1044886": "Apparel",
+"2381887011": "Apparel",
+"1258967011": "Apparel",
+"1048184": "Apparel",
+"1048186": "Apparel",
+"1044460": "Apparel",
+"1044456": "Apparel",
+"165793011": "Toys"}
+"""
 
 
 
@@ -611,80 +611,80 @@ fullItems = {"172282": "Electronics",
 
 
 tags = ["knag_baby-20",
-        "knag_video-20",
-        "knag_p_hardware-20",
-        "knag_lawngarden-20",
-        "knag_videogames-20",
-        "jdt03-20",
-        "knag_musical_instruments-20",
-        "knag_tools-20",
-        "knag_wireless-20",
-        "knag_musicalinstruments-20",
-        "knag_appliances-20",
-        "knag_books-20",
-        "knag_collectibles-20",
-        "knag_foreign_books-20",
-        "knag_home-20",
-        "knag_jewlery-20",
-        "knag_lighting-20",
-        "knag_luggage_bags-20",
-        "knag_outdoor_living-20",
-        "knag_pc_hardware-20",
-        "knag_pet_supplies-20",
-        "knag_photo-20",
-        "knag_software_video_games-20",
-        "knag_vhs-20",
-        "knag_p_chardware-20",
-        "knag_automotive-20",
-        "knag_beauty-20",
-        "knag_classical-20",
-        "knag_dvd-20",
-        "knag_garden-20",
-        "knag_home_garden-20",
-        "knag_home_improvement-20",
-        "knag_home_kitchen-20",
-        "knag_kindle_store-20",
-        "knag_kitchen-20",
-        "knag_toys-20",
-        "knag_video_games-20",
-        "knag_watches-20",
-        "knag_boy_toys-20",
-        "knag_girl_toys-20",
-        "knag_v_hs-20",
-        "knag_outdoorliving-20",
-        "knag_pchardware-20",
-        "knag_wirelessaccessories-20",
-        "knag_jewelry-20",
-        "knagapparel-20",
-        "knag_apparel-20",
-        "knag_arts_and_crafts-20",
-        "knag_health_personal_care-20",
-        "knag_hobbies-20",
-        "knag_industrial-20",
-        "knag_magazines-20",
-        "knag_miscellaneous-20",
-        "knag_mp3_downloads-20",
-        "knag_music-20",
-        "knag_office_products-20",
-        "knag_sporting_goods-20",
-        "knag_womens_beauty-20",
-        "knag_petsupplies-20",
-        "knag_grocery-20",
-        "knag_lawn_garden-20",
-        "knag_mobile_apps-20",
-        "knag_shoes-20",
-        "knag_software-20",
-        "knag_kindlestore-20",
-        "knag_officeproducts-20",
-        "knag_mens_apparel-20",
-        "knag_womens_apparel-20",
-        "knag_digital_music-20",
-        "knag_wireless_accessories-20",
-        "knag_mens_beauty-20",
-        "knag_electronics-20",
-        "knag_gourmet_food-20",
-        "knag_mobileapps-20",
-        "knag_sportinggoods-20"]
+"knag_video-20",
+"knag_p_hardware-20",
+"knag_lawngarden-20",
+"knag_videogames-20",
+"jdt03-20",
+"knag_musical_instruments-20",
+"knag_tools-20",
+"knag_wireless-20",
+"knag_musicalinstruments-20",
+"knag_appliances-20",
+"knag_books-20",
+"knag_collectibles-20",
+"knag_foreign_books-20",
+"knag_home-20",
+"knag_jewlery-20",
+"knag_lighting-20",
+"knag_luggage_bags-20",
+"knag_outdoor_living-20",
+"knag_pc_hardware-20",
+"knag_pet_supplies-20",
+"knag_photo-20",
+"knag_software_video_games-20",
+"knag_vhs-20",
+"knag_p_chardware-20",
+"knag_automotive-20",
+"knag_beauty-20",
+"knag_classical-20",
+"knag_dvd-20",
+"knag_garden-20",
+"knag_home_garden-20",
+"knag_home_improvement-20",
+"knag_home_kitchen-20",
+"knag_kindle_store-20",
+"knag_kitchen-20",
+"knag_toys-20",
+"knag_video_games-20",
+"knag_watches-20",
+"knag_boy_toys-20",
+"knag_girl_toys-20",
+"knag_v_hs-20",
+"knag_outdoorliving-20",
+"knag_pchardware-20",
+"knag_wirelessaccessories-20",
+"knag_jewelry-20",
+"knagapparel-20",
+"knag_apparel-20",
+"knag_arts_and_crafts-20",
+"knag_health_personal_care-20",
+"knag_hobbies-20",
+"knag_industrial-20",
+"knag_magazines-20",
+"knag_miscellaneous-20",
+"knag_mp3_downloads-20",
+"knag_music-20",
+"knag_office_products-20",
+"knag_sporting_goods-20",
+"knag_womens_beauty-20",
+"knag_petsupplies-20",
+"knag_grocery-20",
+"knag_lawn_garden-20",
+"knag_mobile_apps-20",
+"knag_shoes-20",
+"knag_software-20",
+"knag_kindlestore-20",
+"knag_officeproducts-20",
+"knag_mens_apparel-20",
+"knag_womens_apparel-20",
+"knag_digital_music-20",
+"knag_wireless_accessories-20",
+"knag_mens_beauty-20",
+"knag_electronics-20",
+"knag_gourmet_food-20",
+"knag_mobileapps-20",
+"knag_sportinggoods-20"]
 
 #p['ResponseGroup'] = 'MostWishedFor'
 #p['ResponseGroup'] = 'OfferSummary,Images'
@@ -695,18 +695,18 @@ pukey = 'AKIAI2MKYF4J4Q2JH4WA'
 prkey = 'Oahq9neCrb2U0yNt9fyzHFNrn+eOU38KRDEgXSO4'
 
 
-p = {}
+p = {} 
 p['Operation'] = 'ItemSearch'
 p['Sort'] = 'salesrank'
-p['ItemPage'] = str(1)
+p['ItemPage'] = str(1) 
 
 #bitly = bitly_api.Connection(access_token='ceb45471511fbdaee0e1518a06e6a111928cd4ee')
 
 rootM = EF.Element("root")
 #for catInd in range(len(cat)):
 for key, dk in fullItems.iteritems():
-    p['SearchIndex'] = dk
-    p['BrowseNode'] = key
+    p['SearchIndex'] = dk 
+    p['BrowseNode'] = key 
     p['Operation'] = 'ItemSearch'
     
     atag = dk
@@ -716,16 +716,16 @@ for key, dk in fullItems.iteritems():
         atag = gender[key] + atag
     elif atag == 'Beauty':
         atag = gender[key] + atag
-    
+        
     if key in gender:
         sex = gender[key]
     else:
         sex = ''
-    
-    
+
+
     atag = 'knag_' + re.sub(r"(\w)([A-Z])", r"\1_\2", atag).lower() + '-20'
 
-print atag
+    print atag
     print atag in tags
     assert atag in tags
     a = []
@@ -735,34 +735,34 @@ print atag
         p['ItemPage'] = str(q)
         r = requests.get(aws_signed_request('com', p, pukey, prkey, atag))
         time.sleep(.25)
-        
+
         #print r.url
         ju = str(r.text.encode('utf8', 'replace'))
         root = ET.fromstring(ju)
         acount = 0
         for i in root:
-            for j in i:
-                if "Item" in j.tag:
-                    for k in j:
-                        if "ASIN" in k.tag and "ParentASIN" not in k.tag:
-                            acount += 1
+                for j in i:
+                    if "Item" in j.tag:
+                        for k in j:
+                            if "ASIN" in k.tag and "ParentASIN" not in k.tag:
+                                acount += 1
                                 acountt += 1
                                 a.append(k.text)
 
-#a = list(set(a))
-#print a
-print category[key]
+    #a = list(set(a))
+    #print a
+    print category[key]
     print len(a)
     p['Operation'] = 'ItemLookup'
     p['ResponseGroup'] = 'Large'
     del p['SearchIndex']
-    filenames = []
-    
+    filenames = [] 
+
     f = open('combine.xml', 'w')
     fd = 0
     root1 = EF.Element("root")
     tson = []
-    
+
     for i in range(len(a)):
         if (i+1) % 5 == 0 or i+1 == len(a):
             fd += 5
@@ -774,16 +774,16 @@ print category[key]
                 p['ItemId'] = a[i]+','+a[i-1]+','+a[i-2]+','+a[i-3]+','+a[i-4]
             #print p['ItemId']
             r = requests.get(aws_signed_request('com', p, pukey, prkey, atag))
-            
+
             ju = str(r.text.encode('utf8', 'replace'))
             root = ET.fromstring(ju)
-            
+
             for i in root:
-                for j in i:
-                    if "Item" in j.tag:
-                        doc = EF.SubElement(root1, "Item")
+                    for j in i:
+                        if "Item" in j.tag:
+                            doc = EF.SubElement(root1, "Item")
                             docM = EF.SubElement(rootM, "Item")
-                            
+
                             for k in j:
                                 if "ASIN" in k.tag and "ParentASIN" not in k.tag:
                                     field1 = EF.SubElement(doc, "ASIN")
@@ -841,24 +841,24 @@ print category[key]
                                     field1.text = k.text
                                     #field1.text = urllib.unquote(k.text)
                                     """
-                                        data = bitly.shorten(field1.text)
-                                        field1 = EF.SubElement(doc, "ShortURL")
-                                        field1.text = data['url']
-                                        field1 = EF.SubElement(docM, "ShortURL")
-                                        field1.text = data['url']
-                                        print field1.text
-                                        """
-                                """
-                                    if "EditorialReviews" in k.tag:
-                                    for ia in k:
-                                    if "EditorialReview" in ia.tag:
-                                    for lp in ia:
-                                    if "Content" in lp.tag:
-                                    field1 = EF.SubElement(doc, "Content")
-                                    field1.text = lp.text
-                                    field1 = EF.SubElement(docM, "Content")
-                                    field1.text = lp.text
+                                    data = bitly.shorten(field1.text)
+                                    field1 = EF.SubElement(doc, "ShortURL")
+                                    field1.text = data['url']
+                                    field1 = EF.SubElement(docM, "ShortURL")
+                                    field1.text = data['url']
+                                    print field1.text
                                     """
+                                """
+                                if "EditorialReviews" in k.tag:
+                                    for ia in k:
+                                        if "EditorialReview" in ia.tag:
+                                            for lp in ia:
+                                                if "Content" in lp.tag:
+                                                    field1 = EF.SubElement(doc, "Content")
+                                                    field1.text = lp.text
+                                                    field1 = EF.SubElement(docM, "Content")
+                                                    field1.text = lp.text
+                                """
                                 if "ItemAttributes" in k.tag:
                                     for ia in k:
                                         if "Title" in ia.tag:
@@ -878,8 +878,8 @@ print category[key]
                                             field1.text = ia.text
                                             field1 = EF.SubElement(docM, "ProductGroup")
                                             field1.text = ia.text
-                    
-                        field1 = EF.SubElement(doc, "Sex")
+
+                            field1 = EF.SubElement(doc, "Sex")
                             field1.text = sex
                             field1 = EF.SubElement(docM, "Sex")
                             field1.text = sex
@@ -887,18 +887,18 @@ print category[key]
                             field1.text = category[key]
                             field1 = EF.SubElement(docM, "Category")
                             field1.text = category[key]
-    time.sleep(.25)
-        #print r.url
-        ju = str(r.text.encode('utf8', 'replace'))
+            time.sleep(.25)
+            #print r.url
+            ju = str(r.text.encode('utf8', 'replace'))
             #print ju
             f.write(str(ju))
 
-tree1 = EF.ElementTree(root1)
+    tree1 = EF.ElementTree(root1)
     #tree1.write(cat[catInd] + ".xml")
     tree1 = EF.ElementTree(rootM)
     tree1.write(str(date.today()) + ".xml")
     tree1.write("combined.xml")
     #tree1.write("/Users/jgank/Dropbox/Impulse Shopper/Impulse Shopper/combined.xml")
-    
+
     f.close()
 
