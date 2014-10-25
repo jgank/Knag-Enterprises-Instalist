@@ -27,6 +27,7 @@
 		52CCC69219AE93CB00464A46 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 52CCC68E19AE93CB00464A46 /* UIKit.framework */; };
 		52F1900A19AF9F4D00606C5C /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 52F1900919AF9F4D00606C5C /* WebKit.framework */; };
 		A07576660AD94FA8B57F540B /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 89FAADAE8CAB497B9353AD67 /* libPods.a */; };
+		EF09E22919FA48870045779B /* goog.xml in Resources */ = {isa = PBXBuildFile; fileRef = EF09E22819FA48870045779B /* goog.xml */; };
 		EF0B8A5D19E62FB400EA1B6E /* combine.xml in Resources */ = {isa = PBXBuildFile; fileRef = EF0B8A5C19E62FB400EA1B6E /* combine.xml */; };
 		EF0B8A6119E6590700EA1B6E /* Electronics.xml in Resources */ = {isa = PBXBuildFile; fileRef = EF0B8A6019E6590700EA1B6E /* Electronics.xml */; };
 		EF0B8A6419E7387B00EA1B6E /* WebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EF0B8A6319E7387B00EA1B6E /* WebViewController.m */; };
@@ -93,6 +94,7 @@
 		68E31D891A53852CD5B33B96 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 		89FAADAE8CAB497B9353AD67 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		A7431BC226B812FEB6FB096E /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
+		EF09E22819FA48870045779B /* goog.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = goog.xml; sourceTree = "<group>"; };
 		EF0B8A5C19E62FB400EA1B6E /* combine.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = combine.xml; sourceTree = "<group>"; };
 		EF0B8A6019E6590700EA1B6E /* Electronics.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = Electronics.xml; sourceTree = "<group>"; };
 		EF0B8A6219E7387B00EA1B6E /* WebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WebViewController.h; sourceTree = "<group>"; };
@@ -182,6 +184,7 @@
 			isa = PBXGroup;
 			children = (
 				EF70B3EF19ED538700AA55FA /* aws_signed_request.py */,
+				EF09E22819FA48870045779B /* goog.xml */,
 				EF4B164D19F05D1F00083B72 /* apparel.xml */,
 				EF70B3ED19ED4C4D00AA55FA /* combined.xml */,
 				EF0B8A6019E6590700EA1B6E /* Electronics.xml */,
@@ -365,6 +368,7 @@
 			files = (
 				EF70B3F019ED538700AA55FA /* aws_signed_request.py in Resources */,
 				52CCC66419AE90FD00464A46 /* Images.xcassets in Resources */,
+				EF09E22919FA48870045779B /* goog.xml in Resources */,
 				EF70B3EC19EC74C600AA55FA /* SavedCell.xib in Resources */,
 				5245030119B8BF5800103542 /* View.xib in Resources */,
 				EF4B164E19F05D1F00083B72 /* apparel.xml in Resources */,

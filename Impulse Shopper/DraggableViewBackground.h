@@ -57,7 +57,7 @@
 -(DraggableView *)createDraggableViewWithDataAtIndex:(NSInteger)index;
 - (id)initWithFrame:(CGRect)frame setArr:(NSArray*)arr delegate:(id)d;
 @property (retain,nonatomic)NSArray* Items; //%%% the labels the cards
-@property (retain,nonatomic)NSMutableArray* allCards; //%%% the labels the cards
+//@property (retain,nonatomic)NSMutableArray* allCards; //%%% the labels the cards
 @property (retain,nonatomic)NSArray* products; //%%% the labels the cards
 @property (strong, nonatomic) NSMutableArray *favArray;
 

@@ -270,28 +270,18 @@
         
         if([operation.responseString rangeOfString:@"http://"].location != NSNotFound) {
             TWTweetComposeViewController *twitter = [[TWTweetComposeViewController alloc] init];
-            
             [twitter setInitialText:[NSString stringWithFormat:@"Impulse Wishlist %@", operation.responseString]];
-            
             [self presentViewController:twitter animated:YES completion:nil];
-            
             twitter.completionHandler = ^(TWTweetComposeViewControllerResult res) {
-                
                 if(res == TWTweetComposeViewControllerResultDone) {
-                    
                     UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"Success" message:@"The Tweet was posted successfully." delegate:self cancelButtonTitle:@"Dismiss" otherButtonTitles: nil];
-                    
                     [alert show];
-                    
                 }
                 if(res == TWTweetComposeViewControllerResultCancelled) {
-                    
                     UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"Cancelled" message:@"You Cancelled posting the Tweet." delegate:self cancelButtonTitle:@"Dismiss" otherButtonTitles: nil];
-                    
-                    [alert show];    
-                    
+                    [alert show];
                 }
-                [self dismissModalViewControllerAnimated:YES];
+                [self dismissViewControllerAnimated:YES completion:nil];
                 
             };
 

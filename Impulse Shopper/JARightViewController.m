@@ -139,14 +139,6 @@
     static NSString *CellIdentifier = @"SavedCell";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if(!cell) {
-        
-        
-//        cell = [UITableViewCell newAutoLayoutView];
-//        [cell autoSetDimension:ALDimensionHeight toSize:115.0f];
-//        [cell setRestorationIdentifier:CellIdentifier];
-        
-//        cell.reuseIdentifier = CellIdentifier;
-        
         NSArray* topLevelObjects = [[NSBundle mainBundle] loadNibNamed:@"SavedCell" owner:self options:nil];
         for (id currentObject in topLevelObjects) {
             if ([currentObject isKindOfClass:[UITableViewCell class]]) {
@@ -159,28 +151,17 @@
     UILabel *label = (UILabel*)[cell.contentView viewWithTag:2];
     [imageView autoRemoveConstraintsAffectingView];
     [label autoRemoveConstraintsAffectingView];
-//    UIImageView *imageView = [UIImageView newAutoLayoutView];
-//    [cell.contentView addSubview:imageView];
     
     imageView.backgroundColor = [UIColor blueColor];
-    [imageView setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@", [[_favArray[indexPath.row] objectForKey:@"SmallImage"] objectForKey:@"text"]]] placeholderImage:nil options:SDWebImageContinueInBackground];
-//    imageView.frame = CGRectMake(self.view.bounds.size.width*.2, 2, imageView.frame.size.width, imageView.frame.size.height);
+    [imageView sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@", [[_favArray[indexPath.row] objectForKey:@"SmallImage"] objectForKey:@"text"]]] placeholderImage:nil options:SDWebImageDownloaderContinueInBackground completed:nil];
     NSLog(@"fdas %f %f",[[[_favArray[indexPath.row] objectForKey:@"SmallImage"] objectForKey:@"Width"] floatValue], [[[_favArray[indexPath.row] objectForKey:@"SmallImage"] objectForKey:@"Height"] floatValue]);
     CGSize imageSizze = CGSizeMake([[[_favArray[indexPath.row] objectForKey:@"SmallImage"] objectForKey:@"Width"] floatValue], [[[_favArray[indexPath.row] objectForKey:@"SmallImage"] objectForKey:@"Height"] floatValue]);
     [imageView autoSetDimensionsToSize:imageSizze];
     [imageView autoPinEdgeToSuperviewEdge:ALEdgeLeft withInset:11.0f];
-//    [imageView autoPinEdgeToSuperviewEdge:ALEdgeTop withInset:5];
-//    [imageView autoPinEdgeToSuperviewEdge:ALEdgeBottom withInset:5];
     [imageView autoAlignAxisToSuperviewAxis:ALAxisHorizontal];
     imageView.contentMode = UIViewContentModeScaleAspectFit;
-//    UILabel *label = [UILabel newAutoLayoutView];
-//    [cell.contentView addSubview:label];
-//    label.numberOfLines = 0;
-//    label.lineBreakMode = NSLineBreakByWordWrapping;
-//    label.font = [UIFont systemFontOfSize:12.0f];
     [label autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsMake(11, 0, 11, 11) excludingEdge:ALEdgeLeft];
     [label autoMatchDimension:ALDimensionWidth toDimension:ALDimensionWidth ofView:cell.contentView withMultiplier:(2/3.0f) relation:NSLayoutRelationLessThanOrEqual];
-//    UILabel *label = (UILabel*)[cell.contentView viewWithTag:2];
     
     NSString *lText = [NSString stringWithFormat:@"%@\n%@",
                        [[_favArray[indexPath.row] objectForKey:@"Title"] objectForKey:@"text"],

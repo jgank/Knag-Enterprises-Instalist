@@ -11,7 +11,6 @@
 #import "JACenterViewController.h"
 #import "JARightViewController.h"
 #import <BitlyForiOS/SSTURLShortener.h>
-#import "AFNetworking.h"
 
 @implementation DraggableViewBackground{
     NSInteger cardsLoadedIndex; //%%% the index of the card you have loaded into the loadedCards array last
@@ -34,7 +33,7 @@ static const float CARD_HEIGHT = 386; //%%% height of the draggable card
 static const float CARD_WIDTH = 290; //%%% width of the draggable card
 
 @synthesize Items; //%%% all the labels I'm using as example data at the moment
-@synthesize allCards;//%%% all the cards
+//@synthesize allCards;//%%% all the cards
 
 - (id)initWithFrame:(CGRect)frame setArr:(NSArray*)arr delegate:(id)d
 {
@@ -44,7 +43,6 @@ static const float CARD_WIDTH = 290; //%%% width of the draggable card
         [self setupView];
         Items = arr;
         loadedCards = [[NSMutableArray alloc] init];
-        allCards = [[NSMutableArray alloc] init];
         undoItems = [[NSMutableArray alloc] init];
         cardsLoadedIndex = 0;
         _delegate = d;
@@ -71,26 +69,17 @@ static const float CARD_WIDTH = 290; //%%% width of the draggable card
 {
 #warning customize all of this.  These are just place holders to make it look pretty
     self.backgroundColor = [UIColor colorWithRed:.92 green:.93 blue:.95 alpha:1]; //the gray background colors
-//    menuButton = [[UIButton alloc]initWithFrame:CGRectMake(17, 34, 22, 15)];
     menuButton = [[UIButton alloc]initWithFrame:CGRectMake(12, 26, 40, 40)];
     menuButton.imageView.contentMode = UIViewContentModeTopLeft;
-//    menuButton.backgroundColor = [UIColor blueColor];
     [menuButton setImage:[UIImage imageNamed:@"menuButton"] forState:UIControlStateNormal];
     [menuButton addTarget:self action:@selector(showLeftPanel) forControlEvents:UIControlEventTouchUpInside];
-//    [menuButton addTarget:self action:@selector(showLeftPanel) forControlEvents:UIControlEventTouchDown];
-//    [menuButton addTarget:self action:@selector(showLeftPanel) forControlEvents:UIControlEventTouchDownRepeat];
-//    [menuButton addTarget:self action:@selector(showLeftPanel) forControlEvents:UIControlEventTouchUpOutside];
-//    messageButton = [[UIButton alloc]initWithFrame:CGRectMake(284, 34, 40, 40)];
     messageButton = [[UIButton alloc]initWithFrame:CGRectMake(self.frame.size.width-40-12, 26, 40, 40)];
     messageButton.imageView.contentMode = UIViewContentModeTopLeft;
-//    messageButton.backgroundColor = [UIColor blueColor];
     [messageButton setImage:[UIImage imageNamed:@"sample-321-like"] forState:UIControlStateNormal];
     [messageButton addTarget:self action:@selector(showRightPanel) forControlEvents:UIControlEventTouchUpInside];
-//    xButton = [[UIButton alloc]initWithFrame:CGRectMake(60, 485, 59, 59)];
     xButton = [UIButton newAutoLayoutView];
     [xButton setImage:[UIImage imageNamed:@"xButton"] forState:UIControlStateNormal];
     [xButton addTarget:self action:@selector(swipeLeft) forControlEvents:UIControlEventTouchUpInside];
-//    checkButton = [[UIButton alloc]initWithFrame:CGRectMake(200, 485, 59, 59)];
     checkButton = [UIButton newAutoLayoutView];
     [checkButton setImage:[UIImage imageNamed:@"checkButton"] forState:UIControlStateNormal];
     [checkButton addTarget:self action:@selector(swipeRight) forControlEvents:UIControlEventTouchUpInside];
@@ -109,11 +98,6 @@ static const float CARD_WIDTH = 290; //%%% width of the draggable card
     titleLabel.sizeToFit;
     titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
     titleLabel.textAlignment = NSTextAlignmentCenter;
-    titleLabel.layer.zPosition = 10;
-//    [titleLabel setBackgroundColor:[UIColor blueColor]];
-//    titleLabel.layoutMargins = UIEdgeInsetsMake(0, 3, 0, 3);
-    
-//    [titleLabel setBackgroundColor:[UIColor blueColor]];
     [self addSubview:menuButton];
     [self addSubview:messageButton];
     [self addSubview:xButton];
@@ -129,14 +113,9 @@ static const float CARD_WIDTH = 290; //%%% width of the draggable card
     
     
     [titleLabel autoPinEdgeToSuperviewEdge:ALEdgeTop withInset:30.0f];
-//    [titleLabel setBackgroundColor:[UIColor colorWithRed:0 green:0 blue:0 alpha:1]];
-//    [titleLabel autoPinEdge:ALEdgeTop toEdge:ALEdgeTop ofView:menuButton withOffset:0];
     [titleLabel autoPinEdge:ALEdgeLeft toEdge:ALEdgeRight ofView:menuButton withOffset:3.0f];
     [titleLabel autoPinEdge:ALEdgeRight toEdge:ALEdgeLeft ofView:messageButton withOffset:-3.0f];
     [titleLabel autoSetDimension:ALDimensionHeight toSize:38.0f relation:NSLayoutRelationEqual];
-//    [titleLabel autoSetDimension:ALDimensionHeight toSize:(self.frame.size.height - (self.frame.size.height * 0.679577))/2 - 8];
-//    [titleLabel autoPinEdge:ALEdgeRight toEdge:ALEdgeLeading ofView:messageButton withOffset:3.0f];
-//    [titleLabel autoSetDimension:ALDimensionHeight toSize:(self.bounds.size.height - (self.frame.size.height * 0.679577))/2.0 - menuButton.frame.origin.y relation:NSLayoutRelationLessThanOrEqual];
 }
 
 #warning include own card customization here!
@@ -195,8 +174,8 @@ static const float CARD_WIDTH = 290; //%%% width of the draggable card
     
     
     [newCard setItem:Items[cardsLoadedIndex]];
-    [allCards addObject:newCard];
-    [loadedCards addObject:[allCards lastObject]];
+//    [allCards addObject:newCard];
+    [loadedCards addObject:newCard];
     NSLog(@"loaded index %i", cardsLoadedIndex);
     NSLog(@"card size %f, %f", [(DraggableView*)[loadedCards firstObject] imageView].image.size.width, [(DraggableView*)[loadedCards firstObject] imageView].image.size.height);
     titleLabel.text = [[[(DraggableView*)loadedCards[0] item] objectForKey:@"Title"] objectForKey:@"text"];
@@ -244,8 +223,8 @@ static const float CARD_WIDTH = 290; //%%% width of the draggable card
                 
             }
             [newCard setItem:Items[cardsLoadedIndex]];
-            [allCards addObject:newCard];
-            [loadedCards addObject:[allCards lastObject]];
+//            [allCards addObject:newCard];
+            [loadedCards addObject:newCard];
         }
         
         titleLabel.text = [[Items[cardsLoadedIndex] objectForKey:@"Title"] objectForKey:@"text"];
@@ -283,13 +262,13 @@ static const float CARD_WIDTH = 290; //%%% width of the draggable card
     [_delegate sendFav:_favArray];
     
     
-//    NSString *urlEsc = [[[[_favArray lastObject] objectForKey:@"DetailPageURL"] objectForKey:@"text"] stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
-//    [SSTURLShortener shortenURL:[NSURL URLWithString:urlEsc] username:@"justinknag" apiKey:@"R_a5f42d4c62ac1253dc0cdb2f8d02f912" withCompletionBlock:^(NSURL *shortenedURL, NSError *error) {
-//        NSLog(@"short url %@", shortenedURL.absoluteString);
-//        NSLog(@"error %@", [error description]);
-//        if(!error)
-//           [[[_favArray lastObject] objectForKey:@"DetailPageURL"] setObject:shortenedURL.absoluteString forKey:@"text"];
-//    }];
+    NSString *urlEsc = [[[[_favArray lastObject] objectForKey:@"DetailPageURL"] objectForKey:@"text"] stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+    [SSTURLShortener shortenURL:[NSURL URLWithString:urlEsc] username:@"justinknag" apiKey:@"R_a5f42d4c62ac1253dc0cdb2f8d02f912" withCompletionBlock:^(NSURL *shortenedURL, NSError *error) {
+        NSLog(@"short url %@", shortenedURL.absoluteString);
+        NSLog(@"error %@", [error description]);
+        if(!error)
+           [[[_favArray lastObject] objectForKey:@"DetailPageURL"] setObject:shortenedURL.absoluteString forKey:@"text"];
+    }];
     [self addToAll];
 }
 
