@@ -140,7 +140,11 @@ static const float CARD_WIDTH = 290; //%%% width of the draggable card
     while (1) {
         cardsLoadedIndex = arc4random() % [Items count];
         
-        if([[Items[cardsLoadedIndex] objectForKey:@"Sex"] objectForKey:@"text"] == nil) {
+        if([[Items[cardsLoadedIndex] objectForKey:@"LargeImage"] objectForKey:@"text"] == nil) {
+            NSLog(@"continue no large image");
+            continue;
+        }
+        else if([[Items[cardsLoadedIndex] objectForKey:@"Sex"] objectForKey:@"text"] == nil) {
             NSLog(@"blank sex");
             break;
         }
@@ -192,8 +196,11 @@ static const float CARD_WIDTH = 290; //%%% width of the draggable card
             DraggableView* newCard = [self createDraggableViewWithDataAtIndex:i];
             while (1) {
                 cardsLoadedIndex = arc4random() % [Items count];
-                
-                if([[Items[cardsLoadedIndex] objectForKey:@"Sex"] objectForKey:@"text"] == nil) {
+                if([[Items[cardsLoadedIndex] objectForKey:@"LargeImage"] objectForKey:@"text"] == nil) {
+                    NSLog(@"continue no large image");
+                    continue;
+                }
+                else if([[Items[cardsLoadedIndex] objectForKey:@"Sex"] objectForKey:@"text"] == nil) {
                     NSLog(@"blank sex");
                     break;
                 }
@@ -235,7 +242,6 @@ static const float CARD_WIDTH = 290; //%%% width of the draggable card
             } else {
                 [self addSubview:[loadedCards objectAtIndex:i]];
             }
-            cardsLoadedIndex++; //%%% we loaded a card into loaded cards, so we have to increment
         }
         NSLog(@"%@",[[[(DraggableView*)loadedCards[0] item] objectForKey:@"ProductGroup"] objectForKey:@"text"]);
     }

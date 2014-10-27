@@ -44,6 +44,7 @@
 @property (nonatomic, weak) UIButton *removeRightPanel;
 @property (nonatomic, weak) UIButton *addRightPanel;
 @property (nonatomic, weak) UIButton *changeCenterPanel;
+@property (readwrite) BOOL fbLogin;
 
 @end
 
@@ -126,11 +127,31 @@
     [button addTarget:self action:@selector(_postPasteBin:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:button];
     self.changeCenterPanel = button;
+    
+    FBLoginView *loginView = [[FBLoginView alloc] init];
+//    loginView.tooltipBehavior = FBLoginViewTooltipBehaviorForceDisplay;
+//    loginView.loginBehavior = FBSessionDefaultAudienceOnlyMe;
+//    loginView.loginBehavior = FBSessionDefaultAudienceEveryone;
+    loginView.center = button.center;
+    [self.view addSubview:loginView];
+    
+    
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(appplicationIsActive:)
+                                                 name:UIApplicationDidBecomeActiveNotification
+                                               object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(applicationEnteredForeground:)
+                                                 name:UIApplicationWillEnterForegroundNotification
+                                               object:nil];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     self.label.center = CGPointMake(floorf(self.sidePanelController.leftVisibleWidth/2.0f), 25.0f);
+    NSLog(@"view will appear left");
 }
 
 #pragma mark - Button Actions
@@ -342,8 +363,10 @@
                                 nil];
         FBSession *session = [[FBSession alloc] initWithPermissions:permissions];
         [FBSession setActiveSession:session];
+        _fbLogin = YES;
         if([FBSession openActiveSessionWithAllowLoginUI:YES]) {
             
+            NSLog(@"allow login UI");
             [self performPublishAction:^{
                 NSString *message = @"";
                 NSArray *arr = ((JACenterViewController*)self.sidePanelController.centerPanel).draggableView.favArray;
@@ -368,6 +391,7 @@
                      completionHandler:^(FBRequestConnection *innerConnection, id result, NSError *error) {
                          NSLog(@"login complettion post");
                          [self showAlert:message result:result error:error];
+//                         _fbLogin = NO;
                          //                         self.buttonPostStatus.enabled = YES;
                      }];
                 [connection start];
@@ -444,6 +468,18 @@
 }
 - (void)messageComposeViewController:(MFMessageComposeViewController *)controller didFinishWithResult:(MessageComposeResult)result {
     [self dismissViewControllerAnimated:YES completion:nil];
+}
+
+- (void)appplicationIsActive:(NSNotification *)notification {
+    NSLog(@"Application Did Become Active");
+    if(_fbLogin) {
+        [self _postToFacebook:nil];
+        _fbLogin = NO;
+    }
+}
+
+- (void)applicationEnteredForeground:(NSNotification *)notification {
+    NSLog(@"Application Entered Foreground");
 }
 
 @end

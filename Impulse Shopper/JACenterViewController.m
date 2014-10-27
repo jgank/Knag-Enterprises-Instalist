@@ -34,8 +34,6 @@
 
 @interface JACenterViewController () <DraggableViewBackgroundDelegate>
 
-@property (nonatomic, retain) NSLayoutConstraint *containerTopSpaceConstraint;
-@property (nonatomic, retain) UIView *contentView;
 @property (nonatomic, strong) NSArray *products;
 @property (readwrite, assign) int productIndex;
 
@@ -54,6 +52,8 @@
     return self;
 }
 
+
+
 - (void)viewDidLoad {
     [super viewDidLoad];
 //    NSString *str=[[NSBundle mainBundle] pathForResource:@"combined" ofType:@"xml"];
@@ -62,48 +62,23 @@
 //    NSData *data = [NSData dataWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"combined" ofType:@"xml"]];
     NSError *error = nil;
     NSLog(@"read xmlfile");
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *documentsDirectory = [paths objectAtIndex:0]; // Get documents directory
     if([[NSUserDefaults standardUserDefaults] boolForKey:@"useNew"] == YES) {
-        self.products = [[[XMLReader dictionaryForXMLData:[NSData dataWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"new" ofType:@"xml"]] options:XMLReaderOptionsProcessNamespaces error:&error] objectForKey:@"root"] objectForKey:@"Item"];
+        NSLog(@"reading new file");
+        self.products = [[[XMLReader dictionaryForXMLData:[NSData dataWithContentsOfFile:[documentsDirectory stringByAppendingPathComponent:@"net.xml"]] options:XMLReaderOptionsProcessNamespaces error:&error] objectForKey:@"root"] objectForKey:@"Item"];
+        if([self.products count] < 2000) {
+            self.products = [[[XMLReader dictionaryForXMLData:[NSData dataWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"combined" ofType:@"xml"]] options:XMLReaderOptionsProcessNamespaces error:&error] objectForKey:@"root"] objectForKey:@"Item"];
+        }
     }
     else {
         self.products = [[[XMLReader dictionaryForXMLData:[NSData dataWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"combined" ofType:@"xml"]] options:XMLReaderOptionsProcessNamespaces error:&error] objectForKey:@"root"] objectForKey:@"Item"];
     }
-    NSLog(@"done xmfile");
-    NSLog(@"dict reading root");
-//    NSDictionary *list = [dict objectForKey:@"root"];
-    NSLog(@"done read root");
-    NSLog(@"reading items");
-//    NSArray *arg = [list objectForKey:@"Item"];
-    NSLog(@"done item");
-//    NSMutableArray *pics = [[NSMutableArray alloc] init];
-//    
-//    
-//    NSLog(@"%lu", (unsigned long)[dict count]);
-//    NSLog(@"finding xml with LargeImage");
-//    for (id i in dict) {
-//        if(![i objectForKey:@"LargeImage"])
-//            continue;
-//        [pics addObject:i];
-//    }
+    NSLog(@"prodcuts count %lu", (unsigned long)[self.products count]);
     
-    
-    
-    
-    
-    NSLog(@"done with LargeImage");
-//    _products = dict;
-//    _productIndex = 0;
-//    str = nil;
-//    dict = nil;
-    
-    if([_products count] > 0) {
-        DraggableViewBackground *back = [[DraggableViewBackground alloc] initWithFrame:self.view.frame setArr:[[[XMLReader dictionaryForXMLData:[NSData dataWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"combined" ofType:@"xml"]] options:XMLReaderOptionsProcessNamespaces error:&error] objectForKey:@"root"] objectForKey:@"Item"] delegate:self];
-        self.products = nil;
-        NSLog(@"add draggableviews");
-        self.draggableView = back;
-        [self.view addSubview:self.draggableView];
-        NSLog(@"done adding draggable views");
-    }
+    DraggableViewBackground *back = [[DraggableViewBackground alloc] initWithFrame:self.view.frame setArr:self.products delegate:self];
+    self.draggableView = back;
+    [self.view addSubview:self.draggableView];
     
     
     NSLog(@"dict");
@@ -114,101 +89,39 @@
         [av show];
     }
     
-    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
-    AFHTTPRequestSerializer * requestSerializer = [AFHTTPRequestSerializer serializer];
-    AFHTTPResponseSerializer * responseSerializer = [AFHTTPResponseSerializer serializer];
+    if ([NSDate date] != [[NSUserDefaults standardUserDefaults] objectForKey:@"dateUpdated"]) {
+        NSLog(@"date not match");
+        [NSTimer scheduledTimerWithTimeInterval:30.0
+                                         target:self
+                                       selector:@selector(newList)
+                                       userInfo:nil
+                                        repeats:NO];
+    }
     
-    NSString *ua = @"Mozilla/5.0 (iPhone; CPU iPhone OS 6_0 like Mac OS X) AppleWebKit/536.26 (KHTML, like Gecko) Version/6.0 Mobile/10A5376e Safari/8536.25";
-    [requestSerializer setValue:ua forHTTPHeaderField:@"User-Agent"];
-    //    [requestSerializer setValue:@"application/xml" forHTTPHeaderField:@"Content-type"];
+}
+- (void)newList {
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *documentsDirectory = [paths objectAtIndex:0]; // Get documents directory
+    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    AFHTTPResponseSerializer * responseSerializer = [AFHTTPResponseSerializer serializer];
     responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"text/xml", nil];
     manager.responseSerializer = responseSerializer;
-    manager.requestSerializer = requestSerializer;
     
     
-    [manager POST:@"http://ec2-54-165-105-96.compute-1.amazonaws.com/combined.xml"
-       parameters:nil
-          success:^(AFHTTPRequestOperation *operation, id responseObject) {
-              NSData * data = (NSData *)responseObject;
-              
-              [operation.responseString writeToFile:nil atomically:YES encoding:NSUTF8StringEncoding error:nil];
-              NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-              NSString *documentsDirectory = [paths objectAtIndex:0]; // Get documents directory
-              
-              NSError *error;
-              BOOL succeed = [operation.responseString writeToFile:[documentsDirectory stringByAppendingPathComponent:@"new.xml"] atomically:YES encoding:NSUTF8StringEncoding error:&error];
-              
-              if (!succeed) {
-                  NSLog(@"error %@", [error description]);
-                  [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"useNew"];
-              }
-              else {
-                  [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"useNew"];
-              }
-              
-              
-              NSLog(@"Content-lent: %lld", [operation.response expectedContentLength]);
-
-              
-              
-              
-              NSLog(@"%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%");
-          }
-          failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-              NSLog(@"Error: %@", error);
-          }];
+    AFHTTPRequestOperation *op = [manager POST:@"http://ec2-54-165-105-96.compute-1.amazonaws.com/combined.xml"
+                                    parameters:nil
+                                       success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                                           [operation.responseString writeToFile:nil atomically:YES encoding:NSUTF8StringEncoding error:nil];
+                                           NSLog(@"got new");
+                                           [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"useNew"];
+                                           [[NSUserDefaults standardUserDefaults] setObject:[NSDate date] forKey:@"lastUpdated"];
+                                       }
+                                       failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                                           [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"useNew"];
+                                           NSLog(@"Error: %@", error);
+                                       }];
     
-//        NSLog(@"first run null");
-//        
-//        UIAlertController *av = [UIAlertController alertControllerWithTitle:@"Gender:" message:@"For shoing appropriate gift" preferredStyle:UIAlertControllerStyleAlert];
-//        UIAlertAction *maleAction = [UIAlertAction
-//                                       actionWithTitle:NSLocalizedString(@"Male", @"Male action")
-//                                       style:UIAlertActionStyleCancel
-//                                       handler:^(UIAlertAction *action)
-//                                       {
-//                                           [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"MALE"];
-//                                       }];
-//        
-//        UIAlertAction *femaleAction = [UIAlertAction
-//                                   actionWithTitle:NSLocalizedString(@"Female", @"Female action")
-//                                   style:UIAlertActionStyleDefault
-//                                   handler:^(UIAlertAction *action)
-//                                   {
-//                                       [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"MALE"];
-//                                   }];
-//        [av addAction:maleAction];
-//        [av addAction:femaleAction];
-//    
-//        
-//        [self presentViewController:av animated:YES completion:^(void) {
-//            UIAlertController *toysAV = [UIAlertController alertControllerWithTitle:@"Toy Gifts?" message:@"Do you want the app to display toys?" preferredStyle:UIAlertControllerStyleAlert];
-//            UIAlertAction *yesAction = [UIAlertAction
-//                                        actionWithTitle:NSLocalizedString(@"Yes", @"Yes action")
-//                                        style:UIAlertActionStyleCancel
-//                                        handler:^(UIAlertAction *action)
-//                                        {
-//                                            [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"toys"];
-//                                        }];
-//            
-//            UIAlertAction *noAction = [UIAlertAction
-//                                       actionWithTitle:NSLocalizedString(@"No", @"No action")
-//                                       style:UIAlertActionStyleDefault
-//                                       handler:^(UIAlertAction *action)
-//                                       {
-//                                           [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"toys"];
-//                                       }];
-//            [toysAV addAction:yesAction];
-//            [toysAV addAction:noAction];
-//            
-//            [self presentViewController:toysAV animated:YES completion:^{
-//                [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"firstRun"];
-//            }];
-//            
-//            
-//        }];
-//        
-//        
-//    }
+    op.outputStream = [NSOutputStream outputStreamToFileAtPath:[documentsDirectory stringByAppendingPathComponent:@"net.xml"] append:NO];
 }
 -(void)showProduct {
     
