@@ -30,6 +30,7 @@
 #import <SDWebImage/UIImageView+WebCache.h>
 #import "UIViewController+JASidePanel.h"
 #import "PureLayout.h"
+#import <ChameleonFramework/Chameleon.h>
 
 @interface JARightViewController ()
 @property (strong,nonatomic) UIToolbar *toolBar;
@@ -42,7 +43,8 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.toolBar = [UIToolbar newAutoLayoutView];
-    self.view.backgroundColor = [UIColor grayColor];
+//    self.view.backgroundColor = [UIColor colorWithComplementaryFlatColorOf:[UIColor flatGreenColorDark]];
+    self.view.backgroundColor = FlatMint;
 //    self.toolBar = [[UIToolbar alloc] initWithFrame:CGRectMake(self.view.bounds.origin.x, self.view.bounds.origin.y, self.view.bounds.size.width, 44.0f)];
     self.backButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRewind target:self action:@selector(showCenter)];
     UIBarButtonItem *flexSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:self action:nil];
@@ -51,8 +53,11 @@
     [self.toolBar setItems:[NSArray arrayWithObjects:_backButton, flexSpace, _editButton, nil]];
     [self.view addSubview:_toolBar];
     
-    [_toolBar setTintColor:[UIColor blueColor]];
-    _toolBar.backgroundColor = [UIColor grayColor];
+//    [_toolBar setTintColor:[UIColor blueColor]];
+    _toolBar.barTintColor = FlatMint;
+    _toolBar.tintColor = ComplementaryFlatColorOf(FlatMint);
+    _toolBar.backgroundColor = FlatMint;
+    
     
     [_toolBar autoPinEdgeToSuperviewEdge:ALEdgeTop withInset:20.0f];
     [_toolBar autoPinEdgeToSuperviewEdge:ALEdgeLeft];

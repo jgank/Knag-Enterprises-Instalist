@@ -36,6 +36,7 @@
 #import <Twitter/Twitter.h>
 #import <Accounts/Accounts.h>
 #import "ChoosePersonViewController.h"
+#import <ChameleonFramework/Chameleon.h>
 
 @interface JALeftViewController () <MFMailComposeViewControllerDelegate>
 
@@ -53,6 +54,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    self.view.backgroundColor = [UIColor flatGrayColorDark];
 	
 	UILabel *label  = [[UILabel alloc] init];
     label.font = [UIFont boldSystemFontOfSize:20.0f];

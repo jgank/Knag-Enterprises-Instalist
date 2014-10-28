@@ -31,6 +31,7 @@
 #import "XMLReader.h"
 #import <AFNetworking/AFNetworking.h>
 #import <BitlyForiOS/SSTURLShortener.h>
+#import <ChameleonFramework/Chameleon.h>
 
 static const CGFloat ChoosePersonButtonHorizontalPadding = 80.f;
 static const CGFloat ChoosePersonButtonVerticalPadding = 20.f;
@@ -46,12 +47,44 @@ static const CGFloat ChoosePersonButtonVerticalPadding = 20.f;
     NSMutableArray *undoItems;
     UIButton* menuButton;
     UIButton* messageButton;
-    UIButton* checkButton;
-    UIButton* xButton;
     UILabel *titleLabel;
     NSArray *paths;
     NSString  *arrayPath;
     UILabel *catLabel;
+    UIButton *undoButton;
+}
+- (UIImage *)imageNamed:(NSString *)name withColor:(UIColor *)color {
+    UIImage *img = [UIImage imageNamed:name];
+    
+    // begin a new image context, to draw our colored image onto
+    UIGraphicsBeginImageContext(img.size);
+    
+    // get a reference to that context we created
+    CGContextRef context = UIGraphicsGetCurrentContext();
+    
+    // set the fill color
+    [color setFill];
+    
+    // translate/flip the graphics context (for transforming from CG* coords to UI* coords
+    CGContextTranslateCTM(context, 0, img.size.height);
+    CGContextScaleCTM(context, 1.0, -1.0);
+    
+    // set the blend mode to color burn, and the original image
+    CGContextSetBlendMode(context, kCGBlendModeColorBurn);
+    CGRect rect = CGRectMake(0, 0, img.size.width, img.size.height);
+    CGContextDrawImage(context, rect, img.CGImage);
+    
+    // set a mask that matches the shape of the image, then draw (color burn) a colored rectangle
+    CGContextClipToMask(context, rect, img.CGImage);
+    CGContextAddRect(context, rect);
+    CGContextDrawPath(context,kCGPathFill);
+    
+    // generate a new UIImage from the graphics context we drew onto
+    UIImage *coloredImg = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    
+    //return the color-burned image
+    return coloredImg;
 }
 
 #pragma mark - Object Lifecycle
@@ -80,11 +113,12 @@ static const CGFloat ChoosePersonButtonVerticalPadding = 20.f;
         NSLog(@"prodcuts count %lu", (unsigned long)[self.items count]);
         menuButton = [[UIButton alloc]initWithFrame:CGRectMake(12, 26, 40, 40)];
         menuButton.imageView.contentMode = UIViewContentModeTopLeft;
-        [menuButton setImage:[UIImage imageNamed:@"menuButton"] forState:UIControlStateNormal];
+        [menuButton setImage:[UIImage imageNamed:@"group"] forState:UIControlStateNormal];
         [menuButton addTarget:self action:@selector(showLeftPanel) forControlEvents:UIControlEventTouchUpInside];
         messageButton = [[UIButton alloc]initWithFrame:CGRectMake(self.view.frame.size.width-40-12, 26, 40, 40)];
+//        messageButton = [[UIButton alloc]initWithFrame:CGRectMake(self.view.frame.size.width-22-12, 26, 22, 28)];
         messageButton.imageView.contentMode = UIViewContentModeTopLeft;
-        [messageButton setImage:[UIImage imageNamed:@"sample-321-like"] forState:UIControlStateNormal];
+        [messageButton setImage:[UIImage imageNamed:@"179-notepad"] forState:UIControlStateNormal];
         [messageButton addTarget:self action:@selector(showRightPanel) forControlEvents:UIControlEventTouchUpInside];
         
         
@@ -104,33 +138,65 @@ static const CGFloat ChoosePersonButtonVerticalPadding = 20.f;
 //        titleLabel.sizeToFit;
         titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
         titleLabel.textAlignment = NSTextAlignmentCenter;
+        UIView *menView = [UIView newAutoLayoutView];
+        undoButton = [UIButton newAutoLayoutView];
+        [undoButton setImage:[self imageNamed:@"215-subscription" withColor:FlatWhite] forState:UIControlStateNormal];
+        [undoButton addTarget:self action:@selector(undoPressed) forControlEvents:UIControlEventTouchUpInside];
+        
+        
+        
+        
+//        [self imageNamed:@"215-subscription" withColor:[UIColor colorWithContrastingBlackOrWhiteColorOn:FlatGreen isFlat:YES]];
+//        
+//        [UIColor colorWithContrastingBlackOrWhiteColorOn:FlatGreen isFlat:YES];
+        
+        
+        
+        
+        
+        [self.view addSubview:undoButton];
+        [self.view addSubview:menView];
         [self.view addSubview:menuButton];
         [self.view addSubview:messageButton];
-        [self.view addSubview:xButton];
-        [self.view addSubview:checkButton];
         [self.view addSubview:titleLabel];
-        [checkButton autoPinEdgeToSuperviewEdge:ALEdgeBottom withInset:20.0f];
-        [checkButton autoPinEdgeToSuperviewEdge:ALEdgeRight withInset:60.0f];
         
-        
-        [titleLabel autoPinEdgeToSuperviewEdge:ALEdgeTop withInset:30.0f];
+        [titleLabel autoPinEdgeToSuperviewEdge:ALEdgeTop withInset:25.0f];
+//        [titleLabel autoAlignAxis:ALAxisFirstBaseline toSameAxisOfView:menuButton];
         [titleLabel autoPinEdge:ALEdgeLeft toEdge:ALEdgeRight ofView:menuButton withOffset:3.0f];
         [titleLabel autoPinEdge:ALEdgeRight toEdge:ALEdgeLeft ofView:messageButton withOffset:-3.0f];
-        [titleLabel autoSetDimension:ALDimensionHeight toSize:38.0f relation:NSLayoutRelationEqual];
+        [titleLabel autoSetDimension:ALDimensionHeight toSize:42.0f relation:NSLayoutRelationEqual];
         arrayPath = [[paths objectAtIndex:0] stringByAppendingPathComponent:@"fav.out"];
         NSArray *arrayFromFile = [NSArray arrayWithContentsOfFile:arrayPath];
         if (!arrayFromFile)
             arrayFromFile = [[NSArray alloc] init];
         self.favArray = [[NSMutableArray alloc] initWithArray:arrayFromFile];
         [self sendFav:_favArray];
-        self.view.backgroundColor = [UIColor whiteColor];
+//        self.view.backgroundColor = [UIColor whiteColor];
+//        self.view.backgroundColor = [UIColor flatSkyBlueColorDark];
+        self.view.backgroundColor = ComplementaryFlatColorOf(FlatWhite);
+        titleLabel.backgroundColor = FlatGreen;
+        titleLabel.textColor = ComplementaryFlatColorOf(FlatGreen);
+        catLabel.textColor = FlatGreen;
+        
+        
+        menView.backgroundColor = FlatGreen;
+        menView.layer.zPosition = -1;
+        [menView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero excludingEdge:ALEdgeBottom];
+        [menView autoPinEdge:ALEdgeBottom toEdge:ALEdgeBottom ofView:titleLabel];
+        
+        messageButton.backgroundColor = FlatGreen;
+        menuButton.backgroundColor = FlatGreen;
+        
+        [undoButton autoPinEdgeToSuperviewEdge:ALEdgeLeft withInset:20.0f];
+        [undoButton autoPinEdgeToSuperviewEdge:ALEdgeBottom withInset:20.0f];
+        
+        
         [self constructNopeButton];
         [self constructLikedButton];
     }
 
     return self;
 }
-
 #pragma mark - UIViewController Overrides
 
 - (void)viewDidLoad {

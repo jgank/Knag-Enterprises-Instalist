@@ -33,6 +33,7 @@
 #import <AFNetworking/AFNetworking.h>
 #import "ChoosePersonViewController.h"
 
+
 @interface JACenterViewController () <DraggableViewBackgroundDelegate>
 
 @property (nonatomic, strong) NSArray *products;
