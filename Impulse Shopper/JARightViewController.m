@@ -26,7 +26,7 @@
 
 #import "JARightViewController.h"
 #import "JASidePanelController.h"
-#import "JACenterViewController.h"
+#import "ChoosePersonViewController.h"
 #import <SDWebImage/UIImageView+WebCache.h>
 #import "UIViewController+JASidePanel.h"
 #import "PureLayout.h"
@@ -81,8 +81,8 @@
     
     
     if(!_favArray ) {
-        JACenterViewController *cPanel = (JACenterViewController*) self.sidePanelController.centerPanel;
-        self.favArray = cPanel.draggableView.favArray;
+        ChoosePersonViewController *cPanel = (ChoosePersonViewController*) self.sidePanelController.centerPanel;
+        self.favArray = cPanel.favArray;
         [_tableView reloadData];
         NSLog(@"no favarray in right controller");
     }
@@ -125,7 +125,7 @@
 
 - (void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:[[_favArray[0] objectForKey:@"DetailPageURL"] objectForKey:@"text"]]];
+    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:[[_favArray[indexPath.row] objectForKey:@"DetailPageURL"] objectForKey:@"text"]]];
 }
 //- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
 //    if (![self.result[indexPath.row][@"type"] isEqualToString:@"image"]) {
@@ -152,21 +152,45 @@
     [imageView autoRemoveConstraintsAffectingView];
     [label autoRemoveConstraintsAffectingView];
     
-    imageView.backgroundColor = [UIColor blueColor];
-    [imageView sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@", [[_favArray[indexPath.row] objectForKey:@"SmallImage"] objectForKey:@"text"]]] placeholderImage:nil options:SDWebImageDownloaderContinueInBackground completed:nil];
+    imageView.backgroundColor = [UIColor clearColor];
+//    imageView.backgroundColor = [UIColor grayColor];
+    [imageView sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@", [[_favArray[indexPath.row] objectForKey:@"SmallImage"] objectForKey:@"text"]]] placeholderImage:[UIImage imageNamed:@"Placeholder"] options:SDWebImageContinueInBackground completed:nil];
     NSLog(@"fdas %f %f",[[[_favArray[indexPath.row] objectForKey:@"SmallImage"] objectForKey:@"Width"] floatValue], [[[_favArray[indexPath.row] objectForKey:@"SmallImage"] objectForKey:@"Height"] floatValue]);
     CGSize imageSizze = CGSizeMake([[[_favArray[indexPath.row] objectForKey:@"SmallImage"] objectForKey:@"Width"] floatValue], [[[_favArray[indexPath.row] objectForKey:@"SmallImage"] objectForKey:@"Height"] floatValue]);
-    [imageView autoSetDimensionsToSize:imageSizze];
-    [imageView autoPinEdgeToSuperviewEdge:ALEdgeLeft withInset:11.0f];
-    [imageView autoAlignAxisToSuperviewAxis:ALAxisHorizontal];
-    imageView.contentMode = UIViewContentModeScaleAspectFit;
-    [label autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsMake(11, 0, 11, 11) excludingEdge:ALEdgeLeft];
-    [label autoMatchDimension:ALDimensionWidth toDimension:ALDimensionWidth ofView:cell.contentView withMultiplier:(2/3.0f) relation:NSLayoutRelationLessThanOrEqual];
+    if([[[UIDevice currentDevice] systemVersion] doubleValue] >= 8.0) {
+        
+        [imageView autoSetDimensionsToSize:imageSizze];
+//        [imageView autoPinEdgeToSuperviewEdge:ALEdgeLeft withInset:11.0f];
+        [imageView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsMake(11.0f, 11.0f, 11.0f, 0) excludingEdge:ALEdgeRight];
+        imageView.contentMode = UIViewContentModeScaleAspectFit;
+        //    label.backgroundColor = [UIColor grayColor];
+        [label autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsMake(11, 0, 11, 11) excludingEdge:ALEdgeLeft];
+        [label autoPinEdge:ALEdgeLeft toEdge:ALEdgeRight ofView:imageView withOffset:11.0f];
+    }
+    else {
+        
+        [imageView autoSetDimensionsToSize:imageSizze];
+        [imageView autoPinEdgeToSuperviewEdge:ALEdgeLeft withInset:11.0f];
+        [imageView autoAlignAxisToSuperviewAxis:ALAxisHorizontal];
+        imageView.contentMode = UIViewContentModeScaleAspectFit;
+        //    label.backgroundColor = [UIColor grayColor];
+        [label autoAlignAxis:ALAxisVertical toSameAxisOfView:imageView];
+        [label autoPinEdge:ALEdgeRight toEdge:ALEdgeRight ofView:cell withOffset:0.f];
+        [label autoPinEdge:ALEdgeTop toEdge:ALEdgeTop ofView:imageView];
+        [label autoPinEdge:ALEdgeBottom toEdge:ALEdgeBottom ofView:imageView];
+        //    [label autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsMake(11, 0, 11, 11) excludingEdge:ALEdgeLeft];
+        [label autoPinEdge:ALEdgeLeft toEdge:ALEdgeRight ofView:imageView withOffset:35.0f];
+    }
+    
+
+//    [label autoMatchDimension:ALDimensionWidth toDimension:ALDimensionWidth ofView:cell.contentView withMultiplier:(2/3.0f) relation:NSLayoutRelationLessThanOrEqual];
     
     NSString *lText = [NSString stringWithFormat:@"%@\n%@",
                        [[_favArray[indexPath.row] objectForKey:@"Title"] objectForKey:@"text"],
                        [[_favArray[indexPath.row] objectForKey:@"FormattedPrice"] objectForKey:@"text"]];
     label.attributedText = [[NSAttributedString alloc] initWithString:lText attributes:nil];
+    label.adjustsFontSizeToFitWidth;
+    label.sizeToFit;
     
     return cell;
     
@@ -175,6 +199,9 @@
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
     if (editingStyle == UITableViewCellEditingStyleDelete) {
         [_favArray removeObject:_favArray[indexPath.row]];
+        NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+        NSString *arrayPath = [[paths objectAtIndex:0] stringByAppendingPathComponent:@"fav.out"];
+        [_favArray writeToFile:arrayPath atomically:YES];
         [_tableView reloadData];
     }
 }

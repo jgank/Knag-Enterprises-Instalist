@@ -31,6 +31,7 @@
 #import "JARightViewController.h"
 #import "PureLayout.h"
 #import <AFNetworking/AFNetworking.h>
+#import "ChoosePersonViewController.h"
 
 @interface JACenterViewController () <DraggableViewBackgroundDelegate>
 
@@ -80,6 +81,8 @@
     self.draggableView = back;
     [self.view addSubview:self.draggableView];
     
+//    ChoosePersonViewController *cvc = [[ChoosePersonViewController alloc] init];
+//    [self.view addSubview:cvc.view];
     
     NSLog(@"dict");
     

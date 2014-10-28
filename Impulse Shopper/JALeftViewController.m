@@ -35,6 +35,7 @@
 #import <AFNetworking/AFNetworking.h>
 #import <Twitter/Twitter.h>
 #import <Accounts/Accounts.h>
+#import "ChoosePersonViewController.h"
 
 @interface JALeftViewController () <MFMailComposeViewControllerDelegate>
 
@@ -128,6 +129,14 @@
     [self.view addSubview:button];
     self.changeCenterPanel = button;
     
+    button = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    button.frame = CGRectMake(20.0f, 320.0f, 200.0f, 40.0f);
+    button.autoresizingMask = UIViewAutoresizingFlexibleRightMargin;
+    [button setTitle:@"Create Pastebin Link" forState:UIControlStateNormal];
+    [button addTarget:self action:@selector(_postPasteBin:) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:button];
+    self.changeCenterPanel = button;
+    
     FBLoginView *loginView = [[FBLoginView alloc] init];
 //    loginView.tooltipBehavior = FBLoginViewTooltipBehaviorForceDisplay;
 //    loginView.loginBehavior = FBSessionDefaultAudienceOnlyMe;
@@ -164,7 +173,8 @@
 }
 
 - (void)_emailTapped:(id)sender {
-    NSArray *arr = ((JACenterViewController*)self.sidePanelController.centerPanel).draggableView.favArray;
+//    NSArray *arr = ((JACenterViewController*)self.sidePanelController.centerPanel).draggableView.favArray;
+    NSArray *arr = ((ChoosePersonViewController*)self.sidePanelController.centerPanel).favArray;
     if ([arr count] == 0) {
         [[[UIAlertView alloc] initWithTitle:@"Alert" message:@"Please favorite some items first" delegate:nil cancelButtonTitle:@"Okay" otherButtonTitles:nil] show];
         return;
@@ -182,6 +192,7 @@
             [[d objectForKey:@"DetailPageURL"] objectForKey:@"text"]]];
         }
         body = [body stringByAppendingString:@"\n Created by iPhone Christmas List Creator"];
+        body = [body stringByAppendingString:@"\n http://amazonchristmasiphone.duckdns.org/redirect.php"];
 //        NSLog(@"%@",body);
         [mailer setMessageBody:body isHTML:NO];
         [self presentViewController:mailer animated:YES completion:nil];
@@ -223,7 +234,8 @@
     
 }
 - (void)_postSMS:(id)sender {
-    NSArray *arr = ((JACenterViewController*)self.sidePanelController.centerPanel).draggableView.favArray;
+//    NSArray *arr = ((JACenterViewController*)self.sidePanelController.centerPanel).draggableView.favArray;
+    NSArray *arr = ((ChoosePersonViewController*)self.sidePanelController.centerPanel).favArray;
     if ([arr count] == 0) {
         [[[UIAlertView alloc] initWithTitle:@"Alert" message:@"Please favorite some items first" delegate:nil cancelButtonTitle:@"Okay" otherButtonTitles:nil] show];
         return;
@@ -233,7 +245,8 @@
         mailer.messageComposeDelegate = self;
         [mailer setSubject:@"Gift Wish List"];
         NSString *body = @"";
-        NSArray *arr = ((JACenterViewController*)self.sidePanelController.centerPanel).draggableView.favArray;
+//        NSArray *arr = ((JACenterViewController*)self.sidePanelController.centerPanel).draggableView.favArray;
+        NSArray *arr = ((ChoosePersonViewController*)self.sidePanelController.centerPanel).favArray;
         for (NSDictionary *d in arr) {
             body = [body stringByAppendingString:[NSString stringWithFormat:@"%@, %@, %@\n",
                                                   [[d objectForKey:@"Title"] objectForKey:@"text"],
@@ -241,6 +254,8 @@
                                                   [[d objectForKey:@"DetailPageURL"] objectForKey:@"text"]]];
         }
         body = [body stringByAppendingString:@"\n Created by iPhone Christmas List Creator"];
+        body = [body stringByAppendingString:@"\n http://amazonchristmasiphone.duckdns.org/redirect.php"];
+        
 //        NSLog(@"%@",body);
         [mailer setBody:body];
         [self presentViewController:mailer animated:YES completion:nil];
@@ -253,7 +268,8 @@
 
 - (void)_postPasteBin:(id)sender {
     
-    NSArray *arr = ((JACenterViewController*)self.sidePanelController.centerPanel).draggableView.favArray;
+//    NSArray *arr = ((JACenterViewController*)self.sidePanelController.centerPanel).draggableView.favArray;
+    NSArray *arr = ((ChoosePersonViewController*)self.sidePanelController.centerPanel).favArray;
     if ([arr count] == 0) {
         [[[UIAlertView alloc] initWithTitle:@"Alert" message:@"Please favorite some items first" delegate:nil cancelButtonTitle:@"Okay" otherButtonTitles:nil] show];
         return;
@@ -266,6 +282,7 @@
                                               [[d objectForKey:@"DetailPageURL"] objectForKey:@"text"]]];
     }
     body = [body stringByAppendingString:@"\n Created by iPhone Christmas List Creator"];
+    body = [body stringByAppendingString:@"\n http://amazonchristmasiphone.duckdns.org/redirect.php"];
     body = [body stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
 //    NSLog(@"%@",body);
     
@@ -315,18 +332,69 @@
     }];
 }
 - (void)_postToFacebook:(id)sender {
-    NSArray *arr = ((JACenterViewController*)self.sidePanelController.centerPanel).draggableView.favArray;
+    NSArray *arr = ((ChoosePersonViewController*)self.sidePanelController.centerPanel).favArray;
     if ([arr count] == 0) {
         [[[UIAlertView alloc] initWithTitle:@"Alert" message:@"Please favorite some items first" delegate:nil cancelButtonTitle:@"Okay" otherButtonTitles:nil] show];
         return;
     }
+    
+    
+    
+    if([SLComposeViewController isAvailableForServiceType:SLServiceTypeFacebook]) //check if Facebook Account is linked
+    {
+        
+        
+        
+        NSString *message = @"";
+        NSArray *arr = ((ChoosePersonViewController*)self.sidePanelController.centerPanel).favArray;
+        
+        
+        for (NSDictionary *d in arr) {
+            message = [message stringByAppendingString:[NSString stringWithFormat:@"%@, %@, %@\n",
+                                                        [[d objectForKey:@"Title"] objectForKey:@"text"],
+                                                        [[d objectForKey:@"FormattedPrice"] objectForKey:@"text"],
+                                                        [[d objectForKey:@"DetailPageURL"] objectForKey:@"text"]]];
+        }
+        message = [message stringByAppendingString:@"\n Created by iPhone Christmas List Creator"];
+        message = [message stringByAppendingString:@"\n http://amazonchristmasiphone.duckdns.org/redirect.php"];
+        NSLog(@"%@",message);
+        
+        
+       SLComposeViewController *mySLComposerSheet = [[SLComposeViewController alloc] init]; //initiate the Social Controller
+        mySLComposerSheet = [SLComposeViewController composeViewControllerForServiceType:SLServiceTypeFacebook]; //Tell him with what social plattform to use it, e.g. facebook or twitter
+        [mySLComposerSheet setInitialText:message]; //the message you want to post
+        [mySLComposerSheet addImage:[UIImage imageWithData:[[NSData alloc] initWithContentsOfURL:[NSURL URLWithString:[[[arr firstObject] objectForKey:@"LargeImage"] objectForKey:@"text"]]]]]; //an image you could post
+        //for more instance methodes, go here:https://developer.apple.com/library/ios/#documentation/NetworkingInternet/Reference/SLComposeViewController_Class/Reference/Reference.html#//apple_ref/doc/uid/TP40012205
+        [self presentViewController:mySLComposerSheet animated:YES completion:nil];
+        [mySLComposerSheet setCompletionHandler:^(SLComposeViewControllerResult result) {
+            NSString *output;
+            switch (result) {
+                case SLComposeViewControllerResultCancelled:
+                    output = @"Action Cancelled";
+                    break;
+                case SLComposeViewControllerResultDone:
+                    output = @"Post Successfull";
+                    break;
+                default:
+                    break;
+            } //check if everything worked properly. Give out a message on the state.
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Facebook" message:output delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil];
+            [alert show];
+        }];
+        return;
+    }
+    
+    
+    
+    
     if (FBSession.activeSession.isOpen)
     {
         // Post a status update to the user's feed via the Graph API, and display an alert view
         NSLog(@"%@",FBSession.activeSession.permissions);
         [self performPublishAction:^{
             NSString *message = @"";
-            NSArray *arr = ((JACenterViewController*)self.sidePanelController.centerPanel).draggableView.favArray;
+//            NSArray *arr = ((JACenterViewController*)self.sidePanelController.centerPanel).draggableView.favArray;
+            NSArray *arr = ((ChoosePersonViewController*)self.sidePanelController.centerPanel).favArray;
             
             
             for (NSDictionary *d in arr) {
@@ -336,6 +404,8 @@
                                                             [[d objectForKey:@"DetailPageURL"] objectForKey:@"text"]]];
             }
             message = [message stringByAppendingString:@"\n Created by iPhone Christmas List Creator"];
+        message = [message stringByAppendingString:@"\n http://amazonchristmasiphone.duckdns.org/redirect.php"];
+//        message = [message stringByReplacingOccurrencesOfString:@"knag_womens_apparel" withString:@"knag_facebook_app"];
             NSLog(@"%@",message);
             
             FBRequestConnection *connection = [[FBRequestConnection alloc] init];
@@ -369,7 +439,8 @@
             NSLog(@"allow login UI");
             [self performPublishAction:^{
                 NSString *message = @"";
-                NSArray *arr = ((JACenterViewController*)self.sidePanelController.centerPanel).draggableView.favArray;
+//                NSArray *arr = ((JACenterViewController*)self.sidePanelController.centerPanel).draggableView.favArray;
+                NSArray *arr = ((ChoosePersonViewController*)self.sidePanelController.centerPanel).favArray;
                 
                 
                 for (NSDictionary *d in arr) {
@@ -379,6 +450,7 @@
                                                                 [[d objectForKey:@"DetailPageURL"] objectForKey:@"text"]]];
                 }
                 message = [message stringByAppendingString:@"\n Created by iPhone Christmas List Creator"];
+        message = [message stringByAppendingString:@"\n http://amazonchristmasiphone.duckdns.org/redirect.php"];
                 NSLog(@"%@",message);
                 
                 FBRequestConnection *connection = [[FBRequestConnection alloc] init];

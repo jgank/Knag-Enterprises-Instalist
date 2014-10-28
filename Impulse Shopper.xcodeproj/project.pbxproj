@@ -43,6 +43,10 @@
 		EF86F90819BEE84A0023A507 /* OverlayView.m in Sources */ = {isa = PBXBuildFile; fileRef = EF86F90519BEE84A0023A507 /* OverlayView.m */; };
 		EFBB10E119E75B8E000FBB38 /* UIWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EFBB10DF19E75B8E000FBB38 /* UIWebViewController.m */; };
 		EFBB10E219E75B8E000FBB38 /* UIWebViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = EFBB10E019E75B8E000FBB38 /* UIWebViewController.xib */; };
+		EFDEAE0319FEE8B700D58BFD /* Person.m in Sources */ = {isa = PBXBuildFile; fileRef = EFDEADFC19FEE8B700D58BFD /* Person.m */; };
+		EFDEAE0419FEE8B700D58BFD /* ImageLabelView.m in Sources */ = {isa = PBXBuildFile; fileRef = EFDEADFE19FEE8B700D58BFD /* ImageLabelView.m */; };
+		EFDEAE0519FEE8B700D58BFD /* ChoosePersonView.m in Sources */ = {isa = PBXBuildFile; fileRef = EFDEAE0019FEE8B700D58BFD /* ChoosePersonView.m */; };
+		EFDEAE0619FEE8B700D58BFD /* ChoosePersonViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EFDEAE0219FEE8B700D58BFD /* ChoosePersonViewController.m */; };
 		EFEE5C5419E47B18009BD5D2 /* XMLReader.m in Sources */ = {isa = PBXBuildFile; fileRef = EFEE5C5319E47B18009BD5D2 /* XMLReader.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		EFEE5C6219E4A98A009BD5D2 /* ALView+PureLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = EFEE5C5A19E4A98A009BD5D2 /* ALView+PureLayout.m */; };
 		EFEE5C6319E4A98A009BD5D2 /* NSArray+PureLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = EFEE5C5C19E4A98A009BD5D2 /* NSArray+PureLayout.m */; };
@@ -116,6 +120,14 @@
 		EFBB10DF19E75B8E000FBB38 /* UIWebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UIWebViewController.m; sourceTree = "<group>"; };
 		EFBB10E019E75B8E000FBB38 /* UIWebViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = UIWebViewController.xib; sourceTree = "<group>"; };
 		EFC2AB5819F6AFB4007F0875 /* Impulse Shopper.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Impulse Shopper.pch"; sourceTree = SOURCE_ROOT; };
+		EFDEADFB19FEE8B700D58BFD /* Person.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Person.h; sourceTree = "<group>"; };
+		EFDEADFC19FEE8B700D58BFD /* Person.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Person.m; sourceTree = "<group>"; };
+		EFDEADFD19FEE8B700D58BFD /* ImageLabelView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageLabelView.h; sourceTree = "<group>"; };
+		EFDEADFE19FEE8B700D58BFD /* ImageLabelView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImageLabelView.m; sourceTree = "<group>"; };
+		EFDEADFF19FEE8B700D58BFD /* ChoosePersonView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChoosePersonView.h; sourceTree = "<group>"; };
+		EFDEAE0019FEE8B700D58BFD /* ChoosePersonView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChoosePersonView.m; sourceTree = "<group>"; };
+		EFDEAE0119FEE8B700D58BFD /* ChoosePersonViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChoosePersonViewController.h; sourceTree = "<group>"; };
+		EFDEAE0219FEE8B700D58BFD /* ChoosePersonViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChoosePersonViewController.m; sourceTree = "<group>"; };
 		EFEE5C5219E47B18009BD5D2 /* XMLReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XMLReader.h; sourceTree = "<group>"; };
 		EFEE5C5319E47B18009BD5D2 /* XMLReader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XMLReader.m; sourceTree = "<group>"; };
 		EFEE5C5919E4A98A009BD5D2 /* ALView+PureLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ALView+PureLayout.h"; sourceTree = "<group>"; };
@@ -231,6 +243,14 @@
 				52CCC65819AE90FD00464A46 /* AppDelegate.m */,
 				52CCC65D19AE90FD00464A46 /* ViewController.h */,
 				52CCC65E19AE90FD00464A46 /* ViewController.m */,
+				EFDEADFB19FEE8B700D58BFD /* Person.h */,
+				EFDEADFC19FEE8B700D58BFD /* Person.m */,
+				EFDEADFD19FEE8B700D58BFD /* ImageLabelView.h */,
+				EFDEADFE19FEE8B700D58BFD /* ImageLabelView.m */,
+				EFDEADFF19FEE8B700D58BFD /* ChoosePersonView.h */,
+				EFDEAE0019FEE8B700D58BFD /* ChoosePersonView.m */,
+				EFDEAE0119FEE8B700D58BFD /* ChoosePersonViewController.h */,
+				EFDEAE0219FEE8B700D58BFD /* ChoosePersonViewController.m */,
 				52CCC66319AE90FD00464A46 /* Images.xcassets */,
 				52CCC65A19AE90FD00464A46 /* Impulse_Shopper.xcdatamodeld */,
 				52CCC65319AE90FD00464A46 /* Supporting Files */,
@@ -431,11 +451,14 @@
 			files = (
 				52CCC68519AE920700464A46 /* JADebugViewController.m in Sources */,
 				52CCC65919AE90FD00464A46 /* AppDelegate.m in Sources */,
+				EFDEAE0319FEE8B700D58BFD /* Person.m in Sources */,
 				EFEE5C6419E4A98A009BD5D2 /* NSLayoutConstraint+PureLayout.m in Sources */,
 				52CCC68A19AE927200464A46 /* JACenterViewController.m in Sources */,
+				EFDEAE0419FEE8B700D58BFD /* ImageLabelView.m in Sources */,
 				52CCC68319AE920700464A46 /* JASidePanelController.m in Sources */,
 				EFEE5C6319E4A98A009BD5D2 /* NSArray+PureLayout.m in Sources */,
 				EFBB10E119E75B8E000FBB38 /* UIWebViewController.m in Sources */,
+				EFDEAE0619FEE8B700D58BFD /* ChoosePersonViewController.m in Sources */,
 				52CCC65619AE90FD00464A46 /* main.m in Sources */,
 				52CCC68419AE920700464A46 /* UIViewController+JASidePanel.m in Sources */,
 				EF86F90819BEE84A0023A507 /* OverlayView.m in Sources */,
@@ -445,6 +468,7 @@
 				52CCC68619AE920700464A46 /* JALeftViewController.m in Sources */,
 				EF0B8A6419E7387B00EA1B6E /* WebViewController.m in Sources */,
 				52CCC65C19AE90FD00464A46 /* Impulse_Shopper.xcdatamodeld in Sources */,
+				EFDEAE0519FEE8B700D58BFD /* ChoosePersonView.m in Sources */,
 				EF86F90619BEE84A0023A507 /* DraggableViewBackground.m in Sources */,
 				EFEE5C6219E4A98A009BD5D2 /* ALView+PureLayout.m in Sources */,
 				52CCC68719AE920700464A46 /* JARightViewController.m in Sources */,

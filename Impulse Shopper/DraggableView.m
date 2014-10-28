@@ -77,7 +77,7 @@
 
 -(void)setItem:(NSDictionary *)item {
     _item = item;
-    [_imageView sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@", [[item objectForKey:@"LargeImage"] objectForKey:@"text"]]] placeholderImage:nil options:SDWebImageContinueInBackground completed:nil];
+    [_imageView sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@", [[item objectForKey:@"LargeImage"] objectForKey:@"text"]]] placeholderImage:[UIImage imageNamed:@"Placeholder"] options:SDWebImageContinueInBackground completed:nil];
 }
 
 /*
@@ -110,30 +110,33 @@
             //%%% in the middle of a swipe
         case UIGestureRecognizerStateChanged:{
             //%%% dictates rotation (see ROTATION_MAX and ROTATION_STRENGTH for details)
-            CGFloat rotationStrength = MIN(xFromCenter / ROTATION_STRENGTH, ROTATION_MAX);
+//            CGFloat rotationStrength = MIN(xFromCenter / ROTATION_STRENGTH, ROTATION_MAX);
             
             //%%% degree change in radians
-            CGFloat rotationAngel = (CGFloat) (ROTATION_ANGLE * rotationStrength);
+//            CGFloat rotationAngel = (CGFloat) (ROTATION_ANGLE * rotationStrength);
             
             //%%% amount the height changes when you move the card up to a certain point
-            CGFloat scale = MAX(1 - fabsf(rotationStrength) / SCALE_STRENGTH, SCALE_MAX);
+//            CGFloat scale = MAX(1 - fabsf(rotationStrength) / SCALE_STRENGTH, SCALE_MAX);
             
             //%%% move the object's center by center + gesture coordinate
             self.center = CGPointMake(self.originalPoint.x + xFromCenter, self.originalPoint.y + yFromCenter);
-            _imageView.center = CGPointMake(self.originalPoint.x + xFromCenter, self.originalPoint.y + yFromCenter);
+//            _imageView.center = CGPointMake(self.originalPoint.x + xFromCenter, self.originalPoint.y + yFromCenter);
 //            _imageView.center = CGPointMake(self.imagePoint.x + xFromCenter, self.imagePoint.y + yFromCenter);
             
             //%%% rotate by certain amount
-            CGAffineTransform transform = CGAffineTransformMakeRotation(rotationAngel);
+//            CGAffineTransform transform = CGAffineTransformMakeRotation(rotationAngel);
             
             //%%% scale by certain amount
-            CGAffineTransform scaleTransform = CGAffineTransformScale(transform, scale, scale);
+//            CGAffineTransform scaleTransform = CGAffineTransformScale(transform, scale, scale);
             
             //%%% apply transformations
-            self.transform = scaleTransform;
-            _imageView.transform = scaleTransform;
+//            self.transform = scaleTransform;
 //            _imageView.transform = scaleTransform;
-            [self updateOverlay:xFromCenter];
+            
+//            self.transform = transform;
+//            _imageView.transform = transform;
+//            _imageView.transform = scaleTransform;
+//            [self updateOverlay:xFromCenter];
             
             break;
         };
