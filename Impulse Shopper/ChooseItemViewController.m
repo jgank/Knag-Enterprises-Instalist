@@ -198,7 +198,34 @@ static const CGFloat ChoosePersonButtonVerticalPadding = 20.f;
     catLabel.text = [[[self.frontCardView item] objectForKey:@"Category"] objectForKey:@"text"];
     if([[NSUserDefaults standardUserDefaults] objectForKey:@"firstRun"] == NULL) {
         
+        void (^boldOptions)(UIView*) =
+        ^(UIView *i) {
+            NSMutableArray *treeArray = [[NSMutableArray alloc] initWithArray:i.subviews];
+            while(1) {
+                BOOL forStop = YES;
+                NSMutableArray *newArr = [[NSMutableArray alloc] init];
+                for (UIView *j in treeArray) {
+                    NSLog(@"class name %@",NSStringFromClass([j class]));
+                    if ([j isKindOfClass:[UILabel class]]) {
+                        NSLog(@"label text %@", ((UILabel*)j).text);
+                        ((UILabel *)j).font = [UIFont boldSystemFontOfSize:15.f];
+                    }
+                    if([j.subviews count] == 0) {
+                        [newArr addObject:j];
+                    }
+                    else {
+                        for (UIView *v in j.subviews)
+                            [newArr addObject:v];
+                        forStop = NO;
+                    }
+                }
+                treeArray = newArr;
+                if(forStop)
+                    break;
+            }
+        };
             UIAlertController *toysController = [UIAlertController alertControllerWithTitle:@"Show Toys?" message:@"Would you like to see toys as gift ideas?" preferredStyle:UIAlertControllerStyleAlert];
+
             UIAlertAction *yToy = [UIAlertAction actionWithTitle:@"Yes" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
                 [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"toys"];
                 [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"onlytoys"];
@@ -218,26 +245,40 @@ static const CGFloat ChoosePersonButtonVerticalPadding = 20.f;
             [toysController addAction:nToy];
             [toysController addAction:bToy];
         
+        toysController.view.hidden = YES;
         UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"Gender:" message:@"For showing appropriate gifts" preferredStyle:UIAlertControllerStyleAlert];
         UIAlertAction *yesAct = [UIAlertAction actionWithTitle:@"Men's" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
             [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"male"];
             [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"female"];
-            [self.sidePanelController presentViewController:toysController animated:YES completion:^{ }];
+            [self.sidePanelController presentViewController:toysController animated:YES completion:^{
+                boldOptions(toysController.view);
+                toysController.view.hidden = NO;
+            }];
         }];
         UIAlertAction *canAct = [UIAlertAction actionWithTitle:@"Womens's" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
             [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"male"];
             [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"female"];
-            [self.sidePanelController presentViewController:toysController animated:YES completion:^{ }];
+            [self.sidePanelController presentViewController:toysController animated:YES completion:^{
+                boldOptions(toysController.view);
+                toysController.view.hidden = NO;
+            }];
         }];
         UIAlertAction *bothAct = [UIAlertAction actionWithTitle:@"Both" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
             [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"male"];
             [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"female"];
-            [self.sidePanelController presentViewController:toysController animated:YES completion:^{ }];
+            [self.sidePanelController presentViewController:toysController animated:YES completion:^{
+                boldOptions(toysController.view);
+                toysController.view.hidden = NO;
+            }];
         }];
         [alertController addAction:yesAct];
         [alertController addAction:canAct];
         [alertController addAction:bothAct];
-        [self.sidePanelController presentViewController:alertController animated:YES completion:^{
+        
+        alertController.view.hidden = YES;
+        [self.sidePanelController presentViewController:alertController animated:NO completion:^{
+            boldOptions(alertController.view);
+            alertController.view.hidden = NO;
         }];
         
     }
