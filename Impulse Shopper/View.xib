@@ -11,9 +11,6 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ReX-11-lOb">
-                    <rect key="frame" x="22" y="119" width="277" height="330"/>
-                </imageView>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nBt-AI-f3u">
                     <rect key="frame" x="146" y="36" width="42" height="21"/>
                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
@@ -21,8 +18,17 @@
                     <nil key="highlightedColor"/>
                     <size key="shadowOffset" width="5" height="-1"/>
                 </label>
+                <segmentedControl opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="a0n-sf-dy5">
+                    <rect key="frame" x="59" y="497" width="117" height="29"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                    <segments>
+                        <segment title="Male"/>
+                        <segment title="Female"/>
+                    </segments>
+                    <color key="tintColor" red="0.90823972230000005" green="0.92638683320000004" blue="0.93171715740000005" alpha="1" colorSpace="calibratedRGB"/>
+                </segmentedControl>
             </subviews>
-            <color key="backgroundColor" red="0.42655369639396667" green="0.47584608197212219" blue="0.48026475310325623" alpha="1" colorSpace="calibratedRGB"/>
+            <color key="backgroundColor" red="0.15101002156734467" green="0.56891876459121704" blue="0.43715286254882812" alpha="1" colorSpace="calibratedRGB"/>
             <nil key="simulatedStatusBarMetrics"/>
             <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
             <point key="canvasLocation" x="22" y="379"/>

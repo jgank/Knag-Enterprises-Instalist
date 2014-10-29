@@ -11,7 +11,7 @@
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>
-	<string>$(PRODUCT_NAME)</string>
+	<string>Wish List</string>
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
@@ -34,6 +34,8 @@
 	<key>FacebookDisplayName</key>
 	<string>Impulse Shopper</string>
 	<key>LSRequiresIPhoneOS</key>
+	<true/>
+	<key>UIFileSharingEnabled</key>
 	<true/>
 	<key>UIMainStoryboardFile</key>
 	<string>Main</string>

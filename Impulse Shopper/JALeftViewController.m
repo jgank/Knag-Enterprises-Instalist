@@ -34,18 +34,14 @@
 #import <FacebookSDK/FacebookSDK.h>
 #import <AFNetworking/AFNetworking.h>
 #import <Twitter/Twitter.h>
-#import <Accounts/Accounts.h>
-#import "ChoosePersonViewController.h"
+#import "ChooseItemViewController.h"
 #import <ChameleonFramework/Chameleon.h>
+#import "PureLayout.h"
 
 @interface JALeftViewController () <MFMailComposeViewControllerDelegate>
 
-@property (nonatomic, weak) UILabel *label;
-@property (nonatomic, weak) UIButton *hide;
-@property (nonatomic, weak) UIButton *show;
-@property (nonatomic, weak) UIButton *removeRightPanel;
-@property (nonatomic, weak) UIButton *addRightPanel;
-@property (nonatomic, weak) UIButton *changeCenterPanel;
+@property (nonatomic, strong) UISegmentedControl *maleControl;
+@property (nonatomic, strong) UISegmentedControl *toyControl;
 @property (readwrite) BOOL fbLogin;
 
 @end
@@ -54,43 +50,32 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.view.backgroundColor = [UIColor flatGrayColorDark];
+    self.view.backgroundColor = FlatNavyBlueDark;
 	
 	UILabel *label  = [[UILabel alloc] init];
     label.font = [UIFont boldSystemFontOfSize:20.0f];
-    label.textColor = [UIColor whiteColor];
+    label.textColor = FlatWhite;;
+    
     label.backgroundColor = [UIColor clearColor];
-	label.text = @"Menu";
 	[label sizeToFit];
 	label.autoresizingMask = UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleBottomMargin;
     [self.view addSubview:label];
-    self.label = label;
     
-    UIButton *button = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
+    UIImage *img = [UIImage imageNamed:@"216-compose"];
+    img = [img imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+    button.imageView.tintColor = FlatWhite;
+    [button setTitleColor:[UIColor colorWithContrastingBlackOrWhiteColorOn:FlatNavyBlueDark isFlat:YES] forState:UIControlStateNormal];
+    [button setImage:img forState:UIControlStateNormal];
+    button.imageEdgeInsets = UIEdgeInsetsMake(0, 0, 0, img.size.width);
+    button.titleEdgeInsets = UIEdgeInsetsMake(0, img.size.width, 0, 0);
+    button.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
     button.frame = CGRectMake(20.0f, 70.0f, 200.0f, 40.0f);
-    button.autoresizingMask = UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleBottomMargin;
-    [button setTitle:@"Undo" forState:UIControlStateNormal];
-    [button addTarget:self action:@selector(_undoTapped:) forControlEvents:UIControlEventTouchUpInside];
-    [self.view addSubview:button];
-    self.hide = button;
-    
-    
-    button = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    button.frame = CGRectMake(20.0f, 120.0f, 200.0f, 40.0f);
     button.autoresizingMask = UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleBottomMargin;
     [button setTitle:@"Email List" forState:UIControlStateNormal];
     [button addTarget:self action:@selector(_emailTapped:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:button];
-    self.removeRightPanel = button;
     
-    button = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    button.frame = self.removeRightPanel.frame;
-    button.autoresizingMask = UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleBottomMargin;
-    [button setTitle:@"Add Right Panel" forState:UIControlStateNormal];
-    [button addTarget:self action:@selector(_addRightPanelTapped:) forControlEvents:UIControlEventTouchUpInside];
-    button.hidden = YES;
-    [self.view addSubview:button];
-    self.addRightPanel = button;
     
 //    button = [UIButton buttonWithType:UIButtonTypeRoundedRect];
 //    button.frame = CGRectMake(20.0f, 170.0f, 200.0f, 40.0f);
@@ -107,44 +92,110 @@
 //    loginView.center = button.center;
 //    [self.view addSubview:loginView];
 
-    button = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    button = [UIButton buttonWithType:UIButtonTypeCustom];
+    button.imageView.tintColor = FlatWhite;
+    img = [UIImage imageNamed:@"208-facebook"];
+    img = [img imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+    [button setTitleColor:[UIColor colorWithContrastingBlackOrWhiteColorOn:FlatNavyBlueDark isFlat:YES] forState:UIControlStateNormal];
+    [button setImage:img forState:UIControlStateNormal];
+    button.imageEdgeInsets = UIEdgeInsetsMake(0, 0, 0, img.size.width);
+    button.titleEdgeInsets = UIEdgeInsetsMake(0, img.size.width, 0, 0);
+    button.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
     button.frame = CGRectMake(20.0f, 170.0f, 200.0f, 40.0f);
     button.autoresizingMask = UIViewAutoresizingFlexibleRightMargin;
     [button setTitle:@"Post to Facebook" forState:UIControlStateNormal];
     [button addTarget:self action:@selector(_postToFacebook:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:button];
-    self.changeCenterPanel = button;
     
-    button = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    button.frame = CGRectMake(20.0f, 220.0f, 200.0f, 40.0f);
+    button = [UIButton buttonWithType:UIButtonTypeCustom];
+    button.imageView.tintColor = FlatWhite;
+    img = [UIImage imageNamed:@"09-chat2"];
+    img = [img imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+    [button setTitleColor:[UIColor colorWithContrastingBlackOrWhiteColorOn:FlatNavyBlueDark isFlat:YES] forState:UIControlStateNormal];
+    [button setImage:img forState:UIControlStateNormal];
+    button.imageEdgeInsets = UIEdgeInsetsMake(0, 0, 0, img.size.width);
+    button.titleEdgeInsets = UIEdgeInsetsMake(0, img.size.width, 0, 0);
+    button.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
+    button.frame = CGRectMake(20.0f, 120.0f, 200.0f, 40.0f);
     button.autoresizingMask = UIViewAutoresizingFlexibleRightMargin;
-    [button setTitle:@"SMS Text Message" forState:UIControlStateNormal];
+    [button setTitle:@"SMS  Message" forState:UIControlStateNormal];
     [button addTarget:self action:@selector(_postSMS:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:button];
-    self.changeCenterPanel = button;
     
-    button = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    
+    button = [UIButton buttonWithType:UIButtonTypeCustom];
+    button.imageView.tintColor = FlatWhite;
+    img = [UIImage imageNamed:@"185-printer"];
+    img = [img imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+    [button setTitleColor:[UIColor colorWithContrastingBlackOrWhiteColorOn:FlatNavyBlueDark isFlat:YES] forState:UIControlStateNormal];
+    [button setImage:img forState:UIControlStateNormal];
+    button.imageEdgeInsets = UIEdgeInsetsMake(0, 0, 0, img.size.width);
+    button.titleEdgeInsets = UIEdgeInsetsMake(0, img.size.width, 0, 0);
+    button.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
+    button.frame = CGRectMake(20.0f, 220.0f, 200.0f, 40.0f);
+    button.autoresizingMask = UIViewAutoresizingFlexibleRightMargin;
+    [button setTitle:@"View Wish List" forState:UIControlStateNormal];
+    [button addTarget:self action:@selector(_viewWishList:) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:button];
+    
+    
+    button = [UIButton buttonWithType:UIButtonTypeCustom];
+    button.imageView.tintColor = FlatWhite;
+    img = [UIImage imageNamed:@"215-subscription"];
+    img = [img imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+    [button setImage:img forState:UIControlStateNormal];
+    [button setTitleColor:[UIColor colorWithContrastingBlackOrWhiteColorOn:FlatNavyBlueDark isFlat:YES] forState:UIControlStateNormal];
+    button.imageEdgeInsets = UIEdgeInsetsMake(0, 0, 0, img.size.width);
+    button.titleEdgeInsets = UIEdgeInsetsMake(0, img.size.width, 0, 0);
+    button.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
     button.frame = CGRectMake(20.0f, 270.0f, 200.0f, 40.0f);
-    button.autoresizingMask = UIViewAutoresizingFlexibleRightMargin;
-    [button setTitle:@"Create Pastebin Link" forState:UIControlStateNormal];
-    [button addTarget:self action:@selector(_postPasteBin:) forControlEvents:UIControlEventTouchUpInside];
+    button.autoresizingMask = UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleBottomMargin;
+    [button setTitle:@"Undo" forState:UIControlStateNormal];
+    [button addTarget:self action:@selector(_undoTapped:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:button];
-    self.changeCenterPanel = button;
     
-    button = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    button.frame = CGRectMake(20.0f, 320.0f, 200.0f, 40.0f);
-    button.autoresizingMask = UIViewAutoresizingFlexibleRightMargin;
-    [button setTitle:@"Create Pastebin Link" forState:UIControlStateNormal];
-    [button addTarget:self action:@selector(_postPasteBin:) forControlEvents:UIControlEventTouchUpInside];
-    [self.view addSubview:button];
-    self.changeCenterPanel = button;
     
-    FBLoginView *loginView = [[FBLoginView alloc] init];
-//    loginView.tooltipBehavior = FBLoginViewTooltipBehaviorForceDisplay;
-//    loginView.loginBehavior = FBSessionDefaultAudienceOnlyMe;
-//    loginView.loginBehavior = FBSessionDefaultAudienceEveryone;
-    loginView.center = button.center;
-    [self.view addSubview:loginView];
+    
+    
+    _maleControl = [[UISegmentedControl alloc] initWithItems:@[@"Men's", @"Women's", @"Both"]];
+    _maleControl.tag = 5;
+    [self.view addSubview:_maleControl];
+    [_maleControl autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:button withOffset:20.f];
+    [_maleControl autoAlignAxis:ALAxisVertical toSameAxisOfView:button];
+    [_maleControl setTintColor:FlatWhite];
+    
+    NSUserDefaults *stand = [NSUserDefaults standardUserDefaults];
+    if([stand boolForKey:@"male"] && [stand boolForKey:@"female"]) {
+        [_maleControl setSelectedSegmentIndex:2];
+    }
+    else if([stand boolForKey:@"female"]) {
+        [_maleControl setSelectedSegmentIndex:1];
+    }
+    else if([stand boolForKey:@"male"]) {
+        [_maleControl setSelectedSegmentIndex:0];
+    }
+    [_maleControl addTarget:self action:@selector(segmentChange:) forControlEvents:UIControlEventValueChanged];
+    
+    
+    _toyControl = [[UISegmentedControl alloc] initWithItems:@[@"Toys", @"No Toys", @"Only Toys"]];
+    _toyControl.tag = 6;
+    [self.view addSubview:_toyControl];
+    [_toyControl autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:_maleControl withOffset:20.f];
+    [_toyControl autoAlignAxis:ALAxisVertical toSameAxisOfView:_maleControl];
+    [_toyControl setTintColor:FlatWhite];
+    
+    if([stand boolForKey:@"toys"]) {
+        [_toyControl setSelectedSegmentIndex:0];
+    }
+    else if([stand boolForKey:@"toys"] == NO) {
+        [_toyControl setSelectedSegmentIndex:1];
+    }
+    else if([stand objectForKey:@"toys"] == [NSNull null]) {
+        [_toyControl setSelectedSegmentIndex:2];
+    }
+    [_toyControl addTarget:self action:@selector(segmentChange:) forControlEvents:UIControlEventValueChanged];
+    
+    
     
     
     
@@ -167,6 +218,40 @@
 
 #pragma mark - Button Actions
 
+-(void)segmentChange:(id)sender {
+    UISegmentedControl *c = (UISegmentedControl*)sender;
+    
+    NSUserDefaults *stand = [NSUserDefaults standardUserDefaults];
+    if(c.tag == 5){
+        if(c.selectedSegmentIndex == 0) {
+            [stand setBool:YES forKey:@"male"];
+            [stand setBool:NO forKey:@"female"];
+        }
+        else if (c.selectedSegmentIndex == 1) {
+            [stand setBool:YES forKey:@"female"];
+            [stand setBool:NO forKey:@"male"];
+        }
+        else if (c.selectedSegmentIndex == 2) {
+            [stand setBool:YES forKey:@"female"];
+            [stand setBool:YES forKey:@"male"];
+        }
+    }
+    else if (c.tag == 6) {
+        if(c.selectedSegmentIndex == 0) {
+            [stand setBool:YES forKey:@"toys"];
+            [stand setBool:NO forKey:@"onlytoys"];
+        }
+        else if (c.selectedSegmentIndex == 1) {
+            [stand setBool:NO forKey:@"toys"];
+            [stand setBool:NO forKey:@"onlytoys"];
+        }
+        else if (c.selectedSegmentIndex == 2) {
+            [stand setBool:YES forKey:@"onlytoys"];
+            [stand setBool:YES forKey:@"toys"];
+        }
+    }
+    [(ChooseItemViewController*)self.sidePanelController.centerPanel popItemViewWithFrame:((ChooseItemViewController*)self.sidePanelController.centerPanel).backCardView.frame neutral:NO];
+}
 - (void)_undoTapped:(id)sender {
     [(JACenterViewController*)self.sidePanelController.centerPanel undoPressed];
 //    [self.sidePanelController setCenterPanelHidden:YES animated:YES duration:0.2f];
@@ -176,7 +261,7 @@
 
 - (void)_emailTapped:(id)sender {
 //    NSArray *arr = ((JACenterViewController*)self.sidePanelController.centerPanel).draggableView.favArray;
-    NSArray *arr = ((ChoosePersonViewController*)self.sidePanelController.centerPanel).favArray;
+    NSArray *arr = ((ChooseItemViewController*)self.sidePanelController.centerPanel).favArray;
     if ([arr count] == 0) {
         [[[UIAlertView alloc] initWithTitle:@"Alert" message:@"Please favorite some items first" delegate:nil cancelButtonTitle:@"Okay" otherButtonTitles:nil] show];
         return;
@@ -186,7 +271,6 @@
         mailer.mailComposeDelegate = self;
         [mailer setSubject:@"Gift Wish List"];
         NSString *body = @"";
-        NSArray *arr = ((JACenterViewController*)self.sidePanelController.centerPanel).draggableView.favArray;
         for (NSDictionary *d in arr) {
             body = [body stringByAppendingString:[NSString stringWithFormat:@"%@, %@, %@\n",
             [[d objectForKey:@"Title"] objectForKey:@"text"],
@@ -237,7 +321,7 @@
 }
 - (void)_postSMS:(id)sender {
 //    NSArray *arr = ((JACenterViewController*)self.sidePanelController.centerPanel).draggableView.favArray;
-    NSArray *arr = ((ChoosePersonViewController*)self.sidePanelController.centerPanel).favArray;
+    NSArray *arr = ((ChooseItemViewController*)self.sidePanelController.centerPanel).favArray;
     if ([arr count] == 0) {
         [[[UIAlertView alloc] initWithTitle:@"Alert" message:@"Please favorite some items first" delegate:nil cancelButtonTitle:@"Okay" otherButtonTitles:nil] show];
         return;
@@ -248,7 +332,7 @@
         [mailer setSubject:@"Gift Wish List"];
         NSString *body = @"";
 //        NSArray *arr = ((JACenterViewController*)self.sidePanelController.centerPanel).draggableView.favArray;
-        NSArray *arr = ((ChoosePersonViewController*)self.sidePanelController.centerPanel).favArray;
+        NSArray *arr = ((ChooseItemViewController*)self.sidePanelController.centerPanel).favArray;
         for (NSDictionary *d in arr) {
             body = [body stringByAppendingString:[NSString stringWithFormat:@"%@, %@, %@\n",
                                                   [[d objectForKey:@"Title"] objectForKey:@"text"],
@@ -271,7 +355,7 @@
 - (void)_postPasteBin:(id)sender {
     
 //    NSArray *arr = ((JACenterViewController*)self.sidePanelController.centerPanel).draggableView.favArray;
-    NSArray *arr = ((ChoosePersonViewController*)self.sidePanelController.centerPanel).favArray;
+    NSArray *arr = ((ChooseItemViewController*)self.sidePanelController.centerPanel).favArray;
     if ([arr count] == 0) {
         [[[UIAlertView alloc] initWithTitle:@"Alert" message:@"Please favorite some items first" delegate:nil cancelButtonTitle:@"Okay" otherButtonTitles:nil] show];
         return;
@@ -334,60 +418,11 @@
     }];
 }
 - (void)_postToFacebook:(id)sender {
-    NSArray *arr = ((ChoosePersonViewController*)self.sidePanelController.centerPanel).favArray;
+    NSArray *arr = ((ChooseItemViewController*)self.sidePanelController.centerPanel).favArray;
     if ([arr count] == 0) {
         [[[UIAlertView alloc] initWithTitle:@"Alert" message:@"Please favorite some items first" delegate:nil cancelButtonTitle:@"Okay" otherButtonTitles:nil] show];
         return;
     }
-    
-    
-    
-    if([SLComposeViewController isAvailableForServiceType:SLServiceTypeFacebook]) //check if Facebook Account is linked
-    {
-        
-        
-        
-        NSString *message = @"";
-        NSArray *arr = ((ChoosePersonViewController*)self.sidePanelController.centerPanel).favArray;
-        
-        
-        for (NSDictionary *d in arr) {
-            message = [message stringByAppendingString:[NSString stringWithFormat:@"%@, %@, %@\n",
-                                                        [[d objectForKey:@"Title"] objectForKey:@"text"],
-                                                        [[d objectForKey:@"FormattedPrice"] objectForKey:@"text"],
-                                                        [[d objectForKey:@"DetailPageURL"] objectForKey:@"text"]]];
-        }
-        message = [message stringByAppendingString:@"\n Created by iPhone Christmas List Creator"];
-        message = [message stringByAppendingString:@"\n http://amazonchristmasiphone.duckdns.org/redirect.php"];
-        NSLog(@"%@",message);
-        
-        
-       SLComposeViewController *mySLComposerSheet = [[SLComposeViewController alloc] init]; //initiate the Social Controller
-        mySLComposerSheet = [SLComposeViewController composeViewControllerForServiceType:SLServiceTypeFacebook]; //Tell him with what social plattform to use it, e.g. facebook or twitter
-        [mySLComposerSheet setInitialText:message]; //the message you want to post
-        [mySLComposerSheet addImage:[UIImage imageWithData:[[NSData alloc] initWithContentsOfURL:[NSURL URLWithString:[[[arr firstObject] objectForKey:@"LargeImage"] objectForKey:@"text"]]]]]; //an image you could post
-        //for more instance methodes, go here:https://developer.apple.com/library/ios/#documentation/NetworkingInternet/Reference/SLComposeViewController_Class/Reference/Reference.html#//apple_ref/doc/uid/TP40012205
-        [self presentViewController:mySLComposerSheet animated:YES completion:nil];
-        [mySLComposerSheet setCompletionHandler:^(SLComposeViewControllerResult result) {
-            NSString *output;
-            switch (result) {
-                case SLComposeViewControllerResultCancelled:
-                    output = @"Action Cancelled";
-                    break;
-                case SLComposeViewControllerResultDone:
-                    output = @"Post Successfull";
-                    break;
-                default:
-                    break;
-            } //check if everything worked properly. Give out a message on the state.
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Facebook" message:output delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil];
-            [alert show];
-        }];
-        return;
-    }
-    
-    
-    
     
     if (FBSession.activeSession.isOpen)
     {
@@ -395,8 +430,7 @@
         NSLog(@"%@",FBSession.activeSession.permissions);
         [self performPublishAction:^{
             NSString *message = @"";
-//            NSArray *arr = ((JACenterViewController*)self.sidePanelController.centerPanel).draggableView.favArray;
-            NSArray *arr = ((ChoosePersonViewController*)self.sidePanelController.centerPanel).favArray;
+            NSArray *arr = ((ChooseItemViewController*)self.sidePanelController.centerPanel).favArray;
             
             
             for (NSDictionary *d in arr) {
@@ -407,7 +441,6 @@
             }
             message = [message stringByAppendingString:@"\n Created by iPhone Christmas List Creator"];
         message = [message stringByAppendingString:@"\n http://amazonchristmasiphone.duckdns.org/redirect.php"];
-//        message = [message stringByReplacingOccurrencesOfString:@"knag_womens_apparel" withString:@"knag_facebook_app"];
             NSLog(@"%@",message);
             
             FBRequestConnection *connection = [[FBRequestConnection alloc] init];
@@ -441,8 +474,7 @@
             NSLog(@"allow login UI");
             [self performPublishAction:^{
                 NSString *message = @"";
-//                NSArray *arr = ((JACenterViewController*)self.sidePanelController.centerPanel).draggableView.favArray;
-                NSArray *arr = ((ChoosePersonViewController*)self.sidePanelController.centerPanel).favArray;
+                NSArray *arr = ((ChooseItemViewController*)self.sidePanelController.centerPanel).favArray;
                 
                 
                 for (NSDictionary *d in arr) {
@@ -465,7 +497,7 @@
                      completionHandler:^(FBRequestConnection *innerConnection, id result, NSError *error) {
                          NSLog(@"login complettion post");
                          [self showAlert:message result:result error:error];
-//                         _fbLogin = NO;
+                         _fbLogin = NO;
                          //                         self.buttonPostStatus.enabled = YES;
                      }];
                 [connection start];
@@ -478,6 +510,9 @@
         }
     }
 
+}
+- (void)_viewWishList:(id)sender {
+    [self.sidePanelController showRightPanelAnimated:YES];
 }
 // UIAlertView helper for post buttons
 - (void)showAlert:(NSString *)message

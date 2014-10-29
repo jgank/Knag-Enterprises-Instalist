@@ -11,7 +11,7 @@
 #import "JACenterViewController.h"
 #import "JALeftViewController.h"
 #import "JARightViewController.h"
-#import "ChoosePersonViewController.h"
+#import "ChooseItemViewController.h"
 #import <FacebookSDK/FacebookSDK.h>
 #import <Social/Social.h>
 #import <Accounts/Accounts.h>
@@ -37,7 +37,7 @@
     //self.viewController.centerPanel = [[UINavigationController alloc] initWithRootViewController:[[JACenterViewController alloc] init]];
 //    self.viewController.centerPanel = [[JACenterViewController alloc] init];
     
-    self.viewController.centerPanel = [[ChoosePersonViewController alloc] init];
+    self.viewController.centerPanel = [[ChooseItemViewController alloc] init];
     self.viewController.rightPanel = [[JARightViewController alloc] init];
     
     self.window.rootViewController = self.viewController;

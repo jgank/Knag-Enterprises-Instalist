@@ -42,12 +42,14 @@
 		EF86F90619BEE84A0023A507 /* DraggableViewBackground.m in Sources */ = {isa = PBXBuildFile; fileRef = EF86F90119BEE84A0023A507 /* DraggableViewBackground.m */; };
 		EF86F90719BEE84A0023A507 /* DraggableView.m in Sources */ = {isa = PBXBuildFile; fileRef = EF86F90319BEE84A0023A507 /* DraggableView.m */; };
 		EF86F90819BEE84A0023A507 /* OverlayView.m in Sources */ = {isa = PBXBuildFile; fileRef = EF86F90519BEE84A0023A507 /* OverlayView.m */; };
+		EFAD358C1A00880800CBA5DF /* InsetLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = EFAD358B1A00880800CBA5DF /* InsetLabel.m */; };
+		EFAD358E1A00B27A00CBA5DF /* christmas_present.png in Resources */ = {isa = PBXBuildFile; fileRef = EFAD358D1A00B27A00CBA5DF /* christmas_present.png */; };
 		EFBB10E119E75B8E000FBB38 /* UIWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EFBB10DF19E75B8E000FBB38 /* UIWebViewController.m */; };
 		EFBB10E219E75B8E000FBB38 /* UIWebViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = EFBB10E019E75B8E000FBB38 /* UIWebViewController.xib */; };
 		EFDEAE0319FEE8B700D58BFD /* Person.m in Sources */ = {isa = PBXBuildFile; fileRef = EFDEADFC19FEE8B700D58BFD /* Person.m */; };
 		EFDEAE0419FEE8B700D58BFD /* ImageLabelView.m in Sources */ = {isa = PBXBuildFile; fileRef = EFDEADFE19FEE8B700D58BFD /* ImageLabelView.m */; };
-		EFDEAE0519FEE8B700D58BFD /* ChoosePersonView.m in Sources */ = {isa = PBXBuildFile; fileRef = EFDEAE0019FEE8B700D58BFD /* ChoosePersonView.m */; };
-		EFDEAE0619FEE8B700D58BFD /* ChoosePersonViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EFDEAE0219FEE8B700D58BFD /* ChoosePersonViewController.m */; };
+		EFDEAE0519FEE8B700D58BFD /* ChooseItemView.m in Sources */ = {isa = PBXBuildFile; fileRef = EFDEAE0019FEE8B700D58BFD /* ChooseItemView.m */; };
+		EFDEAE0619FEE8B700D58BFD /* ChooseItemViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EFDEAE0219FEE8B700D58BFD /* ChooseItemViewController.m */; };
 		EFEE5C5419E47B18009BD5D2 /* XMLReader.m in Sources */ = {isa = PBXBuildFile; fileRef = EFEE5C5319E47B18009BD5D2 /* XMLReader.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		EFEE5C6219E4A98A009BD5D2 /* ALView+PureLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = EFEE5C5A19E4A98A009BD5D2 /* ALView+PureLayout.m */; };
 		EFEE5C6319E4A98A009BD5D2 /* NSArray+PureLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = EFEE5C5C19E4A98A009BD5D2 /* NSArray+PureLayout.m */; };
@@ -118,6 +120,9 @@
 		EF86F90319BEE84A0023A507 /* DraggableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DraggableView.m; sourceTree = "<group>"; };
 		EF86F90419BEE84A0023A507 /* OverlayView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OverlayView.h; sourceTree = "<group>"; };
 		EF86F90519BEE84A0023A507 /* OverlayView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OverlayView.m; sourceTree = "<group>"; };
+		EFAD358A1A00880800CBA5DF /* InsetLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InsetLabel.h; sourceTree = "<group>"; };
+		EFAD358B1A00880800CBA5DF /* InsetLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InsetLabel.m; sourceTree = "<group>"; };
+		EFAD358D1A00B27A00CBA5DF /* christmas_present.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = christmas_present.png; sourceTree = "<group>"; };
 		EFBB10DE19E75B8E000FBB38 /* UIWebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIWebViewController.h; sourceTree = "<group>"; };
 		EFBB10DF19E75B8E000FBB38 /* UIWebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UIWebViewController.m; sourceTree = "<group>"; };
 		EFBB10E019E75B8E000FBB38 /* UIWebViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = UIWebViewController.xib; sourceTree = "<group>"; };
@@ -126,10 +131,10 @@
 		EFDEADFC19FEE8B700D58BFD /* Person.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Person.m; sourceTree = "<group>"; };
 		EFDEADFD19FEE8B700D58BFD /* ImageLabelView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageLabelView.h; sourceTree = "<group>"; };
 		EFDEADFE19FEE8B700D58BFD /* ImageLabelView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImageLabelView.m; sourceTree = "<group>"; };
-		EFDEADFF19FEE8B700D58BFD /* ChoosePersonView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChoosePersonView.h; sourceTree = "<group>"; };
-		EFDEAE0019FEE8B700D58BFD /* ChoosePersonView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChoosePersonView.m; sourceTree = "<group>"; };
-		EFDEAE0119FEE8B700D58BFD /* ChoosePersonViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChoosePersonViewController.h; sourceTree = "<group>"; };
-		EFDEAE0219FEE8B700D58BFD /* ChoosePersonViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChoosePersonViewController.m; sourceTree = "<group>"; };
+		EFDEADFF19FEE8B700D58BFD /* ChooseItemView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChooseItemView.h; sourceTree = "<group>"; };
+		EFDEAE0019FEE8B700D58BFD /* ChooseItemView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChooseItemView.m; sourceTree = "<group>"; };
+		EFDEAE0119FEE8B700D58BFD /* ChooseItemViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChooseItemViewController.h; sourceTree = "<group>"; };
+		EFDEAE0219FEE8B700D58BFD /* ChooseItemViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChooseItemViewController.m; sourceTree = "<group>"; };
 		EFEE5C5219E47B18009BD5D2 /* XMLReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XMLReader.h; sourceTree = "<group>"; };
 		EFEE5C5319E47B18009BD5D2 /* XMLReader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XMLReader.m; sourceTree = "<group>"; };
 		EFEE5C5919E4A98A009BD5D2 /* ALView+PureLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ALView+PureLayout.h"; sourceTree = "<group>"; };
@@ -204,6 +209,7 @@
 				EF0B8A6019E6590700EA1B6E /* Electronics.xml */,
 				EF4B164F19F061B400083B72 /* Toys.xml */,
 				EF0B8A5C19E62FB400EA1B6E /* combine.xml */,
+				EFAD358D1A00B27A00CBA5DF /* christmas_present.png */,
 				EFEE5C5219E47B18009BD5D2 /* XMLReader.h */,
 				EFEE5C5319E47B18009BD5D2 /* XMLReader.m */,
 				EF0B8A6219E7387B00EA1B6E /* WebViewController.h */,
@@ -249,10 +255,12 @@
 				EFDEADFC19FEE8B700D58BFD /* Person.m */,
 				EFDEADFD19FEE8B700D58BFD /* ImageLabelView.h */,
 				EFDEADFE19FEE8B700D58BFD /* ImageLabelView.m */,
-				EFDEADFF19FEE8B700D58BFD /* ChoosePersonView.h */,
-				EFDEAE0019FEE8B700D58BFD /* ChoosePersonView.m */,
-				EFDEAE0119FEE8B700D58BFD /* ChoosePersonViewController.h */,
-				EFDEAE0219FEE8B700D58BFD /* ChoosePersonViewController.m */,
+				EFDEADFF19FEE8B700D58BFD /* ChooseItemView.h */,
+				EFDEAE0019FEE8B700D58BFD /* ChooseItemView.m */,
+				EFDEAE0119FEE8B700D58BFD /* ChooseItemViewController.h */,
+				EFDEAE0219FEE8B700D58BFD /* ChooseItemViewController.m */,
+				EFAD358A1A00880800CBA5DF /* InsetLabel.h */,
+				EFAD358B1A00880800CBA5DF /* InsetLabel.m */,
 				EF3E89DA1A0038FB00EA9985 /* 179-notepad.svg */,
 				52CCC66319AE90FD00464A46 /* Images.xcassets */,
 				52CCC65A19AE90FD00464A46 /* Impulse_Shopper.xcdatamodeld */,
@@ -394,6 +402,7 @@
 				EF3E89DB1A0038FB00EA9985 /* 179-notepad.svg in Resources */,
 				EF09E22919FA48870045779B /* goog.xml in Resources */,
 				EF70B3EC19EC74C600AA55FA /* SavedCell.xib in Resources */,
+				EFAD358E1A00B27A00CBA5DF /* christmas_present.png in Resources */,
 				5245030119B8BF5800103542 /* View.xib in Resources */,
 				EF4B164E19F05D1F00083B72 /* apparel.xml in Resources */,
 				EFBB10E219E75B8E000FBB38 /* UIWebViewController.xib in Resources */,
@@ -455,6 +464,7 @@
 			files = (
 				52CCC68519AE920700464A46 /* JADebugViewController.m in Sources */,
 				52CCC65919AE90FD00464A46 /* AppDelegate.m in Sources */,
+				EFAD358C1A00880800CBA5DF /* InsetLabel.m in Sources */,
 				EFDEAE0319FEE8B700D58BFD /* Person.m in Sources */,
 				EFEE5C6419E4A98A009BD5D2 /* NSLayoutConstraint+PureLayout.m in Sources */,
 				52CCC68A19AE927200464A46 /* JACenterViewController.m in Sources */,
@@ -462,7 +472,7 @@
 				52CCC68319AE920700464A46 /* JASidePanelController.m in Sources */,
 				EFEE5C6319E4A98A009BD5D2 /* NSArray+PureLayout.m in Sources */,
 				EFBB10E119E75B8E000FBB38 /* UIWebViewController.m in Sources */,
-				EFDEAE0619FEE8B700D58BFD /* ChoosePersonViewController.m in Sources */,
+				EFDEAE0619FEE8B700D58BFD /* ChooseItemViewController.m in Sources */,
 				52CCC65619AE90FD00464A46 /* main.m in Sources */,
 				52CCC68419AE920700464A46 /* UIViewController+JASidePanel.m in Sources */,
 				EF86F90819BEE84A0023A507 /* OverlayView.m in Sources */,
@@ -472,7 +482,7 @@
 				52CCC68619AE920700464A46 /* JALeftViewController.m in Sources */,
 				EF0B8A6419E7387B00EA1B6E /* WebViewController.m in Sources */,
 				52CCC65C19AE90FD00464A46 /* Impulse_Shopper.xcdatamodeld in Sources */,
-				EFDEAE0519FEE8B700D58BFD /* ChoosePersonView.m in Sources */,
+				EFDEAE0519FEE8B700D58BFD /* ChooseItemView.m in Sources */,
 				EF86F90619BEE84A0023A507 /* DraggableViewBackground.m in Sources */,
 				EFEE5C6219E4A98A009BD5D2 /* ALView+PureLayout.m in Sources */,
 				52CCC68719AE920700464A46 /* JARightViewController.m in Sources */,
@@ -587,12 +597,14 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_INCREASE_PRECOMPILED_HEADER_SHARING = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				INFOPLIST_FILE = "Impulse Shopper/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
@@ -603,13 +615,15 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_INCREASE_PRECOMPILED_HEADER_SHARING = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				INFOPLIST_FILE = "Impulse Shopper/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;

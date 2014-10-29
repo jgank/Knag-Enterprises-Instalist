@@ -26,15 +26,16 @@
 
 #import "JARightViewController.h"
 #import "JASidePanelController.h"
-#import "ChoosePersonViewController.h"
+#import "ChooseItemViewController.h"
 #import <SDWebImage/UIImageView+WebCache.h>
 #import "UIViewController+JASidePanel.h"
 #import "PureLayout.h"
 #import <ChameleonFramework/Chameleon.h>
 
-@interface JARightViewController ()
+@interface JARightViewController () <UITableViewDataSource, UITableViewDelegate>
 @property (strong,nonatomic) UIToolbar *toolBar;
 @property (strong,nonatomic) UIBarButtonItem *backButton;
+@property (strong,nonatomic) UIBarButtonItem *menuButton;
 @property (strong,nonatomic) UIBarButtonItem *editButton;
 @end
 
@@ -44,19 +45,37 @@
     [super viewDidLoad];
     self.toolBar = [UIToolbar newAutoLayoutView];
 //    self.view.backgroundColor = [UIColor colorWithComplementaryFlatColorOf:[UIColor flatGreenColorDark]];
-    self.view.backgroundColor = FlatMint;
+    self.view.backgroundColor = FlatBlue;
 //    self.toolBar = [[UIToolbar alloc] initWithFrame:CGRectMake(self.view.bounds.origin.x, self.view.bounds.origin.y, self.view.bounds.size.width, 44.0f)];
     self.backButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRewind target:self action:@selector(showCenter)];
+    
     UIBarButtonItem *flexSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:self action:nil];
-
+    
+    
+ 
+    
+    UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0.0 , 11.0f, self.view.frame.size.width, 21.0f)];
+    [titleLabel setFont:[UIFont fontWithName:@"Helvetica-Bold" size:18]];
+    [titleLabel setBackgroundColor:[UIColor clearColor]];
+    [titleLabel setTextColor:ComplementaryFlatColorOf(FlatBlue)];
+    [titleLabel setText:@"Wish List"];
+    [titleLabel setTextAlignment:NSTextAlignmentCenter];
+    
+//    toolTitle.enabled = NO;
     self.editButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemEdit target:self action:@selector(editTable)];
-    [self.toolBar setItems:[NSArray arrayWithObjects:_backButton, flexSpace, _editButton, nil]];
+    
+    self.menuButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCompose target:self action:@selector(viewMenu)];
+    
+    UIBarButtonItem *trash = [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemTrash target:self action:@selector(trash)];
+    
+    [self.toolBar setItems:[NSArray arrayWithObjects:_backButton, _menuButton, flexSpace, trash, _editButton, nil]];
+    [self.toolBar addSubview: titleLabel];
     [self.view addSubview:_toolBar];
     
 //    [_toolBar setTintColor:[UIColor blueColor]];
-    _toolBar.barTintColor = FlatMint;
-    _toolBar.tintColor = ComplementaryFlatColorOf(FlatMint);
-    _toolBar.backgroundColor = FlatMint;
+    _toolBar.barTintColor = FlatBlue;
+    _toolBar.tintColor = ComplementaryFlatColorOf(FlatBlue);
+    _toolBar.backgroundColor = FlatBlue;
     
     
     [_toolBar autoPinEdgeToSuperviewEdge:ALEdgeTop withInset:20.0f];
@@ -65,12 +84,6 @@
     [_toolBar autoMatchDimension:ALDimensionWidth toDimension:ALDimensionWidth ofView:self.view];
     [_toolBar autoSetDimension:ALDimensionHeight toSize:44];
 //    [_toolBar autoPinEdgesToSuperviewMarginsExcludingEdge:ALEdgeBottom];
-    self.label.text = @"Right Panel";
-    [self.label sizeToFit];
-    self.hide.frame = CGRectMake(self.view.bounds.size.width - 220.0f, 70.0f, 200.0f, 40.0f);
-    self.hide.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleBottomMargin;
-    self.show.frame = self.hide.frame;
-    self.show.autoresizingMask = self.hide.autoresizingMask;
 //    self.tableView = [[UITableView alloc] initWithFrame:CGRectMake(self.view.bounds.origin.x, self.view.bounds.origin.y + 44.0f, self.view.bounds.size.width, self.view.bounds.size.height - 44.0f)];
     self.tableView = [UITableView newAutoLayoutView];
     self.tableView.dataSource = self;
@@ -79,6 +92,7 @@
     [_tableView autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:_toolBar];
     [_tableView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero excludingEdge:ALEdgeTop];
     
+    
     self.label.hidden = YES;
     self.removeRightPanel.hidden = YES;
     self.addRightPanel.hidden = YES;
@@ -86,7 +100,7 @@
     
     
     if(!_favArray ) {
-        ChoosePersonViewController *cPanel = (ChoosePersonViewController*) self.sidePanelController.centerPanel;
+        ChooseItemViewController *cPanel = (ChooseItemViewController*) self.sidePanelController.centerPanel;
         self.favArray = cPanel.favArray;
         [_tableView reloadData];
         NSLog(@"no favarray in right controller");
@@ -114,6 +128,23 @@
 }
 -(void)editTable {
     _tableView.editing = !_tableView.editing;
+}
+-(void)trash {
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"Delete All" message:@"Do you want to erase the entire list" preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertAction *yesAct = [UIAlertAction actionWithTitle:@"Yes" style:UIAlertActionStyleDestructive handler:^(UIAlertAction *action) {
+        [((ChooseItemViewController*)self.sidePanelController.centerPanel).favArray removeAllObjects];
+        [_tableView reloadData];
+    }];
+    UIAlertAction *canAct = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {
+        
+    }];
+    [alertController addAction:yesAct];
+    [alertController addAction:canAct];
+    [self presentViewController:alertController animated:YES completion:nil];
+
+}
+-(void)viewMenu {
+    [self.sidePanelController showLeftPanelAnimated:YES];
 }
 #pragma mark - Table view data source
 
@@ -156,6 +187,9 @@
     UILabel *label = (UILabel*)[cell.contentView viewWithTag:2];
     [imageView autoRemoveConstraintsAffectingView];
     [label autoRemoveConstraintsAffectingView];
+//    cell.backgroundColor = FlatWhite;
+    
+    label.textColor = [UIColor colorWithContrastingBlackOrWhiteColorOn:FlatWhite isFlat:YES];
     
     imageView.backgroundColor = [UIColor clearColor];
 //    imageView.backgroundColor = [UIColor grayColor];

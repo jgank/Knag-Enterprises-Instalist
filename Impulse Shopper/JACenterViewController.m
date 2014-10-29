@@ -31,7 +31,7 @@
 #import "JARightViewController.h"
 #import "PureLayout.h"
 #import <AFNetworking/AFNetworking.h>
-#import "ChoosePersonViewController.h"
+#import "ChooseItemViewController.h"
 
 
 @interface JACenterViewController () <DraggableViewBackgroundDelegate>
