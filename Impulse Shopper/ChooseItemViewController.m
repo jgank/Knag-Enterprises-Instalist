@@ -24,7 +24,6 @@
 
 #import "ChooseItemViewController.h"
 #import "PureLayout.h"
-#import "Person.h"
 #import <MDCSwipeToChoose/MDCSwipeToChoose.h>
 #import "UIViewController+JASidePanel.h"
 #import "JARightViewController.h"
@@ -33,6 +32,8 @@
 #import <BitlyForiOS/SSTURLShortener.h>
 #import <ChameleonFramework/Chameleon.h>
 #import "InsetLabel.h"
+#import "SupportKit.h"
+
 
 static const CGFloat ChoosePersonButtonHorizontalPadding = 80.f;
 static const CGFloat ChoosePersonButtonVerticalPadding = 20.f;
@@ -53,6 +54,7 @@ static const CGFloat ChoosePersonButtonVerticalPadding = 20.f;
     InsetLabel *catLabel;
     UIButton *undoButton;
     AFHTTPRequestOperationManager *manager;
+    NSInteger numSwipes;
 }
 
 
@@ -85,7 +87,7 @@ static const CGFloat ChoosePersonButtonVerticalPadding = 20.f;
         [menuButton addTarget:self action:@selector(showLeftPanel) forControlEvents:UIControlEventTouchUpInside];
         messageButton = [[UIButton alloc]initWithFrame:CGRectMake(self.view.frame.size.width-40-6, 26, 40, 40)];
         messageButton.imageView.contentMode = UIViewContentModeTopLeft;
-        [messageButton setImage:[[UIImage imageNamed:@"185-printer"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] forState:UIControlStateNormal];
+        [messageButton setImage:[[UIImage imageNamed:@"162-receipt"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] forState:UIControlStateNormal];
         [messageButton addTarget:self action:@selector(showRightPanel) forControlEvents:UIControlEventTouchUpInside];
         
         
@@ -120,7 +122,7 @@ static const CGFloat ChoosePersonButtonVerticalPadding = 20.f;
         if (!arrayFromFile)
             arrayFromFile = [[NSArray alloc] init];
         self.favArray = [[NSMutableArray alloc] initWithArray:arrayFromFile];
-        self.view.backgroundColor = ComplementaryFlatColorOf(FlatWhite);
+        self.view.backgroundColor = ComplementaryFlatColorOf([UIColor whiteColor]);
         titleLabel.backgroundColor = FlatMintDark;
         titleLabel.textColor = ComplementaryFlatColorOf(FlatMintDark);
         
@@ -146,9 +148,12 @@ static const CGFloat ChoosePersonButtonVerticalPadding = 20.f;
         [catLabel setFont:[UIFont systemFontOfSize:12.0f]];
         catLabel.textColor = ComplementaryFlatColorOf(FlatMintDark);
        
-        
         [self constructNopeButton];
         [self constructLikedButton];
+        
+        
+        numSwipes = [[NSUserDefaults standardUserDefaults] integerForKey:@"numSwipes"];
+        
     }
 
     return self;
@@ -196,6 +201,8 @@ static const CGFloat ChoosePersonButtonVerticalPadding = 20.f;
 -(void) viewDidAppear:(BOOL)animated {
     titleLabel.text = [[[self.frontCardView item] objectForKey:@"Title"] objectForKey:@"text"];
     catLabel.text = [[[self.frontCardView item] objectForKey:@"Category"] objectForKey:@"text"];
+    
+    
     if([[NSUserDefaults standardUserDefaults] objectForKey:@"firstRun"] == NULL) {
         
         void (^boldOptions)(UIView*) =
@@ -322,7 +329,8 @@ static const CGFloat ChoosePersonButtonVerticalPadding = 20.f;
 - (void)view:(UIView *)view wasChosenWithDirection:(MDCSwipeDirection)direction {
     if (direction == MDCSwipeDirectionLeft) {
         NSLog(@"You noped");
-    } else {
+    }
+    else {
         NSLog(@"You liked");
     
         [_favArray addObject:[_frontCardView item]];
@@ -366,12 +374,38 @@ static const CGFloat ChoosePersonButtonVerticalPadding = 20.f;
             }
         }];
         
+       
+        
+        
+
         
         
         
         
         
+    }
+    numSwipes++;
+    [[NSUserDefaults standardUserDefaults] setInteger:numSwipes forKey:@"numSwipes"];
+    NSLog(@"num sqipes %i", numSwipes);
+    if(numSwipes >= 15 && [_favArray count] >= 1) {
         
+        int i = arc4random() % 7;
+        
+        if (i == 0)
+            [SupportKit track:@"Likes5"]; //Hello {{ firstName || fallback }}. I hope you found some great gift ideas. Have you been naughty or nice this year?
+        else if(i == 1)
+            [SupportKit track:@"likeToy"]; //What do you think was the most famous Christmas toy growing up?
+        else if (i == 2)
+            [SupportKit track:@"nickknack"]; //What would make a great gift for white elephant?
+        else if (i == 3)
+            [SupportKit track:@"SecretSanta"]; //What do you think is the best category for Secret Santa gifts?
+        else if (i == 4)
+            [SupportKit track:@"xbox"]; //Do you have or do you plan on getting the Xbox One? I am, I think it is better than the PS4.
+        else if (i == 5)
+            [SupportKit track:@"favoritepresent"]; //Do you remember your favorite Christmas present of all time?
+        else if (i == 6)
+            [SupportKit track:@"Vacation"];//Have you seen any items that would be useful for your next winter vacation?
+
     }
     [undoItems addObject:[_frontCardView item]];
     self.frontCardView = _backCardView;

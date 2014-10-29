@@ -156,7 +156,7 @@
     return [self.favArray count];
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    return 115.0f;
+    return 90.0f;
 }
 
 - (void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -198,9 +198,13 @@
     CGSize imageSizze = CGSizeMake([[[_favArray[indexPath.row] objectForKey:@"SmallImage"] objectForKey:@"Width"] floatValue], [[[_favArray[indexPath.row] objectForKey:@"SmallImage"] objectForKey:@"Height"] floatValue]);
     if([[[UIDevice currentDevice] systemVersion] doubleValue] >= 8.0) {
         
-        [imageView autoSetDimensionsToSize:imageSizze];
+//        [imageView autoSetDimensionsToSize:imageSizze];
 //        [imageView autoPinEdgeToSuperviewEdge:ALEdgeLeft withInset:11.0f];
-        [imageView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsMake(11.0f, 11.0f, 11.0f, 0) excludingEdge:ALEdgeRight];
+        cell.contentView.backgroundColor = ComplementaryFlatColorOf(FlatBlue);
+        [imageView autoSetDimension:ALDimensionWidth toSize:75.f];
+//        [imageView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsMake(11.0f, 11.0f, 11.0f, 0) excludingEdge:ALEdgeRight];
+        [imageView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero excludingEdge:ALEdgeRight];
+        imageView.backgroundColor = [UIColor whiteColor];
         imageView.contentMode = UIViewContentModeScaleAspectFit;
         //    label.backgroundColor = [UIColor grayColor];
         [label autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsMake(11, 0, 11, 11) excludingEdge:ALEdgeLeft];
@@ -208,8 +212,12 @@
     }
     else {
         
-        [imageView autoSetDimensionsToSize:imageSizze];
+        cell.contentView.backgroundColor = ComplementaryFlatColorOf(FlatBlue);
+        [imageView autoSetDimension:ALDimensionWidth toSize:75.f];
+        imageView.backgroundColor = [UIColor whiteColor];
+//        [imageView autoSetDimensionsToSize:imageSizze];
         [imageView autoPinEdgeToSuperviewEdge:ALEdgeLeft withInset:11.0f];
+        [imageView autoPinEdgeToSuperviewEdge:ALEdgeLeft withInset:0.0f];
         [imageView autoAlignAxisToSuperviewAxis:ALAxisHorizontal];
         imageView.contentMode = UIViewContentModeScaleAspectFit;
         //    label.backgroundColor = [UIColor grayColor];
@@ -224,13 +232,11 @@
 
 //    [label autoMatchDimension:ALDimensionWidth toDimension:ALDimensionWidth ofView:cell.contentView withMultiplier:(2/3.0f) relation:NSLayoutRelationLessThanOrEqual];
     
-    NSString *lText = [NSString stringWithFormat:@"%@\n%@",
+    NSString *price = [NSString stringWithFormat:@"\n%@", [[_favArray[indexPath.row] objectForKey:@"FormattedPrice"] objectForKey:@"text"]];
+    NSString *lText = [NSString stringWithFormat:@"%@%@",
                        [[_favArray[indexPath.row] objectForKey:@"Title"] objectForKey:@"text"],
-                       [[_favArray[indexPath.row] objectForKey:@"FormattedPrice"] objectForKey:@"text"]];
+                       price];
     label.attributedText = [[NSAttributedString alloc] initWithString:lText attributes:nil];
-    label.adjustsFontSizeToFitWidth;
-    label.sizeToFit;
-    
     return cell;
     
 }

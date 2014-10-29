@@ -58,6 +58,7 @@ static const CGFloat ChoosePersonViewImageLabelWidth = 42.f;
 //        [self.imageView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsMake(0.f, 0.f, 40.f, 0.f)];
 //        self.imageView.layer.cornerRadius = 5.f;
         self.imageView.layer.borderWidth = 2.f;
+        self.imageView.layer.cornerRadius = 5.f;
         self.imageView.layer.borderColor = [UIColor colorWith8BitRed:220.f green:220.f blue:220.f alpha:1.f].CGColor;
         self.item = dict;
         self.layer.borderColor = FlatBlackDark.CGColor;

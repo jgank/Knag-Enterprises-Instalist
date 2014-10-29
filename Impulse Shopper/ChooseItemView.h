@@ -25,11 +25,9 @@
 #import <UIKit/UIKit.h>
 #import <MDCSwipeToChoose/MDCSwipeToChoose.h>
 
-@class Person;
 
 @interface ChooseItemView : MDCSwipeToChooseView
 
-@property (nonatomic, strong, readonly) Person *person;
 @property (nonatomic, strong) NSDictionary *item;
 
 - (instancetype)initWithFrame:(CGRect)frame

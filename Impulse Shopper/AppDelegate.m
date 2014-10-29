@@ -16,7 +16,7 @@
 #import <Social/Social.h>
 #import <Accounts/Accounts.h>
 #import "Appirater.h"
-
+#import <SupportKit/SupportKit.h>
 
 @interface AppDelegate ()
 
@@ -43,12 +43,20 @@
     
     self.window.rootViewController = self.viewController;
     [self.window makeKeyAndVisible];
+    
+    [SupportKit initWithSettings:[SKTSettings settingsWithAppToken:@"cr6pj0hm9r6vm7ff1kgfhrv7l"]];
+
     [Appirater setAppId:@"437605857"];
     [Appirater setDaysUntilPrompt:1];
     [Appirater setUsesUntilPrompt:10];
     [Appirater setSignificantEventsUntilPrompt:-1];
     [Appirater setTimeBeforeReminding:2];
     [Appirater setDebug:YES];
+    
+    if([[NSUserDefaults standardUserDefaults] objectForKey:@"numSwipes"] == NULL) {
+        [[NSUserDefaults standardUserDefaults] setInteger:0 forKey:@"numSwipes"];
+    }
+    
     return YES;
 }
 

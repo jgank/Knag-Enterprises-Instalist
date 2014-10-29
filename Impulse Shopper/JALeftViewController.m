@@ -38,6 +38,7 @@
 #import <ChameleonFramework/Chameleon.h>
 #import "PureLayout.h"
 #import "Appirater.h"
+#import <SupportKit.h>
 
 @interface JALeftViewController () <MFMailComposeViewControllerDelegate>
 
@@ -76,23 +77,6 @@
     [button setTitle:@"Email List" forState:UIControlStateNormal];
     [button addTarget:self action:@selector(_emailTapped:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:button];
-    
-    
-//    button = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-//    button.frame = CGRectMake(20.0f, 170.0f, 200.0f, 40.0f);
-//    button.autoresizingMask = UIViewAutoresizingFlexibleRightMargin;
-//    [button setTitle:@"Facebook" forState:UIControlStateNormal];
-//    [button addTarget:self action:@selector(_changeCenterPanelTapped:) forControlEvents:UIControlEventTouchUpInside];
-//    [self.view addSubview:button];
-//    self.changeCenterPanel = button;
-//    
-//    FBLoginView *loginView = [[FBLoginView alloc] init];
-////    loginView.tooltipBehavior = FBLoginViewTooltipBehaviorForceDisplay;
-////    loginView.loginBehavior = FBSessionDefaultAudienceOnlyMe;
-////    loginView.loginBehavior = FBSessionDefaultAudienceEveryone;
-//    loginView.center = button.center;
-//    [self.view addSubview:loginView];
-
     
     button = [UIButton buttonWithType:UIButtonTypeCustom];
     button.imageView.tintColor = FlatWhite;
@@ -140,6 +124,27 @@
     [self.view addSubview:button];
     
     
+    
+    
+    button = [UIButton buttonWithType:UIButtonTypeCustom];
+    button.imageView.tintColor = FlatWhite;
+    img = [UIImage imageNamed:@"287-at"];
+    img = [img imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+    [button setImage:img forState:UIControlStateNormal];
+    [button setTitleColor:[UIColor colorWithContrastingBlackOrWhiteColorOn:FlatNavyBlueDark isFlat:YES] forState:UIControlStateNormal];
+    button.imageEdgeInsets = UIEdgeInsetsMake(0, 0, 0, img.size.width);
+    button.titleEdgeInsets = UIEdgeInsetsMake(0, img.size.width, 0, 0);
+    button.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
+    button.frame = CGRectMake(20.0f, 230.0f, 200.0f, 40.0f);
+    button.autoresizingMask = UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleBottomMargin;
+    [button setTitle:@"Chat with Creator" forState:UIControlStateNormal];
+    [button addTarget:self action:@selector(chat) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:button];
+//    [button autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:button withOffset:20.f];
+//    [button autoPinEdge:ALEdgeLeft toEdge:ALEdgeLeft ofView:_toyControl];
+//    [button autoPinEdgeToSuperviewEdge:ALEdgeRight];
+    
+    
     button = [UIButton buttonWithType:UIButtonTypeCustom];
     button.imageView.tintColor = FlatWhite;
     img = [UIImage imageNamed:@"215-subscription"];
@@ -149,25 +154,57 @@
     button.imageEdgeInsets = UIEdgeInsetsMake(0, 0, 0, img.size.width);
     button.titleEdgeInsets = UIEdgeInsetsMake(0, img.size.width, 0, 0);
     button.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
-    button.frame = CGRectMake(20.0f, 230.0f, 200.0f, 40.0f);
+    button.frame = CGRectMake(20.0f, 280.f, 200.0f, 40.0f);
     button.autoresizingMask = UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleBottomMargin;
     [button setTitle:@"Undo" forState:UIControlStateNormal];
     [button addTarget:self action:@selector(_undoTapped:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:button];
     
+    button = [UIButton buttonWithType:UIButtonTypeCustom];
+    button.imageView.tintColor = FlatWhite;
+    img = [UIImage imageNamed:@"28-star"];
+    img = [img imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+    [button setImage:img forState:UIControlStateNormal];
+    [button setTitleColor:[UIColor colorWithContrastingBlackOrWhiteColorOn:FlatNavyBlueDark isFlat:YES] forState:UIControlStateNormal];
+    button.imageEdgeInsets = UIEdgeInsetsMake(0, 0, 0, img.size.width);
+    button.titleEdgeInsets = UIEdgeInsetsMake(0, img.size.width, 0, 0);
+    button.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
+    button.frame = CGRectMake(20.0f, 330.0f, 200.0f, 40.0f);
+    button.autoresizingMask = UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleBottomMargin;
+    [button setTitle:@"Rate and Review" forState:UIControlStateNormal];
+    [button addTarget:self action:@selector(_review) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:button];
+//    [button autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:_toyControl withOffset:20.f];
+//    [button autoPinEdge:ALEdgeLeft toEdge:ALEdgeLeft ofView:_toyControl];
+//    [button autoPinEdgeToSuperviewEdge:ALEdgeRight];
     
+    button = [UIButton buttonWithType:UIButtonTypeCustom];
+    button.imageView.tintColor = FlatWhite;
+    img = [UIImage imageNamed:@"185-printer"];
+    img = [img imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+    [button setImage:img forState:UIControlStateNormal];
+    [button setTitleColor:[UIColor colorWithContrastingBlackOrWhiteColorOn:FlatNavyBlueDark isFlat:YES] forState:UIControlStateNormal];
+    button.imageEdgeInsets = UIEdgeInsetsMake(0, 0, 0, img.size.width);
+    button.titleEdgeInsets = UIEdgeInsetsMake(0, img.size.width, 0, 0);
+    button.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
+    button.frame = CGRectMake(20.0f, 380.0f, 200.0f, 40.0f);
+    button.autoresizingMask = UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleBottomMargin;
+    [button setTitle:@"Print" forState:UIControlStateNormal];
+    [button addTarget:self action:@selector(print) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:button];
     
-    
+//    [button autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:button withOffset:20.f];
+//    [button autoPinEdge:ALEdgeLeft toEdge:ALEdgeLeft ofView:_toyControl];
+//    [button autoPinEdgeToSuperviewEdge:ALEdgeRight];
     _maleControl = [[UISegmentedControl alloc] initWithItems:@[@"Men's", @"Women's", @"Both"]];
     _maleControl.tag = 5;
     [self.view addSubview:_maleControl];
     [_maleControl autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:button withOffset:20.f];
     [_maleControl autoPinEdge:ALEdgeLeft toEdge:ALEdgeLeft ofView:button];
-//    [_maleControl autoAlignAxis:ALAxisVertical toSameAxisOfView:button];
     [_maleControl setTintColor:FlatWhite];
     
     NSUserDefaults *stand = [NSUserDefaults standardUserDefaults];
-    if([stand boolForKey:@"male"] && [stand boolForKey:@"female"]) {
+    if([stand boolForKey:@"male"]) {
         [_maleControl setSelectedSegmentIndex:2];
     }
     else if([stand boolForKey:@"female"]) {
@@ -198,23 +235,10 @@
     [_toyControl addTarget:self action:@selector(segmentChange:) forControlEvents:UIControlEventValueChanged];
     
     
-    button = [UIButton buttonWithType:UIButtonTypeCustom];
-    button.imageView.tintColor = FlatWhite;
-    img = [UIImage imageNamed:@"28-star"];
-    img = [img imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
-    [button setImage:img forState:UIControlStateNormal];
-    [button setTitleColor:[UIColor colorWithContrastingBlackOrWhiteColorOn:FlatNavyBlueDark isFlat:YES] forState:UIControlStateNormal];
-    button.imageEdgeInsets = UIEdgeInsetsMake(0, 0, 0, img.size.width);
-    button.titleEdgeInsets = UIEdgeInsetsMake(0, img.size.width, 0, 0);
-    button.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
-    button.frame = CGRectMake(20.0f, 360.0f, 200.0f, 40.0f);
-    button.autoresizingMask = UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleBottomMargin;
-    [button setTitle:@"Rate and Review" forState:UIControlStateNormal];
-    [button addTarget:self action:@selector(_review) forControlEvents:UIControlEventTouchUpInside];
-    [self.view addSubview:button];
-    [button autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:_toyControl withOffset:20.f];
-    [button autoPinEdge:ALEdgeLeft toEdge:ALEdgeLeft ofView:_toyControl];
-    [button autoPinEdgeToSuperviewEdge:ALEdgeRight];
+    
+
+    
+    
     
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(appplicationIsActive:)
@@ -337,7 +361,6 @@
     
 }
 - (void)_postSMS:(id)sender {
-//    NSArray *arr = ((JACenterViewController*)self.sidePanelController.centerPanel).draggableView.favArray;
     NSArray *arr = ((ChooseItemViewController*)self.sidePanelController.centerPanel).favArray;
     if ([arr count] == 0) {
         [[[UIAlertView alloc] initWithTitle:@"Alert" message:@"Please favorite some items first" delegate:nil cancelButtonTitle:@"Okay" otherButtonTitles:nil] show];
@@ -348,7 +371,6 @@
         mailer.messageComposeDelegate = self;
         [mailer setSubject:@"Gift Wish List"];
         NSString *body = @"";
-//        NSArray *arr = ((JACenterViewController*)self.sidePanelController.centerPanel).draggableView.favArray;
         NSArray *arr = ((ChooseItemViewController*)self.sidePanelController.centerPanel).favArray;
         for (NSDictionary *d in arr) {
             body = [body stringByAppendingString:[NSString stringWithFormat:@"%@, %@, %@\n",
@@ -359,7 +381,6 @@
         body = [body stringByAppendingString:@"\n Created by iPhone Christmas List Creator"];
         body = [body stringByAppendingString:@"\n http://amazonchristmasiphone.duckdns.org/redirect.php"];
         
-//        NSLog(@"%@",body);
         [mailer setBody:body];
         [self presentViewController:mailer animated:YES completion:nil];
     }
@@ -469,6 +490,7 @@
             [connection addRequest:[FBRequest requestForPostStatusUpdate:message]
                  completionHandler:^(FBRequestConnection *innerConnection, id result, NSError *error) {
                      NSLog(@"post completetion");
+                     [SupportKit track:@"facebook"];//Thanks for the spreading your Christmas list! I'm happy to hear that you are enjoying my app and find it useful! Do you have any suggestions? Happy Holidays {{ firstName || fallback }}.
                      [self showAlert:message result:result error:error];
                      //                         self.buttonPostStatus.enabled = YES;
                  }];
@@ -513,6 +535,7 @@
                 [connection addRequest:[FBRequest requestForPostStatusUpdate:message]
                      completionHandler:^(FBRequestConnection *innerConnection, id result, NSError *error) {
                          NSLog(@"login complettion post");
+                         [SupportKit track:@"facebook"];//Thanks for the spreading your Christmas list! I'm happy to hear that you are enjoying my app and find it useful! Do you have any suggestions? Happy Holidays {{ firstName || fallback }}.
                          [self showAlert:message result:result error:error];
                          _fbLogin = NO;
                          //                         self.buttonPostStatus.enabled = YES;
@@ -533,6 +556,54 @@
 }
 -(void)_review {
     [Appirater rateApp];
+}
+-(void)print {
+    
+    
+    NSArray *arr = ((ChooseItemViewController*)self.sidePanelController.centerPanel).favArray;
+    if ([arr count] == 0) {
+        [[[UIAlertView alloc] initWithTitle:@"Alert" message:@"Please favorite some items first" delegate:nil cancelButtonTitle:@"Okay" otherButtonTitles:nil] show];
+        return;
+    }
+    NSString *body = @"";
+    for (NSDictionary *d in arr) {
+        body = [body stringByAppendingString:[NSString stringWithFormat:@"%@, %@, %@\n",
+                                              [[d objectForKey:@"Title"] objectForKey:@"text"],
+                                              [[d objectForKey:@"FormattedPrice"] objectForKey:@"text"],
+                                              [[d objectForKey:@"DetailPageURL"] objectForKey:@"text"]]];
+    }
+    body = [body stringByAppendingString:@"\n Created by iPhone Christmas List Creator"];
+    body = [body stringByAppendingString:@"\n http://amazonchristmasiphone.duckdns.org/redirect.php"];
+    
+    
+    
+    UIPrintInteractionController *pic = [UIPrintInteractionController sharedPrintController];
+    pic.delegate = self;
+    
+    UIPrintInfo *printInfo = [UIPrintInfo printInfo];
+    printInfo.outputType = UIPrintInfoOutputGeneral;
+    printInfo.jobName = @"Christmas Wish List";
+    pic.printInfo = printInfo;
+    
+    UISimpleTextPrintFormatter *textFormatter = [[UISimpleTextPrintFormatter alloc] initWithText:body];
+    textFormatter.startPage = 0;
+    textFormatter.contentInsets = UIEdgeInsetsMake(72.0, 72.0, 72.0, 72.0); // 1 inch margins
+    textFormatter.maximumContentWidth = 6 * 72.0;
+    pic.printFormatter = textFormatter;
+    pic.showsPageRange = YES;
+    
+    void (^completionHandler)(UIPrintInteractionController *, BOOL, NSError *) =
+    ^(UIPrintInteractionController *printController, BOOL completed, NSError *error) {
+        if (!completed && error) {
+            NSLog(@"Printing could not complete because of error: %@", error);
+        }
+    };
+    
+    [pic presentAnimated:YES completionHandler:completionHandler];
+//    [pic presentFromBarButtonItem:self.rightButton animated:YES completionHandler:completionHandler];
+}
+-(void)chat{
+    [SupportKit show];
 }
 // UIAlertView helper for post buttons
 - (void)showAlert:(NSString *)message
@@ -610,5 +681,45 @@
 - (void)applicationEnteredForeground:(NSNotification *)notification {
     NSLog(@"Application Entered Foreground");
 }
+- (UIViewController *)printInteractionControllerParentViewController:(UIPrintInteractionController *)printInteractionController {
+    
+    NSLog(@"print intereaction controller");
+    return nil;
+}
 
+- (UIPrintPaper *)printInteractionController:(UIPrintInteractionController *)printInteractionController choosePaper:(NSArray *)paperList {
+    NSLog(@"choose paper %@", paperList);
+    return [UIPrintPaper bestPaperForPageSize:CGSizeMake(612.f, 792.f) withPapersFromArray:paperList];
+}
+
+- (void)printInteractionControllerWillPresentPrinterOptions:(UIPrintInteractionController *)printInteractionController {
+    
+    NSLog(@"printer options");
+}
+- (void)printInteractionControllerDidPresentPrinterOptions:(UIPrintInteractionController *)printInteractionController {
+    NSLog(@"printer did present options");
+    
+}
+- (void)printInteractionControllerWillDismissPrinterOptions:(UIPrintInteractionController *)printInteractionController {
+    NSLog(@"will dismiss printer options");
+    
+}
+- (void)printInteractionControllerDidDismissPrinterOptions:(UIPrintInteractionController *)printInteractionController {
+    NSLog(@"did dimioss printer options");
+    
+}
+
+- (void)printInteractionControllerWillStartJob:(UIPrintInteractionController *)printInteractionController {
+    NSLog(@"printer jwill start job");
+    
+}
+- (void)printInteractionControllerDidFinishJob:(UIPrintInteractionController *)printInteractionController {
+    NSLog(@"printer did start job");
+    
+}
+
+- (CGFloat)printInteractionController:(UIPrintInteractionController *)printInteractionController cutLengthForPaper:(UIPrintPaper *)paper {
+    return 612.f;
+    
+}
 @end
