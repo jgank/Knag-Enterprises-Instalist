@@ -84,7 +84,6 @@ static const CGFloat ChoosePersonButtonVerticalPadding = 20.f;
         [menuButton setImage:[[UIImage imageNamed:@"group"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] forState:UIControlStateNormal];
         [menuButton addTarget:self action:@selector(showLeftPanel) forControlEvents:UIControlEventTouchUpInside];
         messageButton = [[UIButton alloc]initWithFrame:CGRectMake(self.view.frame.size.width-40-6, 26, 40, 40)];
-//        messageButton = [[UIButton alloc]initWithFrame:CGRectMake(self.view.frame.size.width-22-12, 26, 22, 28)];
         messageButton.imageView.contentMode = UIViewContentModeTopLeft;
         [messageButton setImage:[[UIImage imageNamed:@"185-printer"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] forState:UIControlStateNormal];
         [messageButton addTarget:self action:@selector(showRightPanel) forControlEvents:UIControlEventTouchUpInside];
@@ -98,7 +97,6 @@ static const CGFloat ChoosePersonButtonVerticalPadding = 20.f;
         
         titleLabel.numberOfLines = 0;
         titleLabel.font = [UIFont systemFontOfSize:12];
-//        titleLabel.sizeToFit;
         titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
         titleLabel.textAlignment = NSTextAlignmentCenter;
         UIView *menView = [UIView newAutoLayoutView];
@@ -108,31 +106,12 @@ static const CGFloat ChoosePersonButtonVerticalPadding = 20.f;
         img = [img imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
         [undoButton setImage:img forState:UIControlStateNormal];
         [undoButton addTarget:self action:@selector(undoPressed) forControlEvents:UIControlEventTouchUpInside];
-        
-//        UIImage *image = [UIImage imageNamed:@"215-subscription"];
-//        image = [image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
-//        
-//        UIImageView *imageView = [[UIImageView alloc] initWithFrame:...];
-//        imageView.tintColor = [UIColor colorWithRed:0.35f green:0.85f blue:0.91f alpha:1];
-//        imageView.image = image;
-        
-        
-//        [self imageNamed:@"215-subscription" withColor:[UIColor colorWithContrastingBlackOrWhiteColorOn:FlatMintDark isFlat:YES]];
-//        
-//        [UIColor colorWithContrastingBlackOrWhiteColorOn:FlatMintDark isFlat:YES];
-        
-        
-        
-        
-        
         [self.view addSubview:undoButton];
         [self.view addSubview:menView];
         [self.view addSubview:menuButton];
         [self.view addSubview:messageButton];
         [self.view addSubview:titleLabel];
-        
         [titleLabel autoPinEdgeToSuperviewEdge:ALEdgeTop withInset:25.0f];
-//        [titleLabel autoAlignAxis:ALAxisFirstBaseline toSameAxisOfView:menuButton];
         [titleLabel autoPinEdge:ALEdgeLeft toEdge:ALEdgeRight ofView:menuButton withOffset:3.0f];
         [titleLabel autoPinEdge:ALEdgeRight toEdge:ALEdgeLeft ofView:messageButton withOffset:-3.0f];
         [titleLabel autoSetDimension:ALDimensionHeight toSize:42.0f relation:NSLayoutRelationEqual];
@@ -141,9 +120,6 @@ static const CGFloat ChoosePersonButtonVerticalPadding = 20.f;
         if (!arrayFromFile)
             arrayFromFile = [[NSArray alloc] init];
         self.favArray = [[NSMutableArray alloc] initWithArray:arrayFromFile];
-//        [self sendFav:_favArray];
-//        self.view.backgroundColor = [UIColor whiteColor];
-//        self.view.backgroundColor = [UIColor flatSkyBlueColorDark];
         self.view.backgroundColor = ComplementaryFlatColorOf(FlatWhite);
         titleLabel.backgroundColor = FlatMintDark;
         titleLabel.textColor = ComplementaryFlatColorOf(FlatMintDark);
@@ -156,8 +132,6 @@ static const CGFloat ChoosePersonButtonVerticalPadding = 20.f;
         
         messageButton.backgroundColor = FlatMintDark;
         menuButton.backgroundColor = FlatMintDark;
-//        messageButton.imageView.tintColor = ComplementaryFlatColorOf(FlatMintDark);
-//        menuButton.imageView.tintColor = ComplementaryFlatColorOf(FlatMintDark);
         messageButton.imageView.tintColor = ComplementaryFlatColorOf(FlatMintDark);
         menuButton.imageView.tintColor = ComplementaryFlatColorOf(FlatMintDark);
         
@@ -191,21 +165,15 @@ static const CGFloat ChoosePersonButtonVerticalPadding = 20.f;
     // the MDCSwipeToChooseDelegate protocol methods to update the front and
     // back views after each user swipe.
     self.backCardView = [self popItemViewWithFrame:[self backCardViewFrame] neutral:YES];
-    self.backCardView.layer.zPosition = 10;
     [self.view addSubview:self.backCardView];
     self.frontCardView = [self popItemViewWithFrame:[self frontCardViewFrame] neutral:YES];
-    self.frontCardView.layer.zPosition = 11;
     [self.view insertSubview:self.frontCardView aboveSubview:self.backCardView];
 
     // Add buttons to programmatically swipe the view left or right.
     // See the `nopeFrontCardView` and `likeFrontCardView` methods.
     NSLog(@"dict");
     
-    if([[NSUserDefaults standardUserDefaults] objectForKey:@"firstRun"] == NULL) {
-        UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Gender:" message:@"For showing appropriate gift" delegate:self cancelButtonTitle:@"Female" otherButtonTitles:@"Male", nil];
-        [av setTag:1];
-        [av show];
-    }
+    
     NSDateFormatter* dateFormatter = [[NSDateFormatter alloc] init];
     [dateFormatter setDateFormat:@"yyyy-MM-dd"];
     NSString *dateString = [dateFormatter stringFromDate:[NSDate date]];
@@ -218,15 +186,62 @@ static const CGFloat ChoosePersonButtonVerticalPadding = 20.f;
                                         repeats:NO];
     }
     manager = [AFHTTPRequestOperationManager manager];
-//    AFHTTPResponseSerializer * responseSerializer = [AFHTTPResponseSerializer serializer];
-//    responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"text/xml", @"application/json", @"text/json", @"text/javascript", @"text/html", nil];
 //    manager.responseSerializer = responseSerializer;
     manager.requestSerializer = [AFJSONRequestSerializer serializer];
     manager.responseSerializer = [AFJSONResponseSerializer serializer];
 }
+-(void)toyAlert {
+    
+}
 -(void) viewDidAppear:(BOOL)animated {
     titleLabel.text = [[[self.frontCardView item] objectForKey:@"Title"] objectForKey:@"text"];
     catLabel.text = [[[self.frontCardView item] objectForKey:@"Category"] objectForKey:@"text"];
+    if([[NSUserDefaults standardUserDefaults] objectForKey:@"firstRun"] == NULL) {
+        
+            UIAlertController *toysController = [UIAlertController alertControllerWithTitle:@"Show Toys?" message:@"Would you like to see toys as gift ideas?" preferredStyle:UIAlertControllerStyleAlert];
+            UIAlertAction *yToy = [UIAlertAction actionWithTitle:@"Yes" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+                [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"toys"];
+                [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"onlytoys"];
+                [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"firstRun"];
+            }];
+            UIAlertAction *nToy = [UIAlertAction actionWithTitle:@"No" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+                [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"toys"];
+                [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"onlytoys"];
+                [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"firstRun"];
+            }];
+            UIAlertAction *bToy = [UIAlertAction actionWithTitle:@"Only Show Toys" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+                [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"toys"];
+                [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"onlytoys"];
+                [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"firstRun"];
+            }];
+            [toysController addAction:yToy];
+            [toysController addAction:nToy];
+            [toysController addAction:bToy];
+        
+        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"Gender:" message:@"For showing appropriate gifts" preferredStyle:UIAlertControllerStyleAlert];
+        UIAlertAction *yesAct = [UIAlertAction actionWithTitle:@"Men's" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+            [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"male"];
+            [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"female"];
+            [self.sidePanelController presentViewController:toysController animated:YES completion:^{ }];
+        }];
+        UIAlertAction *canAct = [UIAlertAction actionWithTitle:@"Womens's" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+            [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"male"];
+            [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"female"];
+            [self.sidePanelController presentViewController:toysController animated:YES completion:^{ }];
+        }];
+        UIAlertAction *bothAct = [UIAlertAction actionWithTitle:@"Both" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+            [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"male"];
+            [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"female"];
+            [self.sidePanelController presentViewController:toysController animated:YES completion:^{ }];
+        }];
+        [alertController addAction:yesAct];
+        [alertController addAction:canAct];
+        [alertController addAction:bothAct];
+        [self.sidePanelController presentViewController:alertController animated:YES completion:^{
+        }];
+        
+    }
+ 
 }
 
 - (NSUInteger)supportedInterfaceOrientations {
@@ -255,6 +270,7 @@ static const CGFloat ChoosePersonButtonVerticalPadding = 20.f;
     
     op.outputStream = [NSOutputStream outputStreamToFileAtPath:[documentsDirectory stringByAppendingPathComponent:@"net.xml"] append:NO];
 }
+
 #pragma mark - MDCSwipeToChooseDelegate Protocol Methods
 
 // This is called when a user didn't fully swipe left or right.
@@ -263,8 +279,6 @@ static const CGFloat ChoosePersonButtonVerticalPadding = 20.f;
 
 // This is called then a user swipes the view fully left or right.
 - (void)view:(UIView *)view wasChosenWithDirection:(MDCSwipeDirection)direction {
-    // MDCSwipeToChooseView shows "NOPE" on swipes to the left,
-    // and "LIKED" on swipes to the right.
     if (direction == MDCSwipeDirectionLeft) {
         NSLog(@"You noped");
     } else {
@@ -272,13 +286,10 @@ static const CGFloat ChoosePersonButtonVerticalPadding = 20.f;
     
         [_favArray addObject:[_frontCardView item]];
         [_favArray writeToFile:arrayPath atomically:YES];
-//        [self sendFav:_favArray];
         
-        NSDictionary *item = [_frontCardView item];
         NSString *urlEsc = [[[[_frontCardView item] objectForKey:@"DetailPageURL"] objectForKey:@"text"] stringByRemovingPercentEncoding];
         NSString *urlEsc1 = [[[_frontCardView item] objectForKey:@"DetailPageURL"] objectForKey:@"text"];
      
-//        urlEsc = [NSString stringWithFormat:@"https://www.googleapis.com/urlshortener/v1/url?shortUrl=%@", urlEsc];
         NSLog(@"%@", urlEsc);
         
         
@@ -286,7 +297,6 @@ static const CGFloat ChoosePersonButtonVerticalPadding = 20.f;
             NSLog(@"short url %@", shortenedURL.absoluteString);
             NSLog(@"error %@", [error description]);
             if(!error) {
-//                [[[_favArray lastObject] objectForKey:@"DetailPageURL"] setObject:shortenedURL.absoluteString forKey:@"text"];
                 for (id i in _favArray) {
                     if ([i[@"DetailPageURL"][@"text"] isEqualToString:urlEsc1]) {
                         i[@"DetailPageURL"][@"text"] = shortenedURL.absoluteString;
@@ -296,7 +306,6 @@ static const CGFloat ChoosePersonButtonVerticalPadding = 20.f;
                 }
             }
             else {
-                
                 [manager POST:@"https://www.googleapis.com/urlshortener/v1/url"
                                                 parameters:@{@"longUrl":urlEsc1}
                                                    success:^(AFHTTPRequestOperation *operation, id responseObject) {
@@ -312,7 +321,6 @@ static const CGFloat ChoosePersonButtonVerticalPadding = 20.f;
                                                    }
                                                    failure:^(AFHTTPRequestOperation *operation, NSError *error) {
                                                        NSLog(@"Error: %@", error);
-                                                       NSLog(operation.responseString);
                                                    }];
             }
         }];
@@ -325,12 +333,7 @@ static const CGFloat ChoosePersonButtonVerticalPadding = 20.f;
         
     }
     [undoItems addObject:[_frontCardView item]];
-    // MDCSwipeToChooseView removes the view from the view hierarchy
-    // after it is swiped (this behavior can be customized via the
-    // MDCSwipeOptions class). Since the front card view is gone, we
-    // move the back card to the front, and create a new back card.
-    self.frontCardView = self.backCardView;
-    self.frontCardView.layer.zPosition = 11;
+    self.frontCardView = _backCardView;
     if ((self.backCardView = [self popItemViewWithFrame:[self backCardViewFrame] neutral:NO])) {
         // Fade the back card into view.
         self.backCardView.alpha = 0.f;
@@ -351,6 +354,13 @@ static const CGFloat ChoosePersonButtonVerticalPadding = 20.f;
     // Keep track of the person currently being chosen.
     // Quick and dirty, just for the purposes of this sample app.
     _frontCardView = frontCardView;
+    _frontCardView.layer.zPosition = 11;
+}
+- (void)setBackCardView:(ChooseItemView *)backCardView {
+    // Keep track of the person currently being chosen.
+    // Quick and dirty, just for the purposes of this sample app.
+    _backCardView = backCardView;
+    _backCardView.layer.zPosition = 10;
 }
 
 - (ChooseItemView *)popItemViewWithFrame:(CGRect)frame neutral:(BOOL)n{
@@ -371,19 +381,6 @@ static const CGFloat ChoosePersonButtonVerticalPadding = 20.f;
     };
     while (1) {
         cardsLoadedIndex = arc4random() % [_items count];
-        
-//        break;
-        
-//        if([[NSUserDefaults standardUserDefaults] objectForKey:@"toys"] == NULL &&
-//           [[[_items[cardsLoadedIndex] objectForKey:@"Category"] objectForKey:@"text"] isEqualToString:@"Toys"] &&
-//                ([[[_items[cardsLoadedIndex] objectForKey:@"Sex"] objectForKey:@"text"] isEqualToString:@"boys"] ||
-//                 ([[[_items[cardsLoadedIndex] objectForKey:@"Sex"] objectForKey:@"text"] isEqualToString:@"girls"] &&
-//                  [[NSUserDefaults standardUserDefaults] boolForKey:@"female"] == YES)))
-//            break;
-//        else if([[NSUserDefaults standardUserDefaults] objectForKey:@"toys"] == [NSNull null] &&
-//                       ![[[_items[cardsLoadedIndex] objectForKey:@"Category"] objectForKey:@"text"] isEqualToString:@"Toys"])
-//            continue;
-        
         if([[NSUserDefaults standardUserDefaults] boolForKey:@"onlytoys"] == YES &&
            ![[[_items[cardsLoadedIndex] objectForKey:@"ProductGroup"] objectForKey:@"text"] isEqualToString:@"Toy"])
             continue;
@@ -509,9 +506,8 @@ static const CGFloat ChoosePersonButtonVerticalPadding = 20.f;
     
     if ([undoItems count] == 0)
         return;
-    self.backCardView = self.frontCardView;
+    self.backCardView = _frontCardView;
     self.backCardView.frame = [self backCardViewFrame];
-    self.backCardView.layer.zPosition = 10;
     MDCSwipeToChooseViewOptions *options = [MDCSwipeToChooseViewOptions new];
     options.delegate = self;
     options.threshold = 160.f;
@@ -525,7 +521,6 @@ static const CGFloat ChoosePersonButtonVerticalPadding = 20.f;
     ChooseItemView *personView = [[ChooseItemView alloc] initWithFrame:[self frontCardViewFrame]
                                                                    options:options dict:[undoItems lastObject]];
     self.frontCardView = personView;
-    self.frontCardView.layer.zPosition = 11;
     [self.view insertSubview:self.frontCardView aboveSubview:self.backCardView];
     
 //    DraggableView *d = [self createDraggableViewWithDataAtIndex:0];
@@ -565,27 +560,44 @@ static const CGFloat ChoosePersonButtonVerticalPadding = 20.f;
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
     if(alertView.tag == 1) {
         if (buttonIndex == 0) {
-            NSLog(@"female selected");
-            [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"male"];
+            NSLog(@"both");
+            [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"male"];
             [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"female"];
         }
-        else {
+        else if (buttonIndex == 1){
+            NSLog(@"male");
             [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"male"];
             [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"female"];
         }
-        UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Show Toys?" message:@"Would you like to see toys as gift ideas?" delegate:self cancelButtonTitle:@"Yes" otherButtonTitles:@"No", nil];
+        else if (buttonIndex == 2) {
+            NSLog(@"female");
+            [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"male"];
+            [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"female"];
+            
+        }
+    
+        [self toyAlert];
+        return;
+        UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Show Toys?" message:@"Would you like to see toys as gift ideas?" delegate:self cancelButtonTitle:@"Only Toys" otherButtonTitles:@"Yes", @"No", nil];
         [av setTag:2];
         [av show];
     }
-    else if(alertView.tag == 2) {
+    else if (alertView.tag == 2) {
         if (buttonIndex == 0) {
             NSLog(@"female selected");
             [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"toys"];
+            [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"onlytoys"];
+        }
+        else if (buttonIndex == 1){
+            NSLog(@"male");
+            [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"toys"];
             [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"onlytoys"];
         }
-        else {
+        else if (buttonIndex == 2) {
+            NSLog(@"female");
             [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"toys"];
             [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"onlytoys"];
+            
         }
         [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"firstRun"];
         

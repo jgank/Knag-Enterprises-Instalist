@@ -54,6 +54,7 @@
 		EFEE5C6219E4A98A009BD5D2 /* ALView+PureLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = EFEE5C5A19E4A98A009BD5D2 /* ALView+PureLayout.m */; };
 		EFEE5C6319E4A98A009BD5D2 /* NSArray+PureLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = EFEE5C5C19E4A98A009BD5D2 /* NSArray+PureLayout.m */; };
 		EFEE5C6419E4A98A009BD5D2 /* NSLayoutConstraint+PureLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = EFEE5C5E19E4A98A009BD5D2 /* NSLayoutConstraint+PureLayout.m */; };
+		EFEF512C1A0107F200F9C3B9 /* UIColor+MDCRGB8Bit.m in Sources */ = {isa = PBXBuildFile; fileRef = EFEF512B1A0107F200F9C3B9 /* UIColor+MDCRGB8Bit.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -146,6 +147,8 @@
 		EFEE5C5F19E4A98A009BD5D2 /* PureLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PureLayout.h; sourceTree = "<group>"; };
 		EFEE5C6019E4A98A009BD5D2 /* PureLayout+Internal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "PureLayout+Internal.h"; sourceTree = "<group>"; };
 		EFEE5C6119E4A98A009BD5D2 /* PureLayoutDefines.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PureLayoutDefines.h; sourceTree = "<group>"; };
+		EFEF512A1A0107F200F9C3B9 /* UIColor+MDCRGB8Bit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UIColor+MDCRGB8Bit.h"; path = "../Pods/MDCSwipeToChoose/MDCSwipeToChoose/Internal/UIColor+MDCRGB8Bit.h"; sourceTree = "<group>"; };
+		EFEF512B1A0107F200F9C3B9 /* UIColor+MDCRGB8Bit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UIColor+MDCRGB8Bit.m"; path = "../Pods/MDCSwipeToChoose/MDCSwipeToChoose/Internal/UIColor+MDCRGB8Bit.m"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -261,6 +264,8 @@
 				EFDEAE0219FEE8B700D58BFD /* ChooseItemViewController.m */,
 				EFAD358A1A00880800CBA5DF /* InsetLabel.h */,
 				EFAD358B1A00880800CBA5DF /* InsetLabel.m */,
+				EFEF512A1A0107F200F9C3B9 /* UIColor+MDCRGB8Bit.h */,
+				EFEF512B1A0107F200F9C3B9 /* UIColor+MDCRGB8Bit.m */,
 				EF3E89DA1A0038FB00EA9985 /* 179-notepad.svg */,
 				52CCC66319AE90FD00464A46 /* Images.xcassets */,
 				52CCC65A19AE90FD00464A46 /* Impulse_Shopper.xcdatamodeld */,
@@ -476,6 +481,7 @@
 				52CCC65619AE90FD00464A46 /* main.m in Sources */,
 				52CCC68419AE920700464A46 /* UIViewController+JASidePanel.m in Sources */,
 				EF86F90819BEE84A0023A507 /* OverlayView.m in Sources */,
+				EFEF512C1A0107F200F9C3B9 /* UIColor+MDCRGB8Bit.m in Sources */,
 				EF86F90719BEE84A0023A507 /* DraggableView.m in Sources */,
 				EFEE5C5419E47B18009BD5D2 /* XMLReader.m in Sources */,
 				52CCC65F19AE90FD00464A46 /* ViewController.m in Sources */,

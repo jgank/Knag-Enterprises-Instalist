@@ -24,8 +24,10 @@
 
 #import "ChooseItemView.h"
 #import "ImageLabelView.h"
-#import "Person.h"
+#import "PureLayout.h"
 #import <SDWebImage/UIImageView+WebCache.h>
+#import <ChameleonFramework/Chameleon.h>
+#import "UIColor+MDCRGB8Bit.h"
 static const CGFloat ChoosePersonViewImageLabelWidth = 42.f;
 
 @interface ChooseItemView ()
@@ -53,7 +55,12 @@ static const CGFloat ChoosePersonViewImageLabelWidth = 42.f;
         self.imageView.contentMode = UIViewContentModeScaleAspectFit;
         self.backgroundColor = [UIColor whiteColor];
         self.imageView.frame = CGRectMake(self.imageView.bounds.origin.x, self.imageView.bounds.origin.y, self.imageView.bounds.size.width, self.imageView.bounds.size.height - 40.0f);
+//        [self.imageView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsMake(0.f, 0.f, 40.f, 0.f)];
+//        self.imageView.layer.cornerRadius = 5.f;
+        self.imageView.layer.borderWidth = 2.f;
+        self.imageView.layer.borderColor = [UIColor colorWith8BitRed:220.f green:220.f blue:220.f alpha:1.f].CGColor;
         self.item = dict;
+        self.layer.borderColor = FlatBlackDark.CGColor;
 
         [self constructInformationView];
     }
@@ -89,12 +96,19 @@ static const CGFloat ChoosePersonViewImageLabelWidth = 42.f;
                               topPadding,
                               floorf(CGRectGetWidth(_informationView.frame)),
                               CGRectGetHeight(_informationView.frame) - topPadding);
-    _nameLabel = [[UILabel alloc] initWithFrame:frame];
+//    _nameLabel = [[UILabel alloc] initWithFrame:frame];
+    _nameLabel = [UILabel newAutoLayoutView];
+    
     if([[_item objectForKey:@"FormattedPrice"] objectForKey:@"text"] != NULL) {
         _nameLabel.text = [NSString stringWithFormat:@"%@", [[_item objectForKey:@"FormattedPrice"] objectForKey:@"text"]];
     }
+    _nameLabel.layer.cornerRadius = 2.f;
+    _nameLabel.backgroundColor = [UIColor colorWith8BitRed:220.f green:220.f blue:220.f alpha:1.f];
+    _nameLabel.textColor = FlatBlackDark;
     _nameLabel.textAlignment = NSTextAlignmentCenter;
     [_informationView addSubview:_nameLabel];
+    [_nameLabel autoSetDimension:ALDimensionHeight toSize:40.f];
+    [_nameLabel autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsMake(0, 2, 2, 2) excludingEdge:ALEdgeTop];
 }
 
 - (void)constructCameraImageLabelView {

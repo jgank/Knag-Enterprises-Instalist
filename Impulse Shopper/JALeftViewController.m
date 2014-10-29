@@ -37,6 +37,7 @@
 #import "ChooseItemViewController.h"
 #import <ChameleonFramework/Chameleon.h>
 #import "PureLayout.h"
+#import "Appirater.h"
 
 @interface JALeftViewController () <MFMailComposeViewControllerDelegate>
 
@@ -70,7 +71,7 @@
     button.imageEdgeInsets = UIEdgeInsetsMake(0, 0, 0, img.size.width);
     button.titleEdgeInsets = UIEdgeInsetsMake(0, img.size.width, 0, 0);
     button.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
-    button.frame = CGRectMake(20.0f, 70.0f, 200.0f, 40.0f);
+    button.frame = CGRectMake(20.0f, 30.0f, 200.0f, 40.0f);
     button.autoresizingMask = UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleBottomMargin;
     [button setTitle:@"Email List" forState:UIControlStateNormal];
     [button addTarget:self action:@selector(_emailTapped:) forControlEvents:UIControlEventTouchUpInside];
@@ -92,20 +93,6 @@
 //    loginView.center = button.center;
 //    [self.view addSubview:loginView];
 
-    button = [UIButton buttonWithType:UIButtonTypeCustom];
-    button.imageView.tintColor = FlatWhite;
-    img = [UIImage imageNamed:@"208-facebook"];
-    img = [img imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
-    [button setTitleColor:[UIColor colorWithContrastingBlackOrWhiteColorOn:FlatNavyBlueDark isFlat:YES] forState:UIControlStateNormal];
-    [button setImage:img forState:UIControlStateNormal];
-    button.imageEdgeInsets = UIEdgeInsetsMake(0, 0, 0, img.size.width);
-    button.titleEdgeInsets = UIEdgeInsetsMake(0, img.size.width, 0, 0);
-    button.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
-    button.frame = CGRectMake(20.0f, 170.0f, 200.0f, 40.0f);
-    button.autoresizingMask = UIViewAutoresizingFlexibleRightMargin;
-    [button setTitle:@"Post to Facebook" forState:UIControlStateNormal];
-    [button addTarget:self action:@selector(_postToFacebook:) forControlEvents:UIControlEventTouchUpInside];
-    [self.view addSubview:button];
     
     button = [UIButton buttonWithType:UIButtonTypeCustom];
     button.imageView.tintColor = FlatWhite;
@@ -116,12 +103,26 @@
     button.imageEdgeInsets = UIEdgeInsetsMake(0, 0, 0, img.size.width);
     button.titleEdgeInsets = UIEdgeInsetsMake(0, img.size.width, 0, 0);
     button.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
-    button.frame = CGRectMake(20.0f, 120.0f, 200.0f, 40.0f);
+    button.frame = CGRectMake(20.0f, 80.0f, 200.0f, 40.0f);
     button.autoresizingMask = UIViewAutoresizingFlexibleRightMargin;
     [button setTitle:@"SMS  Message" forState:UIControlStateNormal];
     [button addTarget:self action:@selector(_postSMS:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:button];
     
+    button = [UIButton buttonWithType:UIButtonTypeCustom];
+    button.imageView.tintColor = FlatWhite;
+    img = [UIImage imageNamed:@"208-facebook"];
+    img = [img imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+    [button setTitleColor:[UIColor colorWithContrastingBlackOrWhiteColorOn:FlatNavyBlueDark isFlat:YES] forState:UIControlStateNormal];
+    [button setImage:img forState:UIControlStateNormal];
+    button.imageEdgeInsets = UIEdgeInsetsMake(0, 0, 0, img.size.width);
+    button.titleEdgeInsets = UIEdgeInsetsMake(0, img.size.width, 0, 0);
+    button.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
+    button.frame = CGRectMake(20.0f, 130.0f, 200.0f, 40.0f);
+    button.autoresizingMask = UIViewAutoresizingFlexibleRightMargin;
+    [button setTitle:@"Post to Facebook" forState:UIControlStateNormal];
+    [button addTarget:self action:@selector(_postToFacebook:) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:button];
     
     button = [UIButton buttonWithType:UIButtonTypeCustom];
     button.imageView.tintColor = FlatWhite;
@@ -132,7 +133,7 @@
     button.imageEdgeInsets = UIEdgeInsetsMake(0, 0, 0, img.size.width);
     button.titleEdgeInsets = UIEdgeInsetsMake(0, img.size.width, 0, 0);
     button.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
-    button.frame = CGRectMake(20.0f, 220.0f, 200.0f, 40.0f);
+    button.frame = CGRectMake(20.0f, 180.0f, 200.0f, 40.0f);
     button.autoresizingMask = UIViewAutoresizingFlexibleRightMargin;
     [button setTitle:@"View Wish List" forState:UIControlStateNormal];
     [button addTarget:self action:@selector(_viewWishList:) forControlEvents:UIControlEventTouchUpInside];
@@ -148,7 +149,7 @@
     button.imageEdgeInsets = UIEdgeInsetsMake(0, 0, 0, img.size.width);
     button.titleEdgeInsets = UIEdgeInsetsMake(0, img.size.width, 0, 0);
     button.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
-    button.frame = CGRectMake(20.0f, 270.0f, 200.0f, 40.0f);
+    button.frame = CGRectMake(20.0f, 230.0f, 200.0f, 40.0f);
     button.autoresizingMask = UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleBottomMargin;
     [button setTitle:@"Undo" forState:UIControlStateNormal];
     [button addTarget:self action:@selector(_undoTapped:) forControlEvents:UIControlEventTouchUpInside];
@@ -161,7 +162,8 @@
     _maleControl.tag = 5;
     [self.view addSubview:_maleControl];
     [_maleControl autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:button withOffset:20.f];
-    [_maleControl autoAlignAxis:ALAxisVertical toSameAxisOfView:button];
+    [_maleControl autoPinEdge:ALEdgeLeft toEdge:ALEdgeLeft ofView:button];
+//    [_maleControl autoAlignAxis:ALAxisVertical toSameAxisOfView:button];
     [_maleControl setTintColor:FlatWhite];
     
     NSUserDefaults *stand = [NSUserDefaults standardUserDefaults];
@@ -171,7 +173,7 @@
     else if([stand boolForKey:@"female"]) {
         [_maleControl setSelectedSegmentIndex:1];
     }
-    else if([stand boolForKey:@"male"]) {
+    else if([stand boolForKey:@"male"] && [stand boolForKey:@"female"]) {
         [_maleControl setSelectedSegmentIndex:0];
     }
     [_maleControl addTarget:self action:@selector(segmentChange:) forControlEvents:UIControlEventValueChanged];
@@ -181,23 +183,38 @@
     _toyControl.tag = 6;
     [self.view addSubview:_toyControl];
     [_toyControl autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:_maleControl withOffset:20.f];
-    [_toyControl autoAlignAxis:ALAxisVertical toSameAxisOfView:_maleControl];
+    [_toyControl autoPinEdge:ALEdgeLeft toEdge:ALEdgeLeft ofView:button];
     [_toyControl setTintColor:FlatWhite];
     
-    if([stand boolForKey:@"toys"]) {
+    if([stand boolForKey:@"toys"] == YES) {
         [_toyControl setSelectedSegmentIndex:0];
     }
     else if([stand boolForKey:@"toys"] == NO) {
         [_toyControl setSelectedSegmentIndex:1];
     }
-    else if([stand objectForKey:@"toys"] == [NSNull null]) {
+    else if([stand boolForKey:@"onlytoys"] == YES) {
         [_toyControl setSelectedSegmentIndex:2];
     }
     [_toyControl addTarget:self action:@selector(segmentChange:) forControlEvents:UIControlEventValueChanged];
     
     
-    
-    
+    button = [UIButton buttonWithType:UIButtonTypeCustom];
+    button.imageView.tintColor = FlatWhite;
+    img = [UIImage imageNamed:@"28-star"];
+    img = [img imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+    [button setImage:img forState:UIControlStateNormal];
+    [button setTitleColor:[UIColor colorWithContrastingBlackOrWhiteColorOn:FlatNavyBlueDark isFlat:YES] forState:UIControlStateNormal];
+    button.imageEdgeInsets = UIEdgeInsetsMake(0, 0, 0, img.size.width);
+    button.titleEdgeInsets = UIEdgeInsetsMake(0, img.size.width, 0, 0);
+    button.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
+    button.frame = CGRectMake(20.0f, 360.0f, 200.0f, 40.0f);
+    button.autoresizingMask = UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleBottomMargin;
+    [button setTitle:@"Rate and Review" forState:UIControlStateNormal];
+    [button addTarget:self action:@selector(_review) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:button];
+    [button autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:_toyControl withOffset:20.f];
+    [button autoPinEdge:ALEdgeLeft toEdge:ALEdgeLeft ofView:_toyControl];
+    [button autoPinEdgeToSuperviewEdge:ALEdgeRight];
     
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(appplicationIsActive:)
@@ -513,6 +530,9 @@
 }
 - (void)_viewWishList:(id)sender {
     [self.sidePanelController showRightPanelAnimated:YES];
+}
+-(void)_review {
+    [Appirater rateApp];
 }
 // UIAlertView helper for post buttons
 - (void)showAlert:(NSString *)message
