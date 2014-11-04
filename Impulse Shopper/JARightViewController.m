@@ -53,7 +53,7 @@
     
     UIBarButtonItem *flexSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:self action:nil];
     
-    
+        
  
     
     UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0.0 , 11.0f, self.view.frame.size.width, 21.0f)];
@@ -70,14 +70,18 @@
     
     UIBarButtonItem *trash = [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemTrash target:self action:@selector(trash)];
     
+    
     [self.toolBar setItems:[NSArray arrayWithObjects:_backButton, _menuButton, flexSpace, trash, _editButton, nil]];
     [self.toolBar addSubview: titleLabel];
     [self.view addSubview:_toolBar];
     
-//    [_toolBar setTintColor:[UIColor blueColor]];
+    _toolBar.layer.borderColor = [UIColor clearColor].CGColor;
+    _toolBar.layer.borderWidth = 1;
+    [_toolBar setTintColor:[UIColor clearColor]];
     _toolBar.barTintColor = FlatBlue;
 //    _toolBar.tintColor = ComplementaryFlatColorOf(FlatBlue);
     _toolBar.tintColor = ComplementaryFlatColorOf(FlatWhite);
+//    _toolBar.backgroundColor = [UIColor clearColor];
     _toolBar.backgroundColor = FlatBlue;
     
     
@@ -94,13 +98,19 @@
     [self.view addSubview:self.tableView];
     [_tableView autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:_toolBar];
     [_tableView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero excludingEdge:ALEdgeTop];
-    
-    
-    self.label.hidden = YES;
+    self.navigationController.toolbar.clipsToBounds = YES;
+ 
+    for (UIView *subView in [_toolBar subviews]) {
+            subView.backgroundColor = [UIColor clearColor];
+    }
     self.removeRightPanel.hidden = YES;
     self.addRightPanel.hidden = YES;
     self.changeCenterPanel.hidden = YES;
     
+//    UIView *lv = [[UIView alloc] initWithFrame:CGRectMake(0.f, 0.f, self.view.frame.size.width, self.view.frame.size.height + 20.f)];
+//    lv.backgroundColor = FlatBlue;
+//    [self.view addSubview:lv];
+//    lv.layer.zPosition = -1;
     
     if(!_favArray ) {
         ChooseItemViewController *cPanel = (ChooseItemViewController*) self.sidePanelController.centerPanel;
@@ -136,26 +146,8 @@
     _tableView.editing = !_tableView.editing;
 }
 -(void)trash {
-    
-    
     UIAlertView * av = [[UIAlertView alloc] initWithTitle:@"Delete All?" message:@"Do you want to erase the entire list?" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Yes", nil];
     [av show];
-    
-    
-    return;
-    
-    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"Delete All" message:@"Do you want to erase the entire list" preferredStyle:UIAlertControllerStyleAlert];
-    UIAlertAction *yesAct = [UIAlertAction actionWithTitle:@"Yes" style:UIAlertActionStyleDestructive handler:^(UIAlertAction *action) {
-        [((ChooseItemViewController*)self.sidePanelController.centerPanel).favArray removeAllObjects];
-        [_tableView reloadData];
-    }];
-    UIAlertAction *canAct = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {
-        
-    }];
-    [alertController addAction:yesAct];
-    [alertController addAction:canAct];
-    [self presentViewController:alertController animated:YES completion:nil];
-
 }
 -(void)viewMenu {
     [self.sidePanelController showLeftPanelAnimated:YES];
@@ -209,7 +201,6 @@
 //    imageView.backgroundColor = [UIColor grayColor];
     [imageView sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@", [[_favArray[indexPath.row] objectForKey:@"MediumImage"] objectForKey:@"text"]]] placeholderImage:[UIImage imageNamed:@"Placeholder"] options:SDWebImageContinueInBackground completed:nil];
     NSLog(@"fdas %f %f",[[[_favArray[indexPath.row] objectForKey:@"MediumImage"] objectForKey:@"Width"] floatValue], [[[_favArray[indexPath.row] objectForKey:@"MediumImage"] objectForKey:@"Height"] floatValue]);
-    CGSize imageSizze = CGSizeMake([[[_favArray[indexPath.row] objectForKey:@"MediumImage"] objectForKey:@"Width"] floatValue], [[[_favArray[indexPath.row] objectForKey:@"MediumImage"] objectForKey:@"Height"] floatValue]);
     if([[[UIDevice currentDevice] systemVersion] doubleValue] >= 8.0) {
         
 //        [imageView autoSetDimensionsToSize:imageSizze];

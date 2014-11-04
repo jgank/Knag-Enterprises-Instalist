@@ -133,7 +133,8 @@ static const CGFloat ChoosePersonButtonVerticalPadding = 20.f;
         [menView autoPinEdge:ALEdgeBottom toEdge:ALEdgeBottom ofView:titleLabel];
         
         
-        UIView *lv = [[UIView alloc] initWithFrame:CGRectMake(0.f, 20.f, self.view.frame.size.width, 1.0f)];
+//        UIView *lv = [[UIView alloc] initWithFrame:CGRectMake(0.f, 20.f, self.view.frame.size.width, 1.0f)];
+        UIView *lv = [[UIView alloc] initWithFrame:CGRectMake(0.f, 0.f, self.view.frame.size.width, 20.0f)];
         lv.backgroundColor = ComplementaryFlatColorOf(FlatMintDark);
         [self.view addSubview:lv];
         
@@ -170,7 +171,7 @@ static const CGFloat ChoosePersonButtonVerticalPadding = 20.f;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-
+    
     // Display the first ChoosePersonView in front. Users can swipe to indicate
     // whether they like or dislike the person displayed.
 
@@ -206,6 +207,7 @@ static const CGFloat ChoosePersonButtonVerticalPadding = 20.f;
 //    manager.responseSerializer = responseSerializer;
     manager.requestSerializer = [AFJSONRequestSerializer serializer];
     manager.responseSerializer = [AFJSONResponseSerializer serializer];
+    
     [self updateCloud];
 }
 -(void) updateCloud {
@@ -220,23 +222,28 @@ static const CGFloat ChoosePersonButtonVerticalPadding = 20.f;
     NSUbiquitousKeyValueStore *iCloudStore = [NSUbiquitousKeyValueStore defaultStore];
     NSArray *cloudFav = [iCloudStore arrayForKey:@"cloudFav"];
     
+    NSString *uudid = [iCloudStore stringForKey:@"uudid"];
     
     if(!cloudFav) {
         NSLog(@"fav array not saved to cloud");
     }
     else {
         NSLog(@"CCC %@", cloudFav);
-    }
-    
-    
-    if (![cloudFav isEqualToArray:_favArray]) {
-        for(id i in cloudFav) {
-            [_favArray addObject:i];
+        if (![cloudFav isEqualToArray:_favArray]) {
+            for(id i in cloudFav) {
+                [_favArray addObject:i];
+            }
+            [_favArray setArray:[[NSSet setWithArray:_favArray] allObjects]];
+            [iCloudStore setArray:_favArray forKey:@"cloudFav"];
+            [iCloudStore synchronize];
         }
-        [_favArray setArray:[[NSSet setWithArray:_favArray] allObjects]];
-        [iCloudStore setArray:_favArray forKey:@"cloudFav"];
-        [iCloudStore synchronize];
     }
+    if (uudid != NULL && ![uudid isEqualToString:[[NSUserDefaults standardUserDefaults] valueForKey:@"uudid"]]) {
+        [[NSUserDefaults standardUserDefaults] setValue:uudid forKey:@"uudid"];
+        [[NSUserDefaults standardUserDefaults] synchronize];
+    }
+    
+    
 
 }
 -(void)toyAlert {
@@ -247,11 +254,13 @@ static const CGFloat ChoosePersonButtonVerticalPadding = 20.f;
     catLabel.text = [[[self.frontCardView item] objectForKey:@"Category"] objectForKey:@"text"];
     
     if([[NSUserDefaults standardUserDefaults] objectForKey:@"firstRun"] == NULL) {
-        UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Gender:" message:@"For showing appropriate gift" delegate:self cancelButtonTitle:@"Both" otherButtonTitles:@"Male", @"Female", nil];
+        UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Gender:" message:@"For showing appropriate gift" delegate:self cancelButtonTitle:@"Both" otherButtonTitles:@"Men's", @"Women's", nil];
         [av setTag:1];
         [av show];
-        boldOptions(av);
-        for(UIView *i in av.subviews) {
+        NSArray *subviews = [UIApplication sharedApplication].keyWindow.rootViewController.presentedViewController.view.subviews;
+
+//        boldOptions(av.subviews[1]);
+        for(UIView *i in subviews) {
             boldOptions(i);
         }
     }
@@ -328,7 +337,7 @@ static const CGFloat ChoosePersonButtonVerticalPadding = 20.f;
     NSString *documentsDirectory = [paths objectAtIndex:0]; // Get documents directory
     
     
-    AFHTTPRequestOperation *op = [manager POST:@"http://amazonchristmasiphone.duckdns.org/combined.xml"
+    AFHTTPRequestOperation *op = [manager POST:@"http://instalist.duckdns.org/combined.xml"
                                     parameters:nil
                                        success:^(AFHTTPRequestOperation *operation, id responseObject) {
                                            NSLog(@"got new");
@@ -416,7 +425,7 @@ static const CGFloat ChoosePersonButtonVerticalPadding = 20.f;
     numSwipes++;
     [[NSUserDefaults standardUserDefaults] setInteger:numSwipes forKey:@"numSwipes"];
     BOOL firstMessage = [[NSUserDefaults standardUserDefaults] boolForKey:@"firstMessage"];
-    NSLog(@"num sqipes %i", numSwipes);
+    NSLog(@"num sqipes %li", (long)numSwipes);
     if(!firstMessage && numSwipes == 10 && [_favArray count] >= 1) {
         
         [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"firstMessage"];
@@ -533,6 +542,7 @@ static const CGFloat ChoosePersonButtonVerticalPadding = 20.f;
     catLabel.text = [[self.frontCardView.item objectForKey:@"Category"] objectForKey:@"text"];
 //    catLabel.text = [[self.frontCardView.item objectForKey:@"ProductGroup"] objectForKey:@"text"];
     
+    NSLog(@"large iamge %@",[[self.frontCardView.item objectForKey:@"LargeImage"] objectForKey:@"text"]);
     titleLabel.text = [[self.frontCardView.item objectForKey:@"Title"] objectForKey:@"text"];
 //    titleLabel.text = [[self.frontCardView.item objectForKey:@"Sex"] objectForKey:@"text"];
     return personView;
@@ -658,7 +668,7 @@ static const CGFloat ChoosePersonButtonVerticalPadding = 20.f;
         NSLog(@"ARRAY NIL");
         right.favArray = arr;
     }
-    NSLog(@"arr size %i", [arr count]);
+    NSLog(@"arr size %lu", (unsigned long)[arr count]);
     [right.tableView reloadData];
     
 }
@@ -682,23 +692,23 @@ static const CGFloat ChoosePersonButtonVerticalPadding = 20.f;
             
         }
     
-        UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Show Toys?" message:@"Would you like to see toys as gift ideas?" delegate:self cancelButtonTitle:@"Only Toys" otherButtonTitles:@"Yes", @"No", nil];
+        UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Show Toys?" message:@"Would you like to see toys as gift ideas?" delegate:self cancelButtonTitle:@"Yes" otherButtonTitles:@"Only Toys", @"No", nil];
         [av setTag:2];
         [av show];
     }
     else if (alertView.tag == 2) {
         if (buttonIndex == 0) {
-            NSLog(@"female selected");
-            [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"toys"];
-            [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"onlytoys"];
-        }
-        else if (buttonIndex == 1){
-            NSLog(@"male");
+            NSLog(@"yes toys");
             [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"toys"];
             [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"onlytoys"];
         }
+        else if (buttonIndex == 1){
+            NSLog(@"only toys");
+            [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"toys"];
+            [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"onlytoys"];
+        }
         else if (buttonIndex == 2) {
-            NSLog(@"female");
+            NSLog(@"no toys");
             [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"toys"];
             [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"onlytoys"];
             
@@ -735,6 +745,7 @@ void (^boldOptions)(UIView*) = ^(UIView *i) {
 - (void)applicationDidEnterBackground:(NSNotification *)notification {
     NSUbiquitousKeyValueStore *iCloudStore = [NSUbiquitousKeyValueStore defaultStore];
     [iCloudStore setArray:_favArray forKey:@"cloudFav"];
+    [iCloudStore setString:[[NSUserDefaults standardUserDefaults] stringForKey:@"uudid"] forKey:@"uudid"];
     [iCloudStore synchronize];
     NSLog(@"cloud sync");
 }

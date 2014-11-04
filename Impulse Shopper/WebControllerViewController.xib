@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6250" systemVersion="14A389" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6244"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="WebControllerViewController">
+            <connections>
+                <outlet property="toolbar" destination="fmY-JG-cNw" id="pJ4-eV-JJ2"/>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+                <outlet property="webView" destination="j5a-If-GHW" id="ekn-tu-0R0"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="fmY-JG-cNw">
+                    <rect key="frame" x="0.0" y="20" width="600" height="44"/>
+                    <color key="backgroundColor" red="0.14117647707462311" green="0.67843139171600342" blue="0.80000007152557373" alpha="1" colorSpace="deviceRGB"/>
+                    <items>
+                        <barButtonItem title="Done" id="Daf-1K-ooN">
+                            <connections>
+                                <action selector="donePressed:" destination="-1" id="Qmg-xI-dBQ"/>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem style="plain" systemItem="flexibleSpace" id="h89-4y-wFQ"/>
+                    </items>
+                    <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <color key="barTintColor" red="0.10588236153125763" green="0.35294118523597717" blue="0.7568628191947937" alpha="1" colorSpace="deviceRGB"/>
+                </toolbar>
+                <webView contentMode="scaleToFill" scalesPageToFit="YES" translatesAutoresizingMaskIntoConstraints="NO" id="j5a-If-GHW">
+                    <rect key="frame" x="0.0" y="64" width="600" height="536"/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <connections>
+                        <outlet property="delegate" destination="-1" id="luU-u9-Kii"/>
+                    </connections>
+                </webView>
+            </subviews>
+            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstItem="fmY-JG-cNw" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="20" id="7ah-4N-LTt"/>
+                <constraint firstAttribute="bottom" secondItem="j5a-If-GHW" secondAttribute="bottom" id="DZy-a5-atE"/>
+                <constraint firstAttribute="trailing" secondItem="fmY-JG-cNw" secondAttribute="trailing" id="PNP-Xl-EEo"/>
+                <constraint firstItem="fmY-JG-cNw" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="SNj-Ib-mLX"/>
+                <constraint firstItem="j5a-If-GHW" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="VLT-sn-cTB"/>
+                <constraint firstItem="j5a-If-GHW" firstAttribute="top" secondItem="fmY-JG-cNw" secondAttribute="bottom" id="qdQ-7N-XAO"/>
+                <constraint firstAttribute="trailing" secondItem="j5a-If-GHW" secondAttribute="trailing" id="saZ-Ed-ZXs"/>
+                <constraint firstAttribute="bottom" secondItem="j5a-If-GHW" secondAttribute="bottom" id="vsN-hR-JV0"/>
+            </constraints>
+            <point key="canvasLocation" x="720" y="508"/>
+        </view>
+    </objects>
+</document>

@@ -1,22 +1,23 @@
 //
-//  UIWebViewController.m
+//  WebControllerViewController.m
 //  Impulse Shopper
 //
-//  Created by Justin Knag on 10/9/14.
+//  Created by Justin Knag on 11/4/14.
 //  Copyright (c) 2014 Justin Knag. All rights reserved.
 //
 
-#import "UIWebViewController.h"
+#import "WebControllerViewController.h"
+#import "PureLayout.h"
 
-@interface UIWebViewController ()
+@interface WebControllerViewController ()
 
 @end
 
-@implementation UIWebViewController
+@implementation WebControllerViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view from its nib.
+    [_webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:@"http://instalist.duckdns.org/policy/"]]];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -35,5 +36,6 @@
 */
 
 - (IBAction)donePressed:(id)sender {
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 @end

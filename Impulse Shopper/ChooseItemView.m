@@ -55,14 +55,11 @@ static const CGFloat ChoosePersonViewImageLabelWidth = 42.f;
         self.imageView.contentMode = UIViewContentModeScaleAspectFit;
         self.backgroundColor = [UIColor whiteColor];
         self.imageView.frame = CGRectMake(self.imageView.bounds.origin.x, self.imageView.bounds.origin.y, self.imageView.bounds.size.width, self.imageView.bounds.size.height - 40.0f);
-//        [self.imageView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsMake(0.f, 0.f, 40.f, 0.f)];
-//        self.imageView.layer.cornerRadius = 5.f;
         self.imageView.layer.borderWidth = 2.f;
         self.imageView.layer.cornerRadius = 5.f;
         self.imageView.layer.borderColor = [UIColor colorWith8BitRed:220.f green:220.f blue:220.f alpha:1.f].CGColor;
         self.item = dict;
         self.layer.borderColor = FlatBlackDark.CGColor;
-
         [self constructInformationView];
     }
     return self;
@@ -77,29 +74,16 @@ static const CGFloat ChoosePersonViewImageLabelWidth = 42.f;
                                     CGRectGetWidth(self.bounds),
                                     bottomHeight);
     _informationView = [[UIView alloc] initWithFrame:bottomFrame];
-//    _informationView.backgroundColor = [UIColor yellowColor];
     _informationView.clipsToBounds = YES;
     _informationView.autoresizingMask = UIViewAutoresizingFlexibleWidth |
                                         UIViewAutoresizingFlexibleTopMargin;
     [self addSubview:_informationView];
 
     [self constructNameLabel];
-//    [self constructCameraImageLabelView];
-//    [self constructInterestsImageLabelView];
-//    [self constructFriendsImageLabelView];
 }
 
 - (void)constructNameLabel {
-//    CGFloat leftPadding = 12.f;
-    CGFloat leftPadding = 0.f;
-    CGFloat topPadding = 0.f;
-    CGRect frame = CGRectMake(leftPadding,
-                              topPadding,
-                              floorf(CGRectGetWidth(_informationView.frame)),
-                              CGRectGetHeight(_informationView.frame) - topPadding);
-//    _nameLabel = [[UILabel alloc] initWithFrame:frame];
     _nameLabel = [UILabel newAutoLayoutView];
-    
     if([[_item objectForKey:@"FormattedPrice"] objectForKey:@"text"] != NULL) {
         _nameLabel.text = [NSString stringWithFormat:@"%@", [[_item objectForKey:@"FormattedPrice"] objectForKey:@"text"]];
     }
@@ -112,29 +96,9 @@ static const CGFloat ChoosePersonViewImageLabelWidth = 42.f;
     [_nameLabel autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsMake(0, 2, 2, 2) excludingEdge:ALEdgeTop];
 }
 
-- (void)constructCameraImageLabelView {
-    CGFloat rightPadding = 10.f;
-    UIImage *image = [UIImage imageNamed:@"camera"];
-//    _cameraImageLabelView = [self buildImageLabelViewLeftOf:CGRectGetWidth(_informationView.bounds) - rightPadding
-//                                                      image:image
-//                                                       text:[@(_person.numberOfPhotos) stringValue]];
-//    [_informationView addSubview:_cameraImageLabelView];
-}
 
-- (void)constructInterestsImageLabelView {
-    UIImage *image = [UIImage imageNamed:@"book"];
-//    _interestsImageLabelView = [self buildImageLabelViewLeftOf:CGRectGetMinX(_cameraImageLabelView.frame)
-//                                                         image:image
-//                                                          text:[@(_person.numberOfPhotos) stringValue]];
-//    [_informationView addSubview:_interestsImageLabelView];
-}
 
 - (void)constructFriendsImageLabelView {
-    UIImage *image = [UIImage imageNamed:@"group"];
-//    _friendsImageLabelView = [self buildImageLabelViewLeftOf:CGRectGetMinX(_interestsImageLabelView.frame)
-//                                                      image:image
-//                                                       text:[@(_person.numberOfSharedFriends) stringValue]];
-//    [_informationView addSubview:_friendsImageLabelView];
 }
 
 - (ImageLabelView *)buildImageLabelViewLeftOf:(CGFloat)x image:(UIImage *)image text:(NSString *)text {
@@ -149,12 +113,8 @@ static const CGFloat ChoosePersonViewImageLabelWidth = 42.f;
     return view;
 }
 - (void) touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event {
-    NSLog(@"touches count %i", touches.count);
-    //        WebViewController *w = [[WebViewController alloc] init];
-    //        [w.webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@", [[_item objectForKey:@"LargeImage"] objectForKey:@"text"]]]]];
-    //
+    NSLog(@"touches count %lu", (unsigned long)touches.count);
     [[UIApplication sharedApplication] openURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@", [[_item objectForKey:@"DetailPageURL"] objectForKey:@"text"]]]];
-//    [delegate cardTapped:self];
     
 }
 @end

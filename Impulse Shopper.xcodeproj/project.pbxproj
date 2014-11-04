@@ -7,12 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		524502FE19B8BB4200103542 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 524502FD19B8BB4200103542 /* Main.storyboard */; };
-		5245030119B8BF5800103542 /* View.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5245030019B8BF5800103542 /* View.xib */; };
 		52CCC65619AE90FD00464A46 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 52CCC65519AE90FD00464A46 /* main.m */; };
 		52CCC65919AE90FD00464A46 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 52CCC65819AE90FD00464A46 /* AppDelegate.m */; };
 		52CCC65C19AE90FD00464A46 /* Impulse_Shopper.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 52CCC65A19AE90FD00464A46 /* Impulse_Shopper.xcdatamodeld */; };
-		52CCC65F19AE90FD00464A46 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 52CCC65E19AE90FD00464A46 /* ViewController.m */; };
 		52CCC66419AE90FD00464A46 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 52CCC66319AE90FD00464A46 /* Images.xcassets */; };
 		52CCC67019AE90FD00464A46 /* Impulse_ShopperTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 52CCC66F19AE90FD00464A46 /* Impulse_ShopperTests.m */; };
 		52CCC68319AE920700464A46 /* JASidePanelController.m in Sources */ = {isa = PBXBuildFile; fileRef = 52CCC67A19AE920700464A46 /* JASidePanelController.m */; };
@@ -20,36 +17,20 @@
 		52CCC68519AE920700464A46 /* JADebugViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 52CCC67E19AE920700464A46 /* JADebugViewController.m */; };
 		52CCC68619AE920700464A46 /* JALeftViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 52CCC68019AE920700464A46 /* JALeftViewController.m */; };
 		52CCC68719AE920700464A46 /* JARightViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 52CCC68219AE920700464A46 /* JARightViewController.m */; };
-		52CCC68A19AE927200464A46 /* JACenterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 52CCC68919AE927200464A46 /* JACenterViewController.m */; };
 		52CCC68F19AE93CB00464A46 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 52CCC68B19AE93CB00464A46 /* CoreGraphics.framework */; };
 		52CCC69019AE93CB00464A46 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 52CCC68C19AE93CB00464A46 /* Foundation.framework */; };
 		52CCC69119AE93CB00464A46 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 52CCC68D19AE93CB00464A46 /* QuartzCore.framework */; };
 		52CCC69219AE93CB00464A46 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 52CCC68E19AE93CB00464A46 /* UIKit.framework */; };
-		52F1900A19AF9F4D00606C5C /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 52F1900919AF9F4D00606C5C /* WebKit.framework */; };
 		A07576660AD94FA8B57F540B /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 89FAADAE8CAB497B9353AD67 /* libPods.a */; };
-		EF09E22919FA48870045779B /* goog.xml in Resources */ = {isa = PBXBuildFile; fileRef = EF09E22819FA48870045779B /* goog.xml */; };
-		EF0B8A5D19E62FB400EA1B6E /* combine.xml in Resources */ = {isa = PBXBuildFile; fileRef = EF0B8A5C19E62FB400EA1B6E /* combine.xml */; };
-		EF0B8A6119E6590700EA1B6E /* Electronics.xml in Resources */ = {isa = PBXBuildFile; fileRef = EF0B8A6019E6590700EA1B6E /* Electronics.xml */; };
-		EF0B8A6419E7387B00EA1B6E /* WebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EF0B8A6319E7387B00EA1B6E /* WebViewController.m */; };
-		EF0B8A6619E738A500EA1B6E /* WebViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = EF0B8A6519E738A500EA1B6E /* WebViewController.xib */; };
-		EF3E89DB1A0038FB00EA9985 /* 179-notepad.svg in Resources */ = {isa = PBXBuildFile; fileRef = EF3E89DA1A0038FB00EA9985 /* 179-notepad.svg */; };
-		EF4B164E19F05D1F00083B72 /* apparel.xml in Resources */ = {isa = PBXBuildFile; fileRef = EF4B164D19F05D1F00083B72 /* apparel.xml */; };
-		EF4B165019F061B400083B72 /* Toys.xml in Resources */ = {isa = PBXBuildFile; fileRef = EF4B164F19F061B400083B72 /* Toys.xml */; };
 		EF51278B19EF521C007C636A /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EF51278A19EF521C007C636A /* MessageUI.framework */; };
 		EF70B3EC19EC74C600AA55FA /* SavedCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = EF70B3EB19EC74C600AA55FA /* SavedCell.xib */; };
 		EF70B3EE19ED4C4D00AA55FA /* combined.xml in Resources */ = {isa = PBXBuildFile; fileRef = EF70B3ED19ED4C4D00AA55FA /* combined.xml */; };
-		EF70B3F019ED538700AA55FA /* aws_signed_request.py in Resources */ = {isa = PBXBuildFile; fileRef = EF70B3EF19ED538700AA55FA /* aws_signed_request.py */; };
-		EF86F90619BEE84A0023A507 /* DraggableViewBackground.m in Sources */ = {isa = PBXBuildFile; fileRef = EF86F90119BEE84A0023A507 /* DraggableViewBackground.m */; };
-		EF86F90719BEE84A0023A507 /* DraggableView.m in Sources */ = {isa = PBXBuildFile; fileRef = EF86F90319BEE84A0023A507 /* DraggableView.m */; };
-		EF86F90819BEE84A0023A507 /* OverlayView.m in Sources */ = {isa = PBXBuildFile; fileRef = EF86F90519BEE84A0023A507 /* OverlayView.m */; };
 		EFAD358C1A00880800CBA5DF /* InsetLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = EFAD358B1A00880800CBA5DF /* InsetLabel.m */; };
-		EFAD358E1A00B27A00CBA5DF /* christmas_present.png in Resources */ = {isa = PBXBuildFile; fileRef = EFAD358D1A00B27A00CBA5DF /* christmas_present.png */; };
-		EFBB10E119E75B8E000FBB38 /* UIWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EFBB10DF19E75B8E000FBB38 /* UIWebViewController.m */; };
-		EFBB10E219E75B8E000FBB38 /* UIWebViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = EFBB10E019E75B8E000FBB38 /* UIWebViewController.xib */; };
-		EFDEAE0319FEE8B700D58BFD /* Person.m in Sources */ = {isa = PBXBuildFile; fileRef = EFDEADFC19FEE8B700D58BFD /* Person.m */; };
 		EFDEAE0419FEE8B700D58BFD /* ImageLabelView.m in Sources */ = {isa = PBXBuildFile; fileRef = EFDEADFE19FEE8B700D58BFD /* ImageLabelView.m */; };
 		EFDEAE0519FEE8B700D58BFD /* ChooseItemView.m in Sources */ = {isa = PBXBuildFile; fileRef = EFDEAE0019FEE8B700D58BFD /* ChooseItemView.m */; };
 		EFDEAE0619FEE8B700D58BFD /* ChooseItemViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EFDEAE0219FEE8B700D58BFD /* ChooseItemViewController.m */; };
+		EFEC80241A09283100FB8274 /* WebControllerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EFEC80221A09283100FB8274 /* WebControllerViewController.m */; };
+		EFEC80251A09283100FB8274 /* WebControllerViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = EFEC80231A09283100FB8274 /* WebControllerViewController.xib */; };
 		EFEE5C5419E47B18009BD5D2 /* XMLReader.m in Sources */ = {isa = PBXBuildFile; fileRef = EFEE5C5319E47B18009BD5D2 /* XMLReader.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		EFEE5C6219E4A98A009BD5D2 /* ALView+PureLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = EFEE5C5A19E4A98A009BD5D2 /* ALView+PureLayout.m */; };
 		EFEE5C6319E4A98A009BD5D2 /* NSArray+PureLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = EFEE5C5C19E4A98A009BD5D2 /* NSArray+PureLayout.m */; };
@@ -68,16 +49,12 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		524502FD19B8BB4200103542 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
-		5245030019B8BF5800103542 /* View.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = View.xib; sourceTree = "<group>"; };
 		52CCC65019AE90FD00464A46 /* Impulse Shopper.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Impulse Shopper.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		52CCC65419AE90FD00464A46 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		52CCC65519AE90FD00464A46 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		52CCC65719AE90FD00464A46 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		52CCC65819AE90FD00464A46 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		52CCC65B19AE90FD00464A46 /* Impulse_Shopper.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Impulse_Shopper.xcdatamodel; sourceTree = "<group>"; };
-		52CCC65D19AE90FD00464A46 /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
-		52CCC65E19AE90FD00464A46 /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
 		52CCC66319AE90FD00464A46 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		52CCC66919AE90FD00464A46 /* Impulse ShopperTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Impulse ShopperTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		52CCC66E19AE90FD00464A46 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -92,8 +69,6 @@
 		52CCC68019AE920700464A46 /* JALeftViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JALeftViewController.m; sourceTree = "<group>"; };
 		52CCC68119AE920700464A46 /* JARightViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JARightViewController.h; sourceTree = "<group>"; };
 		52CCC68219AE920700464A46 /* JARightViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JARightViewController.m; sourceTree = "<group>"; };
-		52CCC68819AE927200464A46 /* JACenterViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JACenterViewController.h; sourceTree = "<group>"; };
-		52CCC68919AE927200464A46 /* JACenterViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JACenterViewController.m; sourceTree = "<group>"; };
 		52CCC68B19AE93CB00464A46 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		52CCC68C19AE93CB00464A46 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		52CCC68D19AE93CB00464A46 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
@@ -102,41 +77,23 @@
 		68E31D891A53852CD5B33B96 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 		89FAADAE8CAB497B9353AD67 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		A7431BC226B812FEB6FB096E /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
-		EF09E22819FA48870045779B /* goog.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = goog.xml; sourceTree = "<group>"; };
-		EF0B8A5C19E62FB400EA1B6E /* combine.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = combine.xml; sourceTree = "<group>"; };
-		EF0B8A6019E6590700EA1B6E /* Electronics.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = Electronics.xml; sourceTree = "<group>"; };
-		EF0B8A6219E7387B00EA1B6E /* WebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WebViewController.h; sourceTree = "<group>"; };
-		EF0B8A6319E7387B00EA1B6E /* WebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WebViewController.m; sourceTree = "<group>"; };
-		EF0B8A6519E738A500EA1B6E /* WebViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WebViewController.xib; sourceTree = "<group>"; };
 		EF2879491A02C0820087DA88 /* Impulse Shopper.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = "Impulse Shopper.entitlements"; sourceTree = "<group>"; };
-		EF3E89DA1A0038FB00EA9985 /* 179-notepad.svg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = "179-notepad.svg"; sourceTree = "<group>"; };
-		EF4B164D19F05D1F00083B72 /* apparel.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = apparel.xml; sourceTree = "<group>"; };
-		EF4B164F19F061B400083B72 /* Toys.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = Toys.xml; sourceTree = "<group>"; };
 		EF51278A19EF521C007C636A /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
 		EF70B3EB19EC74C600AA55FA /* SavedCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SavedCell.xib; sourceTree = "<group>"; };
 		EF70B3ED19ED4C4D00AA55FA /* combined.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = combined.xml; sourceTree = "<group>"; };
 		EF70B3EF19ED538700AA55FA /* aws_signed_request.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = aws_signed_request.py; sourceTree = "<group>"; };
-		EF86F90019BEE84A0023A507 /* DraggableViewBackground.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DraggableViewBackground.h; sourceTree = "<group>"; };
-		EF86F90119BEE84A0023A507 /* DraggableViewBackground.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DraggableViewBackground.m; sourceTree = "<group>"; };
-		EF86F90219BEE84A0023A507 /* DraggableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DraggableView.h; sourceTree = "<group>"; };
-		EF86F90319BEE84A0023A507 /* DraggableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DraggableView.m; sourceTree = "<group>"; };
-		EF86F90419BEE84A0023A507 /* OverlayView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OverlayView.h; sourceTree = "<group>"; };
-		EF86F90519BEE84A0023A507 /* OverlayView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OverlayView.m; sourceTree = "<group>"; };
 		EFAD358A1A00880800CBA5DF /* InsetLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InsetLabel.h; sourceTree = "<group>"; };
 		EFAD358B1A00880800CBA5DF /* InsetLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InsetLabel.m; sourceTree = "<group>"; };
-		EFAD358D1A00B27A00CBA5DF /* christmas_present.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = christmas_present.png; sourceTree = "<group>"; };
-		EFBB10DE19E75B8E000FBB38 /* UIWebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIWebViewController.h; sourceTree = "<group>"; };
-		EFBB10DF19E75B8E000FBB38 /* UIWebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UIWebViewController.m; sourceTree = "<group>"; };
-		EFBB10E019E75B8E000FBB38 /* UIWebViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = UIWebViewController.xib; sourceTree = "<group>"; };
 		EFC2AB5819F6AFB4007F0875 /* Impulse Shopper.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Impulse Shopper.pch"; sourceTree = SOURCE_ROOT; };
-		EFDEADFB19FEE8B700D58BFD /* Person.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Person.h; sourceTree = "<group>"; };
-		EFDEADFC19FEE8B700D58BFD /* Person.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Person.m; sourceTree = "<group>"; };
 		EFDEADFD19FEE8B700D58BFD /* ImageLabelView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageLabelView.h; sourceTree = "<group>"; };
 		EFDEADFE19FEE8B700D58BFD /* ImageLabelView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImageLabelView.m; sourceTree = "<group>"; };
 		EFDEADFF19FEE8B700D58BFD /* ChooseItemView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChooseItemView.h; sourceTree = "<group>"; };
 		EFDEAE0019FEE8B700D58BFD /* ChooseItemView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChooseItemView.m; sourceTree = "<group>"; };
 		EFDEAE0119FEE8B700D58BFD /* ChooseItemViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChooseItemViewController.h; sourceTree = "<group>"; };
 		EFDEAE0219FEE8B700D58BFD /* ChooseItemViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChooseItemViewController.m; sourceTree = "<group>"; };
+		EFEC80211A09283100FB8274 /* WebControllerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WebControllerViewController.h; sourceTree = "<group>"; };
+		EFEC80221A09283100FB8274 /* WebControllerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WebControllerViewController.m; sourceTree = "<group>"; };
+		EFEC80231A09283100FB8274 /* WebControllerViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WebControllerViewController.xib; sourceTree = "<group>"; };
 		EFEE5C5219E47B18009BD5D2 /* XMLReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XMLReader.h; sourceTree = "<group>"; };
 		EFEE5C5319E47B18009BD5D2 /* XMLReader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XMLReader.m; sourceTree = "<group>"; };
 		EFEE5C5919E4A98A009BD5D2 /* ALView+PureLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ALView+PureLayout.h"; sourceTree = "<group>"; };
@@ -158,7 +115,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				EF51278B19EF521C007C636A /* MessageUI.framework in Frameworks */,
-				52F1900A19AF9F4D00606C5C /* WebKit.framework in Frameworks */,
 				52CCC68F19AE93CB00464A46 /* CoreGraphics.framework in Frameworks */,
 				52CCC69019AE93CB00464A46 /* Foundation.framework in Frameworks */,
 				52CCC69119AE93CB00464A46 /* QuartzCore.framework in Frameworks */,
@@ -180,7 +136,6 @@
 		52CCC64719AE90FD00464A46 = {
 			isa = PBXGroup;
 			children = (
-				524502FD19B8BB4200103542 /* Main.storyboard */,
 				52F1900919AF9F4D00606C5C /* WebKit.framework */,
 				52CCC68B19AE93CB00464A46 /* CoreGraphics.framework */,
 				52CCC68C19AE93CB00464A46 /* Foundation.framework */,
@@ -209,15 +164,8 @@
 				EF2879491A02C0820087DA88 /* Impulse Shopper.entitlements */,
 				EF7407911A086A8900ABEEA2 /* xml */,
 				EF70B3EF19ED538700AA55FA /* aws_signed_request.py */,
-				EFAD358D1A00B27A00CBA5DF /* christmas_present.png */,
 				EFEE5C5219E47B18009BD5D2 /* XMLReader.h */,
 				EFEE5C5319E47B18009BD5D2 /* XMLReader.m */,
-				EF0B8A6219E7387B00EA1B6E /* WebViewController.h */,
-				EF0B8A6319E7387B00EA1B6E /* WebViewController.m */,
-				EF0B8A6519E738A500EA1B6E /* WebViewController.xib */,
-				EFBB10DE19E75B8E000FBB38 /* UIWebViewController.h */,
-				EFBB10DF19E75B8E000FBB38 /* UIWebViewController.m */,
-				EFBB10E019E75B8E000FBB38 /* UIWebViewController.xib */,
 				EFEE5C5919E4A98A009BD5D2 /* ALView+PureLayout.h */,
 				EFEE5C5A19E4A98A009BD5D2 /* ALView+PureLayout.m */,
 				EFEE5C5B19E4A98A009BD5D2 /* NSArray+PureLayout.h */,
@@ -227,13 +175,10 @@
 				EFEE5C5F19E4A98A009BD5D2 /* PureLayout.h */,
 				EFEE5C6019E4A98A009BD5D2 /* PureLayout+Internal.h */,
 				EFEE5C6119E4A98A009BD5D2 /* PureLayoutDefines.h */,
-				EF86F90019BEE84A0023A507 /* DraggableViewBackground.h */,
-				EF86F90119BEE84A0023A507 /* DraggableViewBackground.m */,
 				EF70B3EB19EC74C600AA55FA /* SavedCell.xib */,
-				EF86F90219BEE84A0023A507 /* DraggableView.h */,
-				EF86F90319BEE84A0023A507 /* DraggableView.m */,
-				EF86F90419BEE84A0023A507 /* OverlayView.h */,
-				EF86F90519BEE84A0023A507 /* OverlayView.m */,
+				EFEC80211A09283100FB8274 /* WebControllerViewController.h */,
+				EFEC80221A09283100FB8274 /* WebControllerViewController.m */,
+				EFEC80231A09283100FB8274 /* WebControllerViewController.xib */,
 				52CCC67919AE920700464A46 /* JASidePanelController.h */,
 				52CCC67A19AE920700464A46 /* JASidePanelController.m */,
 				52CCC67B19AE920700464A46 /* UIViewController+JASidePanel.h */,
@@ -242,17 +187,10 @@
 				52CCC67E19AE920700464A46 /* JADebugViewController.m */,
 				52CCC67F19AE920700464A46 /* JALeftViewController.h */,
 				52CCC68019AE920700464A46 /* JALeftViewController.m */,
-				52CCC68819AE927200464A46 /* JACenterViewController.h */,
-				52CCC68919AE927200464A46 /* JACenterViewController.m */,
-				5245030019B8BF5800103542 /* View.xib */,
 				52CCC68119AE920700464A46 /* JARightViewController.h */,
 				52CCC68219AE920700464A46 /* JARightViewController.m */,
 				52CCC65719AE90FD00464A46 /* AppDelegate.h */,
 				52CCC65819AE90FD00464A46 /* AppDelegate.m */,
-				52CCC65D19AE90FD00464A46 /* ViewController.h */,
-				52CCC65E19AE90FD00464A46 /* ViewController.m */,
-				EFDEADFB19FEE8B700D58BFD /* Person.h */,
-				EFDEADFC19FEE8B700D58BFD /* Person.m */,
 				EFDEADFD19FEE8B700D58BFD /* ImageLabelView.h */,
 				EFDEADFE19FEE8B700D58BFD /* ImageLabelView.m */,
 				EFDEADFF19FEE8B700D58BFD /* ChooseItemView.h */,
@@ -263,7 +201,6 @@
 				EFAD358B1A00880800CBA5DF /* InsetLabel.m */,
 				EFEF512A1A0107F200F9C3B9 /* UIColor+MDCRGB8Bit.h */,
 				EFEF512B1A0107F200F9C3B9 /* UIColor+MDCRGB8Bit.m */,
-				EF3E89DA1A0038FB00EA9985 /* 179-notepad.svg */,
 				52CCC66319AE90FD00464A46 /* Images.xcassets */,
 				52CCC65A19AE90FD00464A46 /* Impulse_Shopper.xcdatamodeld */,
 				52CCC65319AE90FD00464A46 /* Supporting Files */,
@@ -319,12 +256,7 @@
 		EF7407911A086A8900ABEEA2 /* xml */ = {
 			isa = PBXGroup;
 			children = (
-				EF09E22819FA48870045779B /* goog.xml */,
-				EF4B164D19F05D1F00083B72 /* apparel.xml */,
 				EF70B3ED19ED4C4D00AA55FA /* combined.xml */,
-				EF0B8A6019E6590700EA1B6E /* Electronics.xml */,
-				EF4B164F19F061B400083B72 /* Toys.xml */,
-				EF0B8A5C19E62FB400EA1B6E /* combine.xml */,
 			);
 			name = xml;
 			sourceTree = "<group>";
@@ -420,21 +352,10 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				EF70B3F019ED538700AA55FA /* aws_signed_request.py in Resources */,
 				52CCC66419AE90FD00464A46 /* Images.xcassets in Resources */,
-				EF3E89DB1A0038FB00EA9985 /* 179-notepad.svg in Resources */,
-				EF09E22919FA48870045779B /* goog.xml in Resources */,
+				EFEC80251A09283100FB8274 /* WebControllerViewController.xib in Resources */,
 				EF70B3EC19EC74C600AA55FA /* SavedCell.xib in Resources */,
-				EFAD358E1A00B27A00CBA5DF /* christmas_present.png in Resources */,
-				5245030119B8BF5800103542 /* View.xib in Resources */,
-				EF4B164E19F05D1F00083B72 /* apparel.xml in Resources */,
-				EFBB10E219E75B8E000FBB38 /* UIWebViewController.xib in Resources */,
-				524502FE19B8BB4200103542 /* Main.storyboard in Resources */,
 				EF70B3EE19ED4C4D00AA55FA /* combined.xml in Resources */,
-				EF0B8A6619E738A500EA1B6E /* WebViewController.xib in Resources */,
-				EF0B8A5D19E62FB400EA1B6E /* combine.xml in Resources */,
-				EF4B165019F061B400083B72 /* Toys.xml in Resources */,
-				EF0B8A6119E6590700EA1B6E /* Electronics.xml in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -488,26 +409,19 @@
 				52CCC68519AE920700464A46 /* JADebugViewController.m in Sources */,
 				52CCC65919AE90FD00464A46 /* AppDelegate.m in Sources */,
 				EFAD358C1A00880800CBA5DF /* InsetLabel.m in Sources */,
-				EFDEAE0319FEE8B700D58BFD /* Person.m in Sources */,
 				EFEE5C6419E4A98A009BD5D2 /* NSLayoutConstraint+PureLayout.m in Sources */,
-				52CCC68A19AE927200464A46 /* JACenterViewController.m in Sources */,
 				EFDEAE0419FEE8B700D58BFD /* ImageLabelView.m in Sources */,
 				52CCC68319AE920700464A46 /* JASidePanelController.m in Sources */,
 				EFEE5C6319E4A98A009BD5D2 /* NSArray+PureLayout.m in Sources */,
-				EFBB10E119E75B8E000FBB38 /* UIWebViewController.m in Sources */,
 				EFDEAE0619FEE8B700D58BFD /* ChooseItemViewController.m in Sources */,
 				52CCC65619AE90FD00464A46 /* main.m in Sources */,
 				52CCC68419AE920700464A46 /* UIViewController+JASidePanel.m in Sources */,
-				EF86F90819BEE84A0023A507 /* OverlayView.m in Sources */,
 				EFEF512C1A0107F200F9C3B9 /* UIColor+MDCRGB8Bit.m in Sources */,
-				EF86F90719BEE84A0023A507 /* DraggableView.m in Sources */,
 				EFEE5C5419E47B18009BD5D2 /* XMLReader.m in Sources */,
-				52CCC65F19AE90FD00464A46 /* ViewController.m in Sources */,
 				52CCC68619AE920700464A46 /* JALeftViewController.m in Sources */,
-				EF0B8A6419E7387B00EA1B6E /* WebViewController.m in Sources */,
 				52CCC65C19AE90FD00464A46 /* Impulse_Shopper.xcdatamodeld in Sources */,
 				EFDEAE0519FEE8B700D58BFD /* ChooseItemView.m in Sources */,
-				EF86F90619BEE84A0023A507 /* DraggableViewBackground.m in Sources */,
+				EFEC80241A09283100FB8274 /* WebControllerViewController.m in Sources */,
 				EFEE5C6219E4A98A009BD5D2 /* ALView+PureLayout.m in Sources */,
 				52CCC68719AE920700464A46 /* JARightViewController.m in Sources */,
 			);
@@ -621,15 +535,15 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_ENTITLEMENTS = "Impulse Shopper/Impulse Shopper.entitlements";
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Justin Knag (6DC88VRSE2)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Justin Knag (6DC88VRSE2)";
 				GCC_INCREASE_PRECOMPILED_HEADER_SHARING = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				INFOPLIST_FILE = "Impulse Shopper/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "214e125e-e951-413c-83aa-4a891309a68a";
 				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
@@ -641,15 +555,15 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_ENTITLEMENTS = "Impulse Shopper/Impulse Shopper.entitlements";
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Justin Knag (QVT76MD88U)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Justin Knag (QVT76MD88U)";
 				GCC_INCREASE_PRECOMPILED_HEADER_SHARING = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				INFOPLIST_FILE = "Impulse Shopper/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "214e125e-e951-413c-83aa-4a891309a68a";
 				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;

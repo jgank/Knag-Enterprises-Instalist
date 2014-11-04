@@ -8,7 +8,6 @@
 
 #import "AppDelegate.h"
 #import "JASidePanelController.h"
-#import "JACenterViewController.h"
 #import "JALeftViewController.h"
 #import "JARightViewController.h"
 #import "ChooseItemViewController.h"
@@ -17,6 +16,7 @@
 #import <Accounts/Accounts.h>
 #import "Appirater.h"
 #import <SupportKit/SupportKit.h>
+#import <CommonCrypto/CommonDigest.h>
 
 @interface AppDelegate ()
 
@@ -25,6 +25,7 @@
 @implementation AppDelegate
 @synthesize window = _window;
 @synthesize viewController = _viewController;
+#define SYSTEM_VERSION_LESS_THAN(v) ([[[UIDevice currentDevice] systemVersion] compare:v options:NSNumericSearch] == NSOrderedAscending)
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
@@ -43,7 +44,13 @@
     
     self.window.rootViewController = self.viewController;
     [self.window makeKeyAndVisible];
-    
+    NSUInteger rntypes;
+    if (!SYSTEM_VERSION_LESS_THAN(@"8.0")) {
+        rntypes = [[[UIApplication sharedApplication] currentUserNotificationSettings] types];
+    }else{
+        rntypes = [[UIApplication sharedApplication] enabledRemoteNotificationTypes];
+    }
+ 
     [SupportKit initWithSettings:[SKTSettings settingsWithAppToken:@"cr6pj0hm9r6vm7ff1kgfhrv7l"]];
 
     [Appirater setAppId:@"437605857"];
@@ -54,9 +61,38 @@
     [Appirater setDebug:YES];
     
     if([[NSUserDefaults standardUserDefaults] objectForKey:@"uudid"] == NULL) {
-    NSString *udid = [[NSUUID UUID] UUIDString];
-    NSLog(@"udid %@", udid);
-        [[NSUserDefaults standardUserDefaults] setObject:[[NSUUID UUID] UUIDString] forKey:@"uudid"];
+        
+        
+        const char *cStr = [[[NSUUID UUID] UUIDString] UTF8String];
+        unsigned char result[CC_MD5_DIGEST_LENGTH];
+        CC_MD5( cStr, (CC_LONG)strlen(cStr), result ); // This is the md5 call
+        
+        
+        NSString *bodyHash =  [NSString stringWithFormat:
+                               @"%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x",
+                               result[0], result[1], result[2], result[3],
+                               result[4], result[5], result[6], result[7],
+                               result[8], result[9], result[10], result[11],
+                               result[12], result[13], result[14], result[15]
+                               ];
+        
+        
+        
+        
+        char big64[] = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ-_";
+        
+        NSString *eiString = @"";
+        for(int i = 3; i < [bodyHash length]; i += 4) {
+            [bodyHash characterAtIndex:-12];
+            char *f1 = strchr(big64, [bodyHash characterAtIndex:i-3]);
+            char *f2 = strchr(big64, [bodyHash characterAtIndex:i-2]);
+            char *f3 = strchr(big64, [bodyHash characterAtIndex:i-1]);
+            char *f4 = strchr(big64, [bodyHash characterAtIndex:i]);
+            NSInteger sum = (f1 - big64) + (f2 - big64) + (f3 - big64) + (f4 - big64);
+            eiString = [eiString stringByAppendingString:[NSString stringWithFormat:@"%c", big64[sum]]];
+        }
+        NSLog(@"eig string %@", eiString);
+        [[NSUserDefaults standardUserDefaults] setObject:eiString forKey:@"uudid"];
     }
     
     if([[NSUserDefaults standardUserDefaults] objectForKey:@"numSwipes"] == NULL) {
@@ -171,5 +207,13 @@
         }
     }
 }
+- (void)application:(UIApplication*)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData*)deviceToken
+{
+    NSLog(@"My token is: %@", deviceToken);
+}
 
+- (void)application:(UIApplication*)application didFailToRegisterForRemoteNotificationsWithError:(NSError*)error
+{
+    NSLog(@"Failed to get token, error: %@", error);
+}
 @end

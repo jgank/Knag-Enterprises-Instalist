@@ -25,6 +25,7 @@
 
 #import <QuartzCore/QuartzCore.h>
 #import "JASidePanelController.h"
+#import <ChameleonFramework/Chameleon.h>
 
 static char ja_kvoContext;
 
@@ -176,6 +177,7 @@ static char ja_kvoContext;
     
     [self _swapCenter:nil previousState:0 with:_centerPanel];
     [self.view bringSubviewToFront:self.centerPanelContainer];
+    
 }
 -(UIStatusBarStyle)preferredStatusBarStyle{
     return UIStatusBarStyleLightContent;
@@ -816,11 +818,6 @@ static char ja_kvoContext;
 
 - (CGFloat)rightVisibleWidth {
         return self.view.bounds.size.width;
-    if (self.centerPanelHidden && self.shouldResizeRightPanel) {
-        return self.view.bounds.size.width;
-    } else {
-        return self.rightFixedWidth ? self.rightFixedWidth : floorf(self.view.bounds.size.width * self.rightGapPercentage);
-    }    
 }
 
 #pragma mark - Showing Panels
