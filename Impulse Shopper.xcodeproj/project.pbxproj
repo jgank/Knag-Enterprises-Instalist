@@ -108,6 +108,7 @@
 		EF0B8A6219E7387B00EA1B6E /* WebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WebViewController.h; sourceTree = "<group>"; };
 		EF0B8A6319E7387B00EA1B6E /* WebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WebViewController.m; sourceTree = "<group>"; };
 		EF0B8A6519E738A500EA1B6E /* WebViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WebViewController.xib; sourceTree = "<group>"; };
+		EF2879491A02C0820087DA88 /* Impulse Shopper.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = "Impulse Shopper.entitlements"; sourceTree = "<group>"; };
 		EF3E89DA1A0038FB00EA9985 /* 179-notepad.svg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = "179-notepad.svg"; sourceTree = "<group>"; };
 		EF4B164D19F05D1F00083B72 /* apparel.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = apparel.xml; sourceTree = "<group>"; };
 		EF4B164F19F061B400083B72 /* Toys.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = Toys.xml; sourceTree = "<group>"; };
@@ -205,13 +206,9 @@
 		52CCC65219AE90FD00464A46 /* Impulse Shopper */ = {
 			isa = PBXGroup;
 			children = (
+				EF2879491A02C0820087DA88 /* Impulse Shopper.entitlements */,
+				EF7407911A086A8900ABEEA2 /* xml */,
 				EF70B3EF19ED538700AA55FA /* aws_signed_request.py */,
-				EF09E22819FA48870045779B /* goog.xml */,
-				EF4B164D19F05D1F00083B72 /* apparel.xml */,
-				EF70B3ED19ED4C4D00AA55FA /* combined.xml */,
-				EF0B8A6019E6590700EA1B6E /* Electronics.xml */,
-				EF4B164F19F061B400083B72 /* Toys.xml */,
-				EF0B8A5C19E62FB400EA1B6E /* combine.xml */,
 				EFAD358D1A00B27A00CBA5DF /* christmas_present.png */,
 				EFEE5C5219E47B18009BD5D2 /* XMLReader.h */,
 				EFEE5C5319E47B18009BD5D2 /* XMLReader.m */,
@@ -319,6 +316,19 @@
 			name = Pods;
 			sourceTree = "<group>";
 		};
+		EF7407911A086A8900ABEEA2 /* xml */ = {
+			isa = PBXGroup;
+			children = (
+				EF09E22819FA48870045779B /* goog.xml */,
+				EF4B164D19F05D1F00083B72 /* apparel.xml */,
+				EF70B3ED19ED4C4D00AA55FA /* combined.xml */,
+				EF0B8A6019E6590700EA1B6E /* Electronics.xml */,
+				EF4B164F19F061B400083B72 /* Toys.xml */,
+				EF0B8A5C19E62FB400EA1B6E /* combine.xml */,
+			);
+			name = xml;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -371,6 +381,14 @@
 					52CCC64F19AE90FD00464A46 = {
 						CreatedOnToolsVersion = 6.0;
 						DevelopmentTeam = QVT76MD88U;
+						SystemCapabilities = {
+							com.apple.BackgroundModes = {
+								enabled = 1;
+							};
+							com.apple.iCloud = {
+								enabled = 1;
+							};
+						};
 					};
 					52CCC66819AE90FD00464A46 = {
 						CreatedOnToolsVersion = 6.0;
@@ -602,6 +620,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_ENTITLEMENTS = "Impulse Shopper/Impulse Shopper.entitlements";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_INCREASE_PRECOMPILED_HEADER_SHARING = YES;
@@ -621,8 +640,9 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "Apple Production IOS Push Services: com.yougank.impulseshopper";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "Apple Production IOS Push Services: com.yougank.impulseshopper";
+				CODE_SIGN_ENTITLEMENTS = "Impulse Shopper/Impulse Shopper.entitlements";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_INCREASE_PRECOMPILED_HEADER_SHARING = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				INFOPLIST_FILE = "Impulse Shopper/Info.plist";

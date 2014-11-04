@@ -43,9 +43,11 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    [self setNeedsStatusBarAppearanceUpdate];
     self.toolBar = [UIToolbar newAutoLayoutView];
 //    self.view.backgroundColor = [UIColor colorWithComplementaryFlatColorOf:[UIColor flatGreenColorDark]];
     self.view.backgroundColor = FlatBlue;
+//    self.view.backgroundColor = FlatRedDark;
 //    self.toolBar = [[UIToolbar alloc] initWithFrame:CGRectMake(self.view.bounds.origin.x, self.view.bounds.origin.y, self.view.bounds.size.width, 44.0f)];
     self.backButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRewind target:self action:@selector(showCenter)];
     
@@ -57,7 +59,7 @@
     UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0.0 , 11.0f, self.view.frame.size.width, 21.0f)];
     [titleLabel setFont:[UIFont fontWithName:@"Helvetica-Bold" size:18]];
     [titleLabel setBackgroundColor:[UIColor clearColor]];
-    [titleLabel setTextColor:ComplementaryFlatColorOf(FlatBlue)];
+    [titleLabel setTextColor:ComplementaryFlatColorOf(FlatWhite)];
     [titleLabel setText:@"Wish List"];
     [titleLabel setTextAlignment:NSTextAlignmentCenter];
     
@@ -74,7 +76,8 @@
     
 //    [_toolBar setTintColor:[UIColor blueColor]];
     _toolBar.barTintColor = FlatBlue;
-    _toolBar.tintColor = ComplementaryFlatColorOf(FlatBlue);
+//    _toolBar.tintColor = ComplementaryFlatColorOf(FlatBlue);
+    _toolBar.tintColor = ComplementaryFlatColorOf(FlatWhite);
     _toolBar.backgroundColor = FlatBlue;
     
     
@@ -123,6 +126,9 @@
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
 }
+-(UIStatusBarStyle)preferredStatusBarStyle{
+    return UIStatusBarStyleLightContent;
+}
 -(void)showCenter {
     [self.sidePanelController showCenterPanelAnimated:YES];
 }
@@ -130,6 +136,14 @@
     _tableView.editing = !_tableView.editing;
 }
 -(void)trash {
+    
+    
+    UIAlertView * av = [[UIAlertView alloc] initWithTitle:@"Delete All?" message:@"Do you want to erase the entire list?" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Yes", nil];
+    [av show];
+    
+    
+    return;
+    
     UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"Delete All" message:@"Do you want to erase the entire list" preferredStyle:UIAlertControllerStyleAlert];
     UIAlertAction *yesAct = [UIAlertAction actionWithTitle:@"Yes" style:UIAlertActionStyleDestructive handler:^(UIAlertAction *action) {
         [((ChooseItemViewController*)self.sidePanelController.centerPanel).favArray removeAllObjects];
@@ -193,14 +207,14 @@
     
     imageView.backgroundColor = [UIColor clearColor];
 //    imageView.backgroundColor = [UIColor grayColor];
-    [imageView sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@", [[_favArray[indexPath.row] objectForKey:@"SmallImage"] objectForKey:@"text"]]] placeholderImage:[UIImage imageNamed:@"Placeholder"] options:SDWebImageContinueInBackground completed:nil];
-    NSLog(@"fdas %f %f",[[[_favArray[indexPath.row] objectForKey:@"SmallImage"] objectForKey:@"Width"] floatValue], [[[_favArray[indexPath.row] objectForKey:@"SmallImage"] objectForKey:@"Height"] floatValue]);
-    CGSize imageSizze = CGSizeMake([[[_favArray[indexPath.row] objectForKey:@"SmallImage"] objectForKey:@"Width"] floatValue], [[[_favArray[indexPath.row] objectForKey:@"SmallImage"] objectForKey:@"Height"] floatValue]);
+    [imageView sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@", [[_favArray[indexPath.row] objectForKey:@"MediumImage"] objectForKey:@"text"]]] placeholderImage:[UIImage imageNamed:@"Placeholder"] options:SDWebImageContinueInBackground completed:nil];
+    NSLog(@"fdas %f %f",[[[_favArray[indexPath.row] objectForKey:@"MediumImage"] objectForKey:@"Width"] floatValue], [[[_favArray[indexPath.row] objectForKey:@"MediumImage"] objectForKey:@"Height"] floatValue]);
+    CGSize imageSizze = CGSizeMake([[[_favArray[indexPath.row] objectForKey:@"MediumImage"] objectForKey:@"Width"] floatValue], [[[_favArray[indexPath.row] objectForKey:@"MediumImage"] objectForKey:@"Height"] floatValue]);
     if([[[UIDevice currentDevice] systemVersion] doubleValue] >= 8.0) {
         
 //        [imageView autoSetDimensionsToSize:imageSizze];
 //        [imageView autoPinEdgeToSuperviewEdge:ALEdgeLeft withInset:11.0f];
-        cell.contentView.backgroundColor = ComplementaryFlatColorOf(FlatBlue);
+        cell.contentView.backgroundColor = ComplementaryFlatColorOf(FlatWhite);
         [imageView autoSetDimension:ALDimensionWidth toSize:75.f];
 //        [imageView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsMake(11.0f, 11.0f, 11.0f, 0) excludingEdge:ALEdgeRight];
         [imageView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero excludingEdge:ALEdgeRight];
@@ -212,11 +226,10 @@
     }
     else {
         
-        cell.contentView.backgroundColor = ComplementaryFlatColorOf(FlatBlue);
+        cell.contentView.backgroundColor = ComplementaryFlatColorOf(FlatWhite);
         [imageView autoSetDimension:ALDimensionWidth toSize:75.f];
         imageView.backgroundColor = [UIColor whiteColor];
 //        [imageView autoSetDimensionsToSize:imageSizze];
-        [imageView autoPinEdgeToSuperviewEdge:ALEdgeLeft withInset:11.0f];
         [imageView autoPinEdgeToSuperviewEdge:ALEdgeLeft withInset:0.0f];
         [imageView autoAlignAxisToSuperviewAxis:ALAxisHorizontal];
         imageView.contentMode = UIViewContentModeScaleAspectFit;
@@ -226,7 +239,9 @@
         [label autoPinEdge:ALEdgeTop toEdge:ALEdgeTop ofView:imageView];
         [label autoPinEdge:ALEdgeBottom toEdge:ALEdgeBottom ofView:imageView];
         //    [label autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsMake(11, 0, 11, 11) excludingEdge:ALEdgeLeft];
-        [label autoPinEdge:ALEdgeLeft toEdge:ALEdgeRight ofView:imageView withOffset:35.0f];
+        
+//        [label autoPinEdge:ALEdgeLeft toEdge:ALEdgeRight ofView:imageView withOffset:35.0f];
+        [label autoPinEdge:ALEdgeLeft toEdge:ALEdgeRight ofView:imageView withOffset:11.0f];
     }
     
 
@@ -251,5 +266,13 @@
     }
 }
 
-
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
+    if(buttonIndex ==1) {
+        [_favArray removeAllObjects];
+        NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+        NSString *arrayPath = [[paths objectAtIndex:0] stringByAppendingPathComponent:@"fav.out"];
+        [_favArray writeToFile:arrayPath atomically:YES];
+        [_tableView reloadData];
+    }
+}
 @end

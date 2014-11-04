@@ -112,7 +112,7 @@
     manager.responseSerializer = responseSerializer;
     
     
-    AFHTTPRequestOperation *op = [manager POST:@"http://ec2-54-165-105-96.compute-1.amazonaws.com/combined.xml"
+    AFHTTPRequestOperation *op = [manager POST:@"http://amazonchristmasiphone.duckdns.org/combined.xml"
                                     parameters:nil
                                        success:^(AFHTTPRequestOperation *operation, id responseObject) {
                                            [operation.responseString writeToFile:nil atomically:YES encoding:NSUTF8StringEncoding error:nil];

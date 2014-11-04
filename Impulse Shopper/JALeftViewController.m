@@ -39,11 +39,21 @@
 #import "PureLayout.h"
 #import "Appirater.h"
 #import <SupportKit.h>
+#import <CommonCrypto/CommonDigest.h>
 
 @interface JALeftViewController () <MFMailComposeViewControllerDelegate>
 
+@property (nonatomic, strong) UIButton *emailButton;
+@property (nonatomic, strong) UIButton *smsButton;
+@property (nonatomic, strong) UIButton *facebookButton;
+@property (nonatomic, strong) UIButton *listButton;
+@property (nonatomic, strong) UIButton *chatButton;
+@property (nonatomic, strong) UIButton *rateButton;
+@property (nonatomic, strong) UIButton *tweetButton;
+@property (nonatomic, strong) UIButton *printButton;
 @property (nonatomic, strong) UISegmentedControl *maleControl;
 @property (nonatomic, strong) UISegmentedControl *toyControl;
+
 @property (readwrite) BOOL fbLogin;
 
 @end
@@ -70,12 +80,13 @@
     [button setTitleColor:[UIColor colorWithContrastingBlackOrWhiteColorOn:FlatNavyBlueDark isFlat:YES] forState:UIControlStateNormal];
     [button setImage:img forState:UIControlStateNormal];
     button.imageEdgeInsets = UIEdgeInsetsMake(0, 0, 0, img.size.width);
-    button.titleEdgeInsets = UIEdgeInsetsMake(0, img.size.width, 0, 0);
+    button.titleEdgeInsets = UIEdgeInsetsMake(0, 24.0f, 0, 0);
     button.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
     button.frame = CGRectMake(20.0f, 30.0f, 200.0f, 40.0f);
     button.autoresizingMask = UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleBottomMargin;
     [button setTitle:@"Email List" forState:UIControlStateNormal];
     [button addTarget:self action:@selector(_emailTapped:) forControlEvents:UIControlEventTouchUpInside];
+    _emailButton = button;
     [self.view addSubview:button];
     
     button = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -85,12 +96,13 @@
     [button setTitleColor:[UIColor colorWithContrastingBlackOrWhiteColorOn:FlatNavyBlueDark isFlat:YES] forState:UIControlStateNormal];
     [button setImage:img forState:UIControlStateNormal];
     button.imageEdgeInsets = UIEdgeInsetsMake(0, 0, 0, img.size.width);
-    button.titleEdgeInsets = UIEdgeInsetsMake(0, img.size.width, 0, 0);
+    button.titleEdgeInsets = UIEdgeInsetsMake(0, 24.0f, 0, 0);
     button.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
-    button.frame = CGRectMake(20.0f, 80.0f, 200.0f, 40.0f);
+    button.frame = CGRectMake(20.0f, 70.0f, 200.0f, 40.0f);
     button.autoresizingMask = UIViewAutoresizingFlexibleRightMargin;
     [button setTitle:@"SMS  Message" forState:UIControlStateNormal];
     [button addTarget:self action:@selector(_postSMS:) forControlEvents:UIControlEventTouchUpInside];
+    _smsButton = button;
     [self.view addSubview:button];
     
     button = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -100,27 +112,48 @@
     [button setTitleColor:[UIColor colorWithContrastingBlackOrWhiteColorOn:FlatNavyBlueDark isFlat:YES] forState:UIControlStateNormal];
     [button setImage:img forState:UIControlStateNormal];
     button.imageEdgeInsets = UIEdgeInsetsMake(0, 0, 0, img.size.width);
-    button.titleEdgeInsets = UIEdgeInsetsMake(0, img.size.width, 0, 0);
+    button.titleEdgeInsets = UIEdgeInsetsMake(0, 24.0f, 0, 0);
     button.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
-    button.frame = CGRectMake(20.0f, 130.0f, 200.0f, 40.0f);
+    button.frame = CGRectMake(20.0f, 110.0f, 200.0f, 40.0f);
     button.autoresizingMask = UIViewAutoresizingFlexibleRightMargin;
     [button setTitle:@"Post to Facebook" forState:UIControlStateNormal];
     [button addTarget:self action:@selector(_postToFacebook:) forControlEvents:UIControlEventTouchUpInside];
+    _facebookButton = button;
+    [self.view addSubview:button];
+    
+    
+    
+    
+    button = [UIButton buttonWithType:UIButtonTypeCustom];
+    button.imageView.tintColor = FlatWhite;
+    img = [UIImage imageNamed:@"209-twitter"];
+    img = [img imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+    [button setImage:img forState:UIControlStateNormal];
+    [button setTitleColor:[UIColor colorWithContrastingBlackOrWhiteColorOn:FlatNavyBlueDark isFlat:YES] forState:UIControlStateNormal];
+    button.imageEdgeInsets = UIEdgeInsetsMake(0, 0, 0, img.size.width);
+    button.titleEdgeInsets = UIEdgeInsetsMake(0, 24.0f, 0, 0);
+    button.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
+    button.frame = CGRectMake(20.0f, 150.0f, 200.0f, 40.0f);
+    button.autoresizingMask = UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleBottomMargin;
+    [button setTitle:@"Tweet List" forState:UIControlStateNormal];
+    [button addTarget:self action:@selector(_postPasteBin:) forControlEvents:UIControlEventTouchUpInside];
+    _tweetButton = button;
     [self.view addSubview:button];
     
     button = [UIButton buttonWithType:UIButtonTypeCustom];
     button.imageView.tintColor = FlatWhite;
-    img = [UIImage imageNamed:@"185-printer"];
+    img = [UIImage imageNamed:@"162-receipt"];
     img = [img imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
     [button setTitleColor:[UIColor colorWithContrastingBlackOrWhiteColorOn:FlatNavyBlueDark isFlat:YES] forState:UIControlStateNormal];
     [button setImage:img forState:UIControlStateNormal];
     button.imageEdgeInsets = UIEdgeInsetsMake(0, 0, 0, img.size.width);
-    button.titleEdgeInsets = UIEdgeInsetsMake(0, img.size.width, 0, 0);
+    button.titleEdgeInsets = UIEdgeInsetsMake(0, 24.0f, 0, 0);
     button.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
-    button.frame = CGRectMake(20.0f, 180.0f, 200.0f, 40.0f);
+    button.frame = CGRectMake(20.0f, 190.0f, 200.0f, 40.0f);
     button.autoresizingMask = UIViewAutoresizingFlexibleRightMargin;
     [button setTitle:@"View Wish List" forState:UIControlStateNormal];
     [button addTarget:self action:@selector(_viewWishList:) forControlEvents:UIControlEventTouchUpInside];
+    _listButton = button;
     [self.view addSubview:button];
     
     
@@ -133,50 +166,17 @@
     [button setImage:img forState:UIControlStateNormal];
     [button setTitleColor:[UIColor colorWithContrastingBlackOrWhiteColorOn:FlatNavyBlueDark isFlat:YES] forState:UIControlStateNormal];
     button.imageEdgeInsets = UIEdgeInsetsMake(0, 0, 0, img.size.width);
-    button.titleEdgeInsets = UIEdgeInsetsMake(0, img.size.width, 0, 0);
+    button.titleEdgeInsets = UIEdgeInsetsMake(0, 24.0f, 0, 0);
     button.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
     button.frame = CGRectMake(20.0f, 230.0f, 200.0f, 40.0f);
     button.autoresizingMask = UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleBottomMargin;
     [button setTitle:@"Chat with Creator" forState:UIControlStateNormal];
+    _chatButton = button;
+    
     [button addTarget:self action:@selector(chat) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:button];
-//    [button autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:button withOffset:20.f];
-//    [button autoPinEdge:ALEdgeLeft toEdge:ALEdgeLeft ofView:_toyControl];
-//    [button autoPinEdgeToSuperviewEdge:ALEdgeRight];
     
     
-    button = [UIButton buttonWithType:UIButtonTypeCustom];
-    button.imageView.tintColor = FlatWhite;
-    img = [UIImage imageNamed:@"215-subscription"];
-    img = [img imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
-    [button setImage:img forState:UIControlStateNormal];
-    [button setTitleColor:[UIColor colorWithContrastingBlackOrWhiteColorOn:FlatNavyBlueDark isFlat:YES] forState:UIControlStateNormal];
-    button.imageEdgeInsets = UIEdgeInsetsMake(0, 0, 0, img.size.width);
-    button.titleEdgeInsets = UIEdgeInsetsMake(0, img.size.width, 0, 0);
-    button.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
-    button.frame = CGRectMake(20.0f, 280.f, 200.0f, 40.0f);
-    button.autoresizingMask = UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleBottomMargin;
-    [button setTitle:@"Undo" forState:UIControlStateNormal];
-    [button addTarget:self action:@selector(_undoTapped:) forControlEvents:UIControlEventTouchUpInside];
-    [self.view addSubview:button];
-    
-    button = [UIButton buttonWithType:UIButtonTypeCustom];
-    button.imageView.tintColor = FlatWhite;
-    img = [UIImage imageNamed:@"28-star"];
-    img = [img imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
-    [button setImage:img forState:UIControlStateNormal];
-    [button setTitleColor:[UIColor colorWithContrastingBlackOrWhiteColorOn:FlatNavyBlueDark isFlat:YES] forState:UIControlStateNormal];
-    button.imageEdgeInsets = UIEdgeInsetsMake(0, 0, 0, img.size.width);
-    button.titleEdgeInsets = UIEdgeInsetsMake(0, img.size.width, 0, 0);
-    button.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
-    button.frame = CGRectMake(20.0f, 330.0f, 200.0f, 40.0f);
-    button.autoresizingMask = UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleBottomMargin;
-    [button setTitle:@"Rate and Review" forState:UIControlStateNormal];
-    [button addTarget:self action:@selector(_review) forControlEvents:UIControlEventTouchUpInside];
-    [self.view addSubview:button];
-//    [button autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:_toyControl withOffset:20.f];
-//    [button autoPinEdge:ALEdgeLeft toEdge:ALEdgeLeft ofView:_toyControl];
-//    [button autoPinEdgeToSuperviewEdge:ALEdgeRight];
     
     button = [UIButton buttonWithType:UIButtonTypeCustom];
     button.imageView.tintColor = FlatWhite;
@@ -185,32 +185,47 @@
     [button setImage:img forState:UIControlStateNormal];
     [button setTitleColor:[UIColor colorWithContrastingBlackOrWhiteColorOn:FlatNavyBlueDark isFlat:YES] forState:UIControlStateNormal];
     button.imageEdgeInsets = UIEdgeInsetsMake(0, 0, 0, img.size.width);
-    button.titleEdgeInsets = UIEdgeInsetsMake(0, img.size.width, 0, 0);
+    button.titleEdgeInsets = UIEdgeInsetsMake(0, 24.0f, 0, 0);
     button.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
-    button.frame = CGRectMake(20.0f, 380.0f, 200.0f, 40.0f);
+    button.frame = CGRectMake(20.0f, 270.0f, 200.0f, 40.0f);
     button.autoresizingMask = UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleBottomMargin;
     [button setTitle:@"Print" forState:UIControlStateNormal];
     [button addTarget:self action:@selector(print) forControlEvents:UIControlEventTouchUpInside];
+    _printButton = button;
     [self.view addSubview:button];
     
-//    [button autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:button withOffset:20.f];
-//    [button autoPinEdge:ALEdgeLeft toEdge:ALEdgeLeft ofView:_toyControl];
-//    [button autoPinEdgeToSuperviewEdge:ALEdgeRight];
+    
+    
+    button = [UIButton buttonWithType:UIButtonTypeCustom];
+    button.imageView.tintColor = FlatWhite;
+    img = [UIImage imageNamed:@"28-star"];
+    img = [img imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+    [button setImage:img forState:UIControlStateNormal];
+    [button setTitleColor:[UIColor colorWithContrastingBlackOrWhiteColorOn:FlatNavyBlueDark isFlat:YES] forState:UIControlStateNormal];
+    button.imageEdgeInsets = UIEdgeInsetsMake(0, 0, 0, img.size.width);
+    button.titleEdgeInsets = UIEdgeInsetsMake(0, 24.0f, 0, 0);
+    button.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
+    button.frame = CGRectMake(20.0f, 310.0f, 200.0f, 40.0f);
+    button.autoresizingMask = UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleBottomMargin;
+    [button setTitle:@"Rate and Review" forState:UIControlStateNormal];
+    [button addTarget:self action:@selector(_review) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:button];
+    _rateButton = button;
     _maleControl = [[UISegmentedControl alloc] initWithItems:@[@"Men's", @"Women's", @"Both"]];
     _maleControl.tag = 5;
     [self.view addSubview:_maleControl];
-    [_maleControl autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:button withOffset:20.f];
+    [_maleControl autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:button withOffset:5.f];
     [_maleControl autoPinEdge:ALEdgeLeft toEdge:ALEdgeLeft ofView:button];
     [_maleControl setTintColor:FlatWhite];
     
     NSUserDefaults *stand = [NSUserDefaults standardUserDefaults];
-    if([stand boolForKey:@"male"]) {
+    if([stand boolForKey:@"male"]  && [stand boolForKey:@"female"]) {
         [_maleControl setSelectedSegmentIndex:2];
     }
     else if([stand boolForKey:@"female"]) {
         [_maleControl setSelectedSegmentIndex:1];
     }
-    else if([stand boolForKey:@"male"] && [stand boolForKey:@"female"]) {
+    else if([stand boolForKey:@"male"]) {
         [_maleControl setSelectedSegmentIndex:0];
     }
     [_maleControl addTarget:self action:@selector(segmentChange:) forControlEvents:UIControlEventValueChanged];
@@ -219,7 +234,7 @@
     _toyControl = [[UISegmentedControl alloc] initWithItems:@[@"Toys", @"No Toys", @"Only Toys"]];
     _toyControl.tag = 6;
     [self.view addSubview:_toyControl];
-    [_toyControl autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:_maleControl withOffset:20.f];
+    [_toyControl autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:_maleControl withOffset:15.f];
     [_toyControl autoPinEdge:ALEdgeLeft toEdge:ALEdgeLeft ofView:button];
     [_toyControl setTintColor:FlatWhite];
     
@@ -234,9 +249,7 @@
     }
     [_toyControl addTarget:self action:@selector(segmentChange:) forControlEvents:UIControlEventValueChanged];
     
-    
-    
-
+//    [@[_emailButton, _smsButton, _facebookButton, _tweetButton, _listButton, _chatButton, _printButton, _rateButton, _maleControl, _toyControl] autoDistributeViewsAlongAxis:ALAxisVertical withFixedSpacing:self.view.frame.size.height/11.0 alignment:NSLayoutFormatAlignAllCenterX];
     
     
     
@@ -253,7 +266,7 @@
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    self.label.center = CGPointMake(floorf(self.sidePanelController.leftVisibleWidth/2.0f), 25.0f);
+//    self.label.center = CGPointMake(floorf(self.sidePanelController.leftVisibleWidth/2.0f), 25.0f);
     NSLog(@"view will appear left");
 }
 
@@ -373,14 +386,14 @@
         NSString *body = @"";
         NSArray *arr = ((ChooseItemViewController*)self.sidePanelController.centerPanel).favArray;
         for (NSDictionary *d in arr) {
-            body = [body stringByAppendingString:[NSString stringWithFormat:@"%@, %@, %@\n",
-                                                  [[d objectForKey:@"Title"] objectForKey:@"text"],
-                                                  [[d objectForKey:@"FormattedPrice"] objectForKey:@"text"],
-                                                  [[d objectForKey:@"DetailPageURL"] objectForKey:@"text"]]];
-        }
-        body = [body stringByAppendingString:@"\n Created by iPhone Christmas List Creator"];
-        body = [body stringByAppendingString:@"\n http://amazonchristmasiphone.duckdns.org/redirect.php"];
         
+        body = [body stringByAppendingString:[NSString stringWithFormat:@"%@, %@, %@\n",
+                                              [[d objectForKey:@"Title"] objectForKey:@"text"],
+                                              [[d objectForKey:@"FormattedPrice"] objectForKey:@"text"],
+                                              [[d objectForKey:@"DetailPageURL"] objectForKey:@"text"]]];
+    }
+    body = [body stringByAppendingString:@"\n Created by iPhone Christmas List Creator"];
+    body = [body stringByAppendingString:@"\n http://amazonchristmasiphone.duckdns.org/redirect.php"];
         [mailer setBody:body];
         [self presentViewController:mailer animated:YES completion:nil];
     }
@@ -398,35 +411,99 @@
         [[[UIAlertView alloc] initWithTitle:@"Alert" message:@"Please favorite some items first" delegate:nil cancelButtonTitle:@"Okay" otherButtonTitles:nil] show];
         return;
     }
-    NSString *body = @"";
-    for (NSDictionary *d in arr) {
-        body = [body stringByAppendingString:[NSString stringWithFormat:@"%@, %@, %@\n",
-                                              [[d objectForKey:@"Title"] objectForKey:@"text"],
-                                              [[d objectForKey:@"FormattedPrice"] objectForKey:@"text"],
-                                              [[d objectForKey:@"DetailPageURL"] objectForKey:@"text"]]];
-    }
-    body = [body stringByAppendingString:@"\n Created by iPhone Christmas List Creator"];
-    body = [body stringByAppendingString:@"\n http://amazonchristmasiphone.duckdns.org/redirect.php"];
+        NSString *body = @"<ul>";
+        for (NSDictionary *d in arr) {
+            body = [body stringByAppendingString:[NSString stringWithFormat:@"<li><a href='%@'>%@<br>%@<br>%@<br><img src='%@'/></a><br><br></li>\n",
+                                                  [[d objectForKey:@"DetailPageURL"] objectForKey:@"text"],
+                                                  [[d objectForKey:@"Title"] objectForKey:@"text"],
+                                                  [[d objectForKey:@"FormattedPrice"] objectForKey:@"text"],
+                                                  [[d objectForKey:@"DetailPageURL"] objectForKey:@"text"],
+                                                  [[d objectForKey:@"LargeImage"] objectForKey:@"text"]]];
+        }
+    body = [body stringByAppendingString:@"</ul>\n Created by iPhone Christmas List Creator"];
+    body = [body stringByAppendingString:@"\n<a href='hhttp://amazonchristmasiphone.duckdns.org/redirect.php'>http://amazonchristmasiphone.duckdns.org/redirect.php</a>"];
     body = [body stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
-//    NSLog(@"%@",body);
     
+    
+//    -(NSString*) sha1:(NSString*)input
+//    _{
+    
+    typedef NSString* (^CheckSum) (NSString*);
+    
+    CheckSum _md5 = ^(NSString* input) {
+        const char *cStr = [input UTF8String];
+        unsigned char result[CC_MD5_DIGEST_LENGTH];
+        CC_MD5( cStr, strlen(cStr), result ); // This is the md5 call
+        
+        NSLog(@"asdfasfas");
+        
+        
+        printf("%p", result[0]);
+        printf("%c", result[0]);
+        
+        
+        return [NSString stringWithFormat:
+                @"%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x",
+                result[0], result[1], result[2], result[3],
+                result[4], result[5], result[6], result[7],
+                result[8], result[9], result[10], result[11],
+                result[12], result[13], result[14], result[15]
+                ];
+    };
+    CheckSum _sha1 = ^(NSString* input) {
+        const char *cstr = [input cStringUsingEncoding:NSUTF8StringEncoding];
+        NSData *data = [NSData dataWithBytes:cstr length:input.length];
+        uint8_t digest[CC_SHA1_DIGEST_LENGTH];
+        CC_SHA1(data.bytes, data.length, digest);
+        NSMutableString* output = [NSMutableString stringWithCapacity:CC_SHA1_DIGEST_LENGTH * 2];
+        for(int i = 0; i < CC_SHA1_DIGEST_LENGTH; i++) {
+            [output appendFormat:@"%02x", digest[i]];
+        }
+        return output;
+    };
+    NSString *udid = [[NSUUID UUID] UUIDString];
+    NSLog(@"udid %@", udid);
+    
+
+
+ 
+    NSString *bodyHash = _md5([[NSUserDefaults standardUserDefaults] objectForKey:@"uudid"]);
+    NSLog(@"hash %@", bodyHash);
+    
+    char big64[] = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ-_";
+    
+    NSString *eiString = @"";
+    for(int i = 3; i < [bodyHash length]; i += 4) {
+        [bodyHash characterAtIndex:-12];
+        char *f1 = strchr(big64, [bodyHash characterAtIndex:i-3]);
+        char *f2 = strchr(big64, [bodyHash characterAtIndex:i-2]);
+        char *f3 = strchr(big64, [bodyHash characterAtIndex:i-1]);
+        char *f4 = strchr(big64, [bodyHash characterAtIndex:i]);
+//        NSLog(@"%li", f1 - big64);
+//        NSLog(@"%li", f2 - big64);
+//        NSLog(@"%li", f3 - big64);
+//        NSLog(@"%li", f4 - big64);
+        NSInteger sum = (f1 - big64) + (f2 - big64) + (f3 - big64) + (f4 - big64);
+        eiString = [eiString stringByAppendingString:[NSString stringWithFormat:@"%c", big64[sum]]];
+//        NSLog(@"%lu", sum);
+    }
+    
+    
+    
+    NSLog(@"eig string %@", eiString);
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
-    
-//    manager.requestSerializer = [AFJSONRequestSerializer serializer];
+    AFSecurityPolicy *securityPolicy = [AFSecurityPolicy policyWithPinningMode:AFSSLPinningModeNone];
+    securityPolicy.allowInvalidCertificates = YES;
+    manager.securityPolicy = securityPolicy;
+    manager.requestSerializer = [AFHTTPRequestSerializer serializer];
 //    manager.responseSerializer = [AFJSONResponseSerializer serializer];
     manager.responseSerializer = [AFHTTPResponseSerializer serializer];
     [manager.responseSerializer.acceptableContentTypes setByAddingObject:@"text/html"];
     NSDictionary *params = @{
-    @"api_option" : @"paste",
-    @"api_user_key":@"" ,
-    @"api_paste_private":@"0",
-    @"api_paste_name":[@"Impulse Wish List" stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding],
-    @"api_paste_expire_date":@"N",
-    @"api_paste_format":@"text",
-    @"api_dev_key":@"71515aa1aa95e6358902c69e76d602ed",
-    @"api_paste_code":[body stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding]};
-
-    [manager POST:@"http://pastebin.com/api/api_post.php" parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                             @"hash":eiString,
+                             @"api_dev_key":@"h0wNrPzaGXl1IYN971CT3Xm74X525ivv",
+                             @"body":[body stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding]};
+   [manager POST:@"https://amazonchristmasiphone.duckdns.org/post.php" parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSLog(@"JSON: %@", responseObject);
         NSLog(@"%@",operation.responseString);
         
@@ -448,108 +525,541 @@
             };
 
         }
-        
-        
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         NSLog(@"%@",operation.responseString);
         NSLog(@"Error: %@", error);
+        
     }];
+//
+//
+//    [manager POST:@"http://pastebin.com/api/api_post.php" parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+//        NSLog(@"JSON: %@", responseObject);
+//        NSLog(@"%@",operation.responseString);
+//        
+//        if([operation.responseString rangeOfString:@"http://"].location != NSNotFound) {
+//            TWTweetComposeViewController *twitter = [[TWTweetComposeViewController alloc] init];
+//            [twitter setInitialText:[NSString stringWithFormat:@"Impulse Wishlist %@", operation.responseString]];
+//            [self presentViewController:twitter animated:YES completion:nil];
+//            twitter.completionHandler = ^(TWTweetComposeViewControllerResult res) {
+//                if(res == TWTweetComposeViewControllerResultDone) {
+//                    UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"Success" message:@"The Tweet was posted successfully." delegate:self cancelButtonTitle:@"Dismiss" otherButtonTitles: nil];
+//                    [alert show];
+//                }
+//                if(res == TWTweetComposeViewControllerResultCancelled) {
+//                    UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"Cancelled" message:@"You Cancelled posting the Tweet." delegate:self cancelButtonTitle:@"Dismiss" otherButtonTitles: nil];
+//                    [alert show];
+//                }
+//                [self dismissViewControllerAnimated:YES completion:nil];
+//                
+//            };
+//
+//        }
+//        
+//        
+//    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+//        NSLog(@"%@",operation.responseString);
+//        NSLog(@"Error: %@", error);
+//    }];
 }
-- (void)_postToFacebook:(id)sender {
+- (void) postBody:(void (^)(AFHTTPRequestOperation*, id))block {
     NSArray *arr = ((ChooseItemViewController*)self.sidePanelController.centerPanel).favArray;
     if ([arr count] == 0) {
         [[[UIAlertView alloc] initWithTitle:@"Alert" message:@"Please favorite some items first" delegate:nil cancelButtonTitle:@"Okay" otherButtonTitles:nil] show];
         return;
     }
-    
-    if (FBSession.activeSession.isOpen)
-    {
-        // Post a status update to the user's feed via the Graph API, and display an alert view
-        NSLog(@"%@",FBSession.activeSession.permissions);
-        [self performPublishAction:^{
-            NSString *message = @"";
-            NSArray *arr = ((ChooseItemViewController*)self.sidePanelController.centerPanel).favArray;
-            
-            
-            for (NSDictionary *d in arr) {
-                message = [message stringByAppendingString:[NSString stringWithFormat:@"%@, %@, %@\n",
-                                                            [[d objectForKey:@"Title"] objectForKey:@"text"],
-                                                            [[d objectForKey:@"FormattedPrice"] objectForKey:@"text"],
-                                                            [[d objectForKey:@"DetailPageURL"] objectForKey:@"text"]]];
-            }
-            message = [message stringByAppendingString:@"\n Created by iPhone Christmas List Creator"];
-        message = [message stringByAppendingString:@"\n http://amazonchristmasiphone.duckdns.org/redirect.php"];
-            NSLog(@"%@",message);
-            
-            FBRequestConnection *connection = [[FBRequestConnection alloc] init];
-            
-            connection.errorBehavior = FBRequestConnectionErrorBehaviorReconnectSession
-            | FBRequestConnectionErrorBehaviorAlertUser
-            | FBRequestConnectionErrorBehaviorRetry;
-            
-            [connection addRequest:[FBRequest requestForPostStatusUpdate:message]
-                 completionHandler:^(FBRequestConnection *innerConnection, id result, NSError *error) {
-                     NSLog(@"post completetion");
-                     [SupportKit track:@"facebook"];//Thanks for the spreading your Christmas list! I'm happy to hear that you are enjoying my app and find it useful! Do you have any suggestions? Happy Holidays {{ firstName || fallback }}.
-                     [self showAlert:message result:result error:error];
-                     //                         self.buttonPostStatus.enabled = YES;
-                 }];
-            [connection start];
-            
-            //                self.buttonPostStatus.enabled = NO;
-        }];
+    NSString *body = @"<ul>";
+    for (NSDictionary *d in arr) {
+        body = [body stringByAppendingString:[NSString stringWithFormat:@"<li><a href='%@'>%@<br>%@<br>%@<br><img src='%@'/></a><br><br></li>\n",
+                                              [[d objectForKey:@"DetailPageURL"] objectForKey:@"text"],
+                                              [[d objectForKey:@"Title"] objectForKey:@"text"],
+                                              [[d objectForKey:@"FormattedPrice"] objectForKey:@"text"],
+                                              [[d objectForKey:@"DetailPageURL"] objectForKey:@"text"],
+                                              [[d objectForKey:@"LargeImage"] objectForKey:@"text"]]];
     }
-    else {
-        // try to open session with existing valid token
-        NSArray *permissions = [[NSArray alloc] initWithObjects:
-                                @"public_profile",
-                                @"publish_actions",
-                                nil];
-        FBSession *session = [[FBSession alloc] initWithPermissions:permissions];
-        [FBSession setActiveSession:session];
-        _fbLogin = YES;
-        if([FBSession openActiveSessionWithAllowLoginUI:YES]) {
-            
-            NSLog(@"allow login UI");
-            [self performPublishAction:^{
-                NSString *message = @"";
-                NSArray *arr = ((ChooseItemViewController*)self.sidePanelController.centerPanel).favArray;
-                
-                
-                for (NSDictionary *d in arr) {
-                    message = [message stringByAppendingString:[NSString stringWithFormat:@"%@, %@, %@\n",
-                                                                [[d objectForKey:@"Title"] objectForKey:@"text"],
-                                                                [[d objectForKey:@"FormattedPrice"] objectForKey:@"text"],
-                                                                [[d objectForKey:@"DetailPageURL"] objectForKey:@"text"]]];
-                }
-                message = [message stringByAppendingString:@"\n Created by iPhone Christmas List Creator"];
-        message = [message stringByAppendingString:@"\n http://amazonchristmasiphone.duckdns.org/redirect.php"];
-                NSLog(@"%@",message);
-                
-                FBRequestConnection *connection = [[FBRequestConnection alloc] init];
-                
-                connection.errorBehavior = FBRequestConnectionErrorBehaviorReconnectSession
-                | FBRequestConnectionErrorBehaviorAlertUser
-                | FBRequestConnectionErrorBehaviorRetry;
-                
-                [connection addRequest:[FBRequest requestForPostStatusUpdate:message]
-                     completionHandler:^(FBRequestConnection *innerConnection, id result, NSError *error) {
-                         NSLog(@"login complettion post");
-                         [SupportKit track:@"facebook"];//Thanks for the spreading your Christmas list! I'm happy to hear that you are enjoying my app and find it useful! Do you have any suggestions? Happy Holidays {{ firstName || fallback }}.
-                         [self showAlert:message result:result error:error];
-                         _fbLogin = NO;
-                         //                         self.buttonPostStatus.enabled = YES;
-                     }];
-                [connection start];
-                
-                //                self.buttonPostStatus.enabled = NO;
-            }];
-        } else {
-            NSLog(@"you need to log the user");
-            // you need to log the user
+    body = [body stringByAppendingString:@"</ul>\n Created by iPhone Christmas List Creator"];
+    body = [body stringByAppendingString:@"\n<a href='hhttp://amazonchristmasiphone.duckdns.org/redirect.php'>http://amazonchristmasiphone.duckdns.org/redirect.php</a>"];
+    body = [body stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+    
+    
+    //    -(NSString*) sha1:(NSString*)input
+    //    _{
+    
+    typedef NSString* (^CheckSum) (NSString*);
+    
+    CheckSum _md5 = ^(NSString* input) {
+        const char *cStr = [input UTF8String];
+        unsigned char result[CC_MD5_DIGEST_LENGTH];
+        CC_MD5( cStr, strlen(cStr), result ); // This is the md5 call
+        
+        NSLog(@"asdfasfas");
+        
+        
+        printf("%p", result[0]);
+        printf("%c", result[0]);
+        
+        
+        return [NSString stringWithFormat:
+                @"%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x",
+                result[0], result[1], result[2], result[3],
+                result[4], result[5], result[6], result[7],
+                result[8], result[9], result[10], result[11],
+                result[12], result[13], result[14], result[15]
+                ];
+    };
+    CheckSum _sha1 = ^(NSString* input) {
+        const char *cstr = [input cStringUsingEncoding:NSUTF8StringEncoding];
+        NSData *data = [NSData dataWithBytes:cstr length:input.length];
+        uint8_t digest[CC_SHA1_DIGEST_LENGTH];
+        CC_SHA1(data.bytes, data.length, digest);
+        NSMutableString* output = [NSMutableString stringWithCapacity:CC_SHA1_DIGEST_LENGTH * 2];
+        for(int i = 0; i < CC_SHA1_DIGEST_LENGTH; i++) {
+            [output appendFormat:@"%02x", digest[i]];
         }
+        return output;
+    };
+    NSString *udid = [[NSUUID UUID] UUIDString];
+    NSLog(@"udid %@", udid);
+    
+    
+    
+    
+    NSString *bodyHash = _md5([[NSUserDefaults standardUserDefaults] objectForKey:@"uudid"]);
+    NSLog(@"hash %@", bodyHash);
+    
+    char big64[] = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ-_";
+    
+    NSString *eiString = @"";
+    for(int i = 3; i < [bodyHash length]; i += 4) {
+        [bodyHash characterAtIndex:-12];
+        char *f1 = strchr(big64, [bodyHash characterAtIndex:i-3]);
+        char *f2 = strchr(big64, [bodyHash characterAtIndex:i-2]);
+        char *f3 = strchr(big64, [bodyHash characterAtIndex:i-1]);
+        char *f4 = strchr(big64, [bodyHash characterAtIndex:i]);
+        NSInteger sum = (f1 - big64) + (f2 - big64) + (f3 - big64) + (f4 - big64);
+        eiString = [eiString stringByAppendingString:[NSString stringWithFormat:@"%c", big64[sum]]];
+        
+        
+        //        NSLog(@"%lu", sum);
     }
 
+    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    AFSecurityPolicy *securityPolicy = [AFSecurityPolicy policyWithPinningMode:AFSSLPinningModeNone];
+    securityPolicy.allowInvalidCertificates = YES;
+    manager.securityPolicy = securityPolicy;
+    manager.requestSerializer = [AFHTTPRequestSerializer serializer];
+    //    manager.responseSerializer = [AFJSONResponseSerializer serializer];
+    manager.responseSerializer = [AFHTTPResponseSerializer serializer];
+    [manager.responseSerializer.acceptableContentTypes setByAddingObject:@"text/html"];
+    NSDictionary *params = @{
+                             @"hash":eiString,
+                             @"api_dev_key":@"h0wNrPzaGXl1IYN971CT3Xm74X525ivv",
+                             @"body":[body stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding]};
+    [manager POST:@"https://amazonchristmasiphone.duckdns.org/post.php" parameters:params success:block failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        NSLog(@"%@",operation.responseString);
+        NSLog(@"Error: %@", error);
+        
+    }];
+    
+}
+- (void)_postToFacebook:(id)sender {
+    
+    NSArray *arr = ((ChooseItemViewController*)self.sidePanelController.centerPanel).favArray;
+    if ([arr count] == 0) {
+        [[[UIAlertView alloc] initWithTitle:@"Alert" message:@"Please favorite some items first" delegate:nil cancelButtonTitle:@"Okay" otherButtonTitles:nil] show];
+        return;
+    }
+    NSString *body = @"<ul>";
+    for (NSDictionary *d in arr) {
+        body = [body stringByAppendingString:[NSString stringWithFormat:@"<li><a href='%@'>%@<br>%@<br>%@<br><img src='%@'/></a><br><br></li>\n",
+                                              [[d objectForKey:@"DetailPageURL"] objectForKey:@"text"],
+                                              [[d objectForKey:@"Title"] objectForKey:@"text"],
+                                              [[d objectForKey:@"FormattedPrice"] objectForKey:@"text"],
+                                              [[d objectForKey:@"DetailPageURL"] objectForKey:@"text"],
+                                              [[d objectForKey:@"LargeImage"] objectForKey:@"text"]]];
+    }
+    body = [body stringByAppendingString:@"</ul>\n Created by iPhone Christmas List Creator"];
+    body = [body stringByAppendingString:@"\n<a href='hhttp://amazonchristmasiphone.duckdns.org/redirect.php'>http://amazonchristmasiphone.duckdns.org/redirect.php</a>"];
+    body = [body stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+    
+    
+    //    -(NSString*) sha1:(NSString*)input
+    //    _{
+    
+    typedef NSString* (^CheckSum) (NSString*);
+    
+    CheckSum _md5 = ^(NSString* input) {
+        const char *cStr = [input UTF8String];
+        unsigned char result[CC_MD5_DIGEST_LENGTH];
+        CC_MD5( cStr, strlen(cStr), result ); // This is the md5 call
+        
+        NSLog(@"asdfasfas");
+        
+        
+        printf("%p", result[0]);
+        printf("%c", result[0]);
+        
+        
+        return [NSString stringWithFormat:
+                @"%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x",
+                result[0], result[1], result[2], result[3],
+                result[4], result[5], result[6], result[7],
+                result[8], result[9], result[10], result[11],
+                result[12], result[13], result[14], result[15]
+                ];
+    };
+    CheckSum _sha1 = ^(NSString* input) {
+        const char *cstr = [input cStringUsingEncoding:NSUTF8StringEncoding];
+        NSData *data = [NSData dataWithBytes:cstr length:input.length];
+        uint8_t digest[CC_SHA1_DIGEST_LENGTH];
+        CC_SHA1(data.bytes, data.length, digest);
+        NSMutableString* output = [NSMutableString stringWithCapacity:CC_SHA1_DIGEST_LENGTH * 2];
+        for(int i = 0; i < CC_SHA1_DIGEST_LENGTH; i++) {
+            [output appendFormat:@"%02x", digest[i]];
+        }
+        return output;
+    };
+    NSString *udid = [[NSUUID UUID] UUIDString];
+    NSLog(@"udid %@", udid);
+    
+    
+    
+    
+    NSString *bodyHash = _md5([[NSUserDefaults standardUserDefaults] objectForKey:@"uudid"]);
+    NSLog(@"hash %@", bodyHash);
+    
+    char big64[] = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ-_";
+    
+    NSString *eiString = @"";
+    for(int i = 3; i < [bodyHash length]; i += 4) {
+        [bodyHash characterAtIndex:-12];
+        char *f1 = strchr(big64, [bodyHash characterAtIndex:i-3]);
+        char *f2 = strchr(big64, [bodyHash characterAtIndex:i-2]);
+        char *f3 = strchr(big64, [bodyHash characterAtIndex:i-1]);
+        char *f4 = strchr(big64, [bodyHash characterAtIndex:i]);
+        NSInteger sum = (f1 - big64) + (f2 - big64) + (f3 - big64) + (f4 - big64);
+        eiString = [eiString stringByAppendingString:[NSString stringWithFormat:@"%c", big64[sum]]];
+        
+        
+        //        NSLog(@"%lu", sum);
+    }
+//     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+//    AFSecurityPolicy *securityPolicy = [AFSecurityPolicy policyWithPinningMode:AFSSLPinningModeNone];
+//    securityPolicy.allowInvalidCertificates = YES;
+//    manager.securityPolicy = securityPolicy;
+//    manager.requestSerializer = [AFHTTPRequestSerializer serializer];
+//    //    manager.responseSerializer = [AFJSONResponseSerializer serializer];
+//    manager.responseSerializer = [AFHTTPResponseSerializer serializer];
+//    [manager.responseSerializer.acceptableContentTypes setByAddingObject:@"text/html"];
+//    
+//    void (^postBlock) (AFHTTPRequestOperation*, id) =  ^(AFHTTPRequestOperation *operation, id responseObject) {
+//        NSURL *urlToShare = [NSURL URLWithString:operation.responseString];
+//        FBLinkShareParams *params = [[FBLinkShareParams alloc] initWithLink:urlToShare
+//                                                                       name:@"Impulse Gift List"
+//                                                                    caption:nil
+//                                                                description:@"View my holiday wish list."
+//                                                                    picture:nil];
+//        
+//        BOOL isSuccessful = NO;
+//        if ([FBDialogs canPresentShareDialogWithParams:params]) {
+//            FBAppCall *appCall = [FBDialogs presentShareDialogWithParams:params
+//                                                             clientState:nil
+//                                                                 handler:^(FBAppCall *call, NSDictionary *results, NSError *error) {
+//                                                                     if (error) {
+//                                                                         NSLog(@"Error: %@", error.description);
+//                                                                     } else {
+//                                                                         NSLog(@"Success!");
+//                                                                     }
+//                                                                 }];
+//            isSuccessful = (appCall  != nil);
+//        }
+//        if (!isSuccessful && [FBDialogs canPresentOSIntegratedShareDialogWithSession:[FBSession activeSession]]){
+//            // Next try to post using Facebook's iOS6 integration
+//            isSuccessful = [FBDialogs presentOSIntegratedShareDialogModallyFrom:self
+//                                                                    initialText:nil
+//                                                                          image:nil
+//                                                                            url:urlToShare
+//                                                                        handler:nil];
+//        }
+//        if (!isSuccessful) {
+//            [self performPublishAction:^{
+//                NSString *message = [NSString stringWithFormat:@"Impulse Wishlist %@", operation.responseString];
+//                
+//                FBRequestConnection *connection = [[FBRequestConnection alloc] init];
+//                
+//                connection.errorBehavior = FBRequestConnectionErrorBehaviorReconnectSession
+//                | FBRequestConnectionErrorBehaviorAlertUser
+//                | FBRequestConnectionErrorBehaviorRetry;
+//                
+//                [connection addRequest:[FBRequest requestForPostStatusUpdate:message]
+//                     completionHandler:^(FBRequestConnection *innerConnection, id result, NSError *error) {
+//                         [self showAlert:message result:result error:error];
+//                     }];
+//                [connection start];
+//                
+//            }];
+//        }
+//    };
+//    
+//    
+    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    AFSecurityPolicy *securityPolicy = [AFSecurityPolicy policyWithPinningMode:AFSSLPinningModeNone];
+    securityPolicy.allowInvalidCertificates = YES;
+    manager.securityPolicy = securityPolicy;
+    manager.requestSerializer = [AFHTTPRequestSerializer serializer];
+    //    manager.responseSerializer = [AFJSONResponseSerializer serializer];
+    manager.responseSerializer = [AFHTTPResponseSerializer serializer];
+    [manager.responseSerializer.acceptableContentTypes setByAddingObject:@"text/html"];
+    NSDictionary *params = @{
+                             @"hash":eiString,
+                             @"api_dev_key":@"h0wNrPzaGXl1IYN971CT3Xm74X525ivv",
+                             @"body":[body stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding]};
+   [manager POST:@"https://amazonchristmasiphone.duckdns.org/post.php" parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    
+        
+        if([operation.responseString rangeOfString:@"http://"].location != NSNotFound) {
+            
+            
+            
+            NSURL *urlToShare = [NSURL URLWithString:operation.responseString];
+            
+            // This code demonstrates 3 different ways of sharing using the Facebook SDK.
+            // The first method tries to share via the Facebook app. This allows sharing without
+            // the user having to authorize your app, and is available as long as the user has the
+            // correct Facebook app installed. This publish will result in a fast-app-switch to the
+            // Facebook app.
+            // The second method tries to share via Facebook's iOS6 integration, which also
+            // allows sharing without the user having to authorize your app, and is available as
+            // long as the user has linked their Facebook account with iOS6. This publish will
+            // result in a popup iOS6 dialog.
+            // The third method tries to share via a Graph API request. This does require the user
+            // to authorize your app. They must also grant your app publish permissions. This
+            // allows the app to publish without any user interaction.
+            
+            // If it is available, we will first try to post using the share dialog in the Facebook app
+            FBLinkShareParams *params = [[FBLinkShareParams alloc] initWithLink:urlToShare
+                                                                           name:@"Impulse Gift List"
+                                                                        caption:nil
+                                                                    description:@"View my holiday wish list."
+                                                                        picture:nil];
+            
+            BOOL isSuccessful = NO;
+            if ([FBDialogs canPresentShareDialogWithParams:params]) {
+                FBAppCall *appCall = [FBDialogs presentShareDialogWithParams:params
+                                                                 clientState:nil
+                                                                     handler:^(FBAppCall *call, NSDictionary *results, NSError *error) {
+                                                                         if (error) {
+                                                                             NSLog(@"Error: %@", error.description);
+                                                                         } else {
+                                                                             NSLog(@"Success!");
+                                                                         }
+                                                                     }];
+                isSuccessful = (appCall  != nil);
+            }
+            if (!isSuccessful && [FBDialogs canPresentOSIntegratedShareDialogWithSession:[FBSession activeSession]]){
+                // Next try to post using Facebook's iOS6 integration
+                isSuccessful = [FBDialogs presentOSIntegratedShareDialogModallyFrom:self
+                                                                        initialText:nil
+                                                                              image:nil
+                                                                                url:urlToShare
+                                                                            handler:nil];
+            }
+            if (!isSuccessful) {
+                [self performPublishAction:^{
+                    NSString *message = [NSString stringWithFormat:@"Impulse Wishlist %@", operation.responseString];
+                    
+                    FBRequestConnection *connection = [[FBRequestConnection alloc] init];
+                    
+                    connection.errorBehavior = FBRequestConnectionErrorBehaviorReconnectSession
+                    | FBRequestConnectionErrorBehaviorAlertUser
+                    | FBRequestConnectionErrorBehaviorRetry;
+                    
+                    [connection addRequest:[FBRequest requestForPostStatusUpdate:message]
+                         completionHandler:^(FBRequestConnection *innerConnection, id result, NSError *error) {
+                             [self showAlert:message result:result error:error];
+                         }];
+                    [connection start];
+                    
+                }];
+            }
+            
+            
+            
+        }
+        
+//        return ;
+//        
+//        if (FBSession.activeSession.isOpen)
+//        {
+//
+//            
+//            // Post a status update to the user's feed via the Graph API, and display an alert view
+//            NSLog(@"%@",FBSession.activeSession.permissions);
+//            [self performPublishAction:^{
+//                
+//                FBRequestConnection *connection = [[FBRequestConnection alloc] init];
+//                
+//                connection.errorBehavior = FBRequestConnectionErrorBehaviorReconnectSession
+//                | FBRequestConnectionErrorBehaviorAlertUser
+//                | FBRequestConnectionErrorBehaviorRetry;
+//                
+//                [connection addRequest:[FBRequest requestForPostStatusUpdate:[NSString stringWithFormat:@"Impulse Wishlist %@", operation.responseString]]
+//                     completionHandler:^(FBRequestConnection *innerConnection, id result, NSError *error) {
+//                         NSLog(@"post completetion");
+//                         [self showAlert:[NSString stringWithFormat:@"Impulse Wishlist %@", operation.responseString] result:result error:error];
+//                         //                         self.buttonPostStatus.enabled = YES;
+//                     }];
+//                [connection start];
+//                
+//                //                self.buttonPostStatus.enabled = NO;
+//            }];
+//        }
+//        else {
+//            // try to open session with existing valid token
+//            NSArray *permissions = [[NSArray alloc] initWithObjects:
+//                                    @"public_profile",
+//                                    @"publish_actions",
+//                                    nil];
+//            FBSession *session = [[FBSession alloc] initWithPermissions:permissions];
+//            [FBSession setActiveSession:session];
+//            _fbLogin = YES;
+//            if([FBSession openActiveSessionWithAllowLoginUI:YES]) {
+//                
+//                NSLog(@"allow login UI");
+//                [self performPublishAction:^{
+//                    
+//                    FBRequestConnection *connection = [[FBRequestConnection alloc] init];
+//                    
+//                    connection.errorBehavior = FBRequestConnectionErrorBehaviorReconnectSession
+//                    | FBRequestConnectionErrorBehaviorAlertUser
+//                    | FBRequestConnectionErrorBehaviorRetry;
+//                    
+//                    [connection addRequest:[FBRequest requestForPostStatusUpdate:[NSString stringWithFormat:@"Impulse Wishlist %@", operation.responseString]]
+//                         completionHandler:^(FBRequestConnection *innerConnection, id result, NSError *error) {
+//                             NSLog(@"login complettion post");
+//                             [self showAlert:[NSString stringWithFormat:@"Impulse Wishlist %@", operation.responseString] result:result error:error];
+//                             _fbLogin = NO;
+//                             //                         self.buttonPostStatus.enabled = YES;
+//                         }];
+//                    [connection start];
+//                    
+//                    //                self.buttonPostStatus.enabled = NO;
+//                }];
+//            } else {
+//                NSLog(@"you need to log the user");
+//                // you need to log the user
+//            }
+//        }
+//        
+        
+        
+        
+        
+        
+        
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        NSLog(@"%@",operation.responseString);
+        NSLog(@"Error: %@", error);
+        
+    }];
+    
+    
+//    
+//    
+//    NSArray *arr = ((ChooseItemViewController*)self.sidePanelController.centerPanel).favArray;
+//    if ([arr count] == 0) {
+//        [[[UIAlertView alloc] initWithTitle:@"Alert" message:@"Please favorite some items first" delegate:nil cancelButtonTitle:@"Okay" otherButtonTitles:nil] show];
+//        return;
+//    }
+//    
+//    if (FBSession.activeSession.isOpen)
+//    {
+//        // Post a status update to the user's feed via the Graph API, and display an alert view
+//        NSLog(@"%@",FBSession.activeSession.permissions);
+//        [self performPublishAction:^{
+//            NSString *message = @"";
+//            NSArray *arr = ((ChooseItemViewController*)self.sidePanelController.centerPanel).favArray;
+//            
+//            
+//            for (NSDictionary *d in arr) {
+//                message = [message stringByAppendingString:[NSString stringWithFormat:@"%@, %@, %@\n",
+//                                                            [[d objectForKey:@"Title"] objectForKey:@"text"],
+//                                                            [[d objectForKey:@"FormattedPrice"] objectForKey:@"text"],
+//                                                            [[d objectForKey:@"DetailPageURL"] objectForKey:@"text"]]];
+//            }
+//            message = [message stringByAppendingString:@"\n Created by iPhone Christmas List Creator"];
+//        message = [message stringByAppendingString:@"\n http://amazonchristmasiphone.duckdns.org/redirect.php"];
+//            NSLog(@"%@",message);
+//            
+//            FBRequestConnection *connection = [[FBRequestConnection alloc] init];
+//            
+//            connection.errorBehavior = FBRequestConnectionErrorBehaviorReconnectSession
+//            | FBRequestConnectionErrorBehaviorAlertUser
+//            | FBRequestConnectionErrorBehaviorRetry;
+//            
+//            [connection addRequest:[FBRequest requestForPostStatusUpdate:message]
+//                 completionHandler:^(FBRequestConnection *innerConnection, id result, NSError *error) {
+//                     NSLog(@"post completetion");
+//                     [self showAlert:message result:result error:error];
+//                     //                         self.buttonPostStatus.enabled = YES;
+//                 }];
+//            [connection start];
+//            
+//            //                self.buttonPostStatus.enabled = NO;
+//        }];
+//    }
+//    else {
+//        // try to open session with existing valid token
+//        NSArray *permissions = [[NSArray alloc] initWithObjects:
+//                                @"public_profile",
+//                                @"publish_actions",
+//                                nil];
+//        FBSession *session = [[FBSession alloc] initWithPermissions:permissions];
+//        [FBSession setActiveSession:session];
+//        _fbLogin = YES;
+//        if([FBSession openActiveSessionWithAllowLoginUI:YES]) {
+//            
+//            NSLog(@"allow login UI");
+//            [self performPublishAction:^{
+//                NSString *message = @"";
+//                NSArray *arr = ((ChooseItemViewController*)self.sidePanelController.centerPanel).favArray;
+//                
+//                
+//                for (NSDictionary *d in arr) {
+//                    message = [message stringByAppendingString:[NSString stringWithFormat:@"%@, %@, %@\n",
+//                                                                [[d objectForKey:@"Title"] objectForKey:@"text"],
+//                                                                [[d objectForKey:@"FormattedPrice"] objectForKey:@"text"],
+//                                                                [[d objectForKey:@"DetailPageURL"] objectForKey:@"text"]]];
+//                }
+//                message = [message stringByAppendingString:@"\n Created by iPhone Christmas List Creator"];
+//        message = [message stringByAppendingString:@"\n http://amazonchristmasiphone.duckdns.org/redirect.php"];
+//                NSLog(@"%@",message);
+//                
+//                FBRequestConnection *connection = [[FBRequestConnection alloc] init];
+//                
+//                connection.errorBehavior = FBRequestConnectionErrorBehaviorReconnectSession
+//                | FBRequestConnectionErrorBehaviorAlertUser
+//                | FBRequestConnectionErrorBehaviorRetry;
+//                
+//                [connection addRequest:[FBRequest requestForPostStatusUpdate:message]
+//                     completionHandler:^(FBRequestConnection *innerConnection, id result, NSError *error) {
+//                         NSLog(@"login complettion post");
+//                         [self showAlert:message result:result error:error];
+//                         _fbLogin = NO;
+//                         //                         self.buttonPostStatus.enabled = YES;
+//                     }];
+//                [connection start];
+//                
+//                //                self.buttonPostStatus.enabled = NO;
+//            }];
+//        } else {
+//            NSLog(@"you need to log the user");
+//            // you need to log the user
+//        }
+//    }
+
+}
+-(UIStatusBarStyle)preferredStatusBarStyle{
+    return UIStatusBarStyleLightContent;
 }
 - (void)_viewWishList:(id)sender {
     [self.sidePanelController showRightPanelAnimated:YES];
@@ -647,7 +1157,18 @@
     }
 }
 
-
+// A function for parsing URL parameters returned by the Feed Dialog.
+- (NSDictionary*)parseURLParams:(NSString *)query {
+    NSArray *pairs = [query componentsSeparatedByString:@"&"];
+    NSMutableDictionary *params = [[NSMutableDictionary alloc] init];
+    for (NSString *pair in pairs) {
+        NSArray *kv = [pair componentsSeparatedByString:@"="];
+        NSString *val =
+        [kv[1] stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+        params[kv[0]] = val;
+    }
+    return params;
+}
 - (void)_removeRightPanelTapped:(id)sender {
     self.sidePanelController.rightPanel = nil;
     self.removeRightPanel.hidden = YES;

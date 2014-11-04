@@ -122,7 +122,7 @@ static const CGFloat ChoosePersonButtonVerticalPadding = 20.f;
         if (!arrayFromFile)
             arrayFromFile = [[NSArray alloc] init];
         self.favArray = [[NSMutableArray alloc] initWithArray:arrayFromFile];
-        self.view.backgroundColor = ComplementaryFlatColorOf([UIColor whiteColor]);
+        self.view.backgroundColor = ComplementaryFlatColorOf(FlatWhite);
         titleLabel.backgroundColor = FlatMintDark;
         titleLabel.textColor = ComplementaryFlatColorOf(FlatMintDark);
         
@@ -131,6 +131,11 @@ static const CGFloat ChoosePersonButtonVerticalPadding = 20.f;
         menView.layer.zPosition = -1;
         [menView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero excludingEdge:ALEdgeBottom];
         [menView autoPinEdge:ALEdgeBottom toEdge:ALEdgeBottom ofView:titleLabel];
+        
+        
+        UIView *lv = [[UIView alloc] initWithFrame:CGRectMake(0.f, 20.f, self.view.frame.size.width, 1.0f)];
+        lv.backgroundColor = ComplementaryFlatColorOf(FlatMintDark);
+        [self.view addSubview:lv];
         
         messageButton.backgroundColor = FlatMintDark;
         menuButton.backgroundColor = FlatMintDark;
@@ -158,6 +163,9 @@ static const CGFloat ChoosePersonButtonVerticalPadding = 20.f;
 
     return self;
 }
+-(UIStatusBarStyle)preferredStatusBarStyle{
+    return UIStatusBarStyleLightContent;
+}
 #pragma mark - UIViewController Overrides
 
 - (void)viewDidLoad {
@@ -177,7 +185,11 @@ static const CGFloat ChoosePersonButtonVerticalPadding = 20.f;
     // Add buttons to programmatically swipe the view left or right.
     // See the `nopeFrontCardView` and `likeFrontCardView` methods.
     NSLog(@"dict");
-    
+    NSNotificationCenter* defaultCenter = [NSNotificationCenter defaultCenter];
+    [defaultCenter addObserver:self
+                      selector:@selector(applicationDidEnterBackground:)
+                          name:UIApplicationDidEnterBackgroundNotification
+                        object:nil];
     
     NSDateFormatter* dateFormatter = [[NSDateFormatter alloc] init];
     [dateFormatter setDateFormat:@"yyyy-MM-dd"];
@@ -194,6 +206,38 @@ static const CGFloat ChoosePersonButtonVerticalPadding = 20.f;
 //    manager.responseSerializer = responseSerializer;
     manager.requestSerializer = [AFJSONRequestSerializer serializer];
     manager.responseSerializer = [AFJSONResponseSerializer serializer];
+    [self updateCloud];
+}
+-(void) updateCloud {
+    NSURL *ubiq = [[NSFileManager defaultManager]
+                   URLForUbiquityContainerIdentifier:nil];
+    if (ubiq) {
+        NSLog(@"iCloud access at %@", ubiq);
+        // TODO: Load document...
+    } else {
+        NSLog(@"No iCloud access");
+    }
+    NSUbiquitousKeyValueStore *iCloudStore = [NSUbiquitousKeyValueStore defaultStore];
+    NSArray *cloudFav = [iCloudStore arrayForKey:@"cloudFav"];
+    
+    
+    if(!cloudFav) {
+        NSLog(@"fav array not saved to cloud");
+    }
+    else {
+        NSLog(@"CCC %@", cloudFav);
+    }
+    
+    
+    if (![cloudFav isEqualToArray:_favArray]) {
+        for(id i in cloudFav) {
+            [_favArray addObject:i];
+        }
+        [_favArray setArray:[[NSSet setWithArray:_favArray] allObjects]];
+        [iCloudStore setArray:_favArray forKey:@"cloudFav"];
+        [iCloudStore synchronize];
+    }
+
 }
 -(void)toyAlert {
     
@@ -202,93 +246,78 @@ static const CGFloat ChoosePersonButtonVerticalPadding = 20.f;
     titleLabel.text = [[[self.frontCardView item] objectForKey:@"Title"] objectForKey:@"text"];
     catLabel.text = [[[self.frontCardView item] objectForKey:@"Category"] objectForKey:@"text"];
     
-    
     if([[NSUserDefaults standardUserDefaults] objectForKey:@"firstRun"] == NULL) {
-        
-        void (^boldOptions)(UIView*) =
-        ^(UIView *i) {
-            NSMutableArray *treeArray = [[NSMutableArray alloc] initWithArray:i.subviews];
-            while(1) {
-                BOOL forStop = YES;
-                NSMutableArray *newArr = [[NSMutableArray alloc] init];
-                for (UIView *j in treeArray) {
-                    NSLog(@"class name %@",NSStringFromClass([j class]));
-                    if ([j isKindOfClass:[UILabel class]]) {
-                        NSLog(@"label text %@", ((UILabel*)j).text);
-                        ((UILabel *)j).font = [UIFont boldSystemFontOfSize:15.f];
-                    }
-                    if([j.subviews count] == 0) {
-                        [newArr addObject:j];
-                    }
-                    else {
-                        for (UIView *v in j.subviews)
-                            [newArr addObject:v];
-                        forStop = NO;
-                    }
-                }
-                treeArray = newArr;
-                if(forStop)
-                    break;
-            }
-        };
-            UIAlertController *toysController = [UIAlertController alertControllerWithTitle:@"Show Toys?" message:@"Would you like to see toys as gift ideas?" preferredStyle:UIAlertControllerStyleAlert];
-
-            UIAlertAction *yToy = [UIAlertAction actionWithTitle:@"Yes" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
-                [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"toys"];
-                [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"onlytoys"];
-                [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"firstRun"];
-            }];
-            UIAlertAction *nToy = [UIAlertAction actionWithTitle:@"No" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
-                [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"toys"];
-                [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"onlytoys"];
-                [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"firstRun"];
-            }];
-            UIAlertAction *bToy = [UIAlertAction actionWithTitle:@"Only Show Toys" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
-                [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"toys"];
-                [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"onlytoys"];
-                [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"firstRun"];
-            }];
-            [toysController addAction:yToy];
-            [toysController addAction:nToy];
-            [toysController addAction:bToy];
-        
-        toysController.view.hidden = YES;
-        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"Gender:" message:@"For showing appropriate gifts" preferredStyle:UIAlertControllerStyleAlert];
-        UIAlertAction *yesAct = [UIAlertAction actionWithTitle:@"Men's" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
-            [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"male"];
-            [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"female"];
-            [self.sidePanelController presentViewController:toysController animated:YES completion:^{
-                boldOptions(toysController.view);
-                toysController.view.hidden = NO;
-            }];
-        }];
-        UIAlertAction *canAct = [UIAlertAction actionWithTitle:@"Womens's" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
-            [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"male"];
-            [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"female"];
-            [self.sidePanelController presentViewController:toysController animated:YES completion:^{
-                boldOptions(toysController.view);
-                toysController.view.hidden = NO;
-            }];
-        }];
-        UIAlertAction *bothAct = [UIAlertAction actionWithTitle:@"Both" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
-            [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"male"];
-            [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"female"];
-            [self.sidePanelController presentViewController:toysController animated:YES completion:^{
-                boldOptions(toysController.view);
-                toysController.view.hidden = NO;
-            }];
-        }];
-        [alertController addAction:yesAct];
-        [alertController addAction:canAct];
-        [alertController addAction:bothAct];
-        
-        alertController.view.hidden = YES;
-        [self.sidePanelController presentViewController:alertController animated:NO completion:^{
-            boldOptions(alertController.view);
-            alertController.view.hidden = NO;
-        }];
-        
+        UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Gender:" message:@"For showing appropriate gift" delegate:self cancelButtonTitle:@"Both" otherButtonTitles:@"Male", @"Female", nil];
+        [av setTag:1];
+        [av show];
+        boldOptions(av);
+        for(UIView *i in av.subviews) {
+            boldOptions(i);
+        }
     }
+    return;
+//    
+//    
+//    if([[NSUserDefaults standardUserDefaults] objectForKey:@"firstRun"] == NULL) {
+//        
+//            UIAlertController *toysController = [UIAlertController alertControllerWithTitle:@"Show Toys?" message:@"Would you like to see toys as gift ideas?" preferredStyle:UIAlertControllerStyleAlert];
+//
+//            UIAlertAction *yToy = [UIAlertAction actionWithTitle:@"Yes" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+//                [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"toys"];
+//                [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"onlytoys"];
+//                [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"firstRun"];
+//            }];
+//            UIAlertAction *nToy = [UIAlertAction actionWithTitle:@"No" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+//                [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"toys"];
+//                [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"onlytoys"];
+//                [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"firstRun"];
+//            }];
+//            UIAlertAction *bToy = [UIAlertAction actionWithTitle:@"Only Show Toys" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+//                [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"toys"];
+//                [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"onlytoys"];
+//                [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"firstRun"];
+//            }];
+//            [toysController addAction:yToy];
+//            [toysController addAction:nToy];
+//            [toysController addAction:bToy];
+//        
+//        toysController.view.hidden = YES;
+//        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"Gender:" message:@"For showing appropriate gifts" preferredStyle:UIAlertControllerStyleAlert];
+//        UIAlertAction *yesAct = [UIAlertAction actionWithTitle:@"Men's" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+//            [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"male"];
+//            [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"female"];
+//            [self.sidePanelController presentViewController:toysController animated:YES completion:^{
+//                boldOptions(toysController.view);
+//                toysController.view.hidden = NO;
+//            }];
+//        }];
+//        UIAlertAction *canAct = [UIAlertAction actionWithTitle:@"Womens's" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+//            [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"male"];
+//            [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"female"];
+//            [self.sidePanelController presentViewController:toysController animated:YES completion:^{
+//                boldOptions(toysController.view);
+//                toysController.view.hidden = NO;
+//            }];
+//        }];
+//        UIAlertAction *bothAct = [UIAlertAction actionWithTitle:@"Both" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+//            [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"male"];
+//            [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"female"];
+//            [self.sidePanelController presentViewController:toysController animated:YES completion:^{
+//                boldOptions(toysController.view);
+//                toysController.view.hidden = NO;
+//            }];
+//        }];
+//        [alertController addAction:yesAct];
+//        [alertController addAction:canAct];
+//        [alertController addAction:bothAct];
+//        
+//        alertController.view.hidden = YES;
+//        [self.sidePanelController presentViewController:alertController animated:NO completion:^{
+//            boldOptions(alertController.view);
+//            alertController.view.hidden = NO;
+//        }];
+//        
+//    }
  
 }
 
@@ -299,7 +328,7 @@ static const CGFloat ChoosePersonButtonVerticalPadding = 20.f;
     NSString *documentsDirectory = [paths objectAtIndex:0]; // Get documents directory
     
     
-    AFHTTPRequestOperation *op = [manager POST:@"http://ec2-54-165-105-96.compute-1.amazonaws.com/combined.xml"
+    AFHTTPRequestOperation *op = [manager POST:@"http://amazonchristmasiphone.duckdns.org/combined.xml"
                                     parameters:nil
                                        success:^(AFHTTPRequestOperation *operation, id responseObject) {
                                            NSLog(@"got new");
@@ -386,9 +415,11 @@ static const CGFloat ChoosePersonButtonVerticalPadding = 20.f;
     }
     numSwipes++;
     [[NSUserDefaults standardUserDefaults] setInteger:numSwipes forKey:@"numSwipes"];
+    BOOL firstMessage = [[NSUserDefaults standardUserDefaults] boolForKey:@"firstMessage"];
     NSLog(@"num sqipes %i", numSwipes);
-    if(numSwipes >= 15 && [_favArray count] >= 1) {
+    if(!firstMessage && numSwipes == 10 && [_favArray count] >= 1) {
         
+        [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"firstMessage"];
         int i = arc4random() % 7;
         
         if (i == 0)
@@ -651,8 +682,6 @@ static const CGFloat ChoosePersonButtonVerticalPadding = 20.f;
             
         }
     
-        [self toyAlert];
-        return;
         UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Show Toys?" message:@"Would you like to see toys as gift ideas?" delegate:self cancelButtonTitle:@"Only Toys" otherButtonTitles:@"Yes", @"No", nil];
         [av setTag:2];
         [av show];
@@ -677,5 +706,36 @@ static const CGFloat ChoosePersonButtonVerticalPadding = 20.f;
         [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"firstRun"];
         
     }
+}
+void (^boldOptions)(UIView*) = ^(UIView *i) {
+    NSMutableArray *treeArray = [[NSMutableArray alloc] initWithArray:i.subviews];
+    while(1) {
+        BOOL forStop = YES;
+        NSMutableArray *newArr = [[NSMutableArray alloc] init];
+        for (UIView *j in treeArray) {
+            NSLog(@"class name %@",NSStringFromClass([j class]));
+            if ([j isKindOfClass:[UILabel class]]) {
+                NSLog(@"label text %@", ((UILabel*)j).text);
+                ((UILabel *)j).font = [UIFont boldSystemFontOfSize:15.f];
+            }
+            if([j.subviews count] == 0) {
+                [newArr addObject:j];
+            }
+            else {
+                for (UIView *v in j.subviews)
+                    [newArr addObject:v];
+                forStop = NO;
+            }
+        }
+        treeArray = newArr;
+        if(forStop)
+            break;
+    }
+};
+- (void)applicationDidEnterBackground:(NSNotification *)notification {
+    NSUbiquitousKeyValueStore *iCloudStore = [NSUbiquitousKeyValueStore defaultStore];
+    [iCloudStore setArray:_favArray forKey:@"cloudFav"];
+    [iCloudStore synchronize];
+    NSLog(@"cloud sync");
 }
 @end

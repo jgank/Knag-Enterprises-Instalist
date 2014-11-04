@@ -53,6 +53,12 @@
     [Appirater setTimeBeforeReminding:2];
     [Appirater setDebug:YES];
     
+    if([[NSUserDefaults standardUserDefaults] objectForKey:@"uudid"] == NULL) {
+    NSString *udid = [[NSUUID UUID] UUIDString];
+    NSLog(@"udid %@", udid);
+        [[NSUserDefaults standardUserDefaults] setObject:[[NSUUID UUID] UUIDString] forKey:@"uudid"];
+    }
+    
     if([[NSUserDefaults standardUserDefaults] objectForKey:@"numSwipes"] == NULL) {
         [[NSUserDefaults standardUserDefaults] setInteger:0 forKey:@"numSwipes"];
     }

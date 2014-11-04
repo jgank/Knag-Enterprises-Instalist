@@ -177,7 +177,9 @@ static char ja_kvoContext;
     [self _swapCenter:nil previousState:0 with:_centerPanel];
     [self.view bringSubviewToFront:self.centerPanelContainer];
 }
-
+-(UIStatusBarStyle)preferredStatusBarStyle{
+    return UIStatusBarStyleLightContent;
+}
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     // ensure correct view dimensions
