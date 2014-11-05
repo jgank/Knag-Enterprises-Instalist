@@ -33,12 +33,14 @@
 #import <ChameleonFramework/Chameleon.h>
 #import "InsetLabel.h"
 #import "SupportKit.h"
+#import <GAIDictionaryBuilder.h>
+#import <GAI.h>
 
 
 static const CGFloat ChoosePersonButtonHorizontalPadding = 80.f;
 static const CGFloat ChoosePersonButtonVerticalPadding = 20.f;
 
-@interface ChooseItemViewController ()
+@interface ChooseItemViewController () 
 @property (nonatomic, strong) NSArray *items;
 @end
 
@@ -178,19 +180,20 @@ static const CGFloat ChoosePersonButtonVerticalPadding = 20.f;
     // Display the second ChoosePersonView in back. This view controller uses
     // the MDCSwipeToChooseDelegate protocol methods to update the front and
     // back views after each user swipe.
-    self.backCardView = [self popItemViewWithFrame:[self backCardViewFrame] neutral:YES];
+    BOOL firstRun = [[NSUserDefaults standardUserDefaults] boolForKey:@"firstRun"] == YES;
+    self.backCardView = [self popItemViewWithFrame:[self backCardViewFrame] neutral:firstRun];
     [self.view addSubview:self.backCardView];
-    self.frontCardView = [self popItemViewWithFrame:[self frontCardViewFrame] neutral:YES];
+    self.frontCardView = [self popItemViewWithFrame:[self frontCardViewFrame] neutral:firstRun];
     [self.view insertSubview:self.frontCardView aboveSubview:self.backCardView];
 
     // Add buttons to programmatically swipe the view left or right.
     // See the `nopeFrontCardView` and `likeFrontCardView` methods.
     NSLog(@"dict");
-    NSNotificationCenter* defaultCenter = [NSNotificationCenter defaultCenter];
-    [defaultCenter addObserver:self
-                      selector:@selector(applicationDidEnterBackground:)
-                          name:UIApplicationDidEnterBackgroundNotification
-                        object:nil];
+//    NSNotificationCenter* defaultCenter = [NSNotificationCenter defaultCenter];
+//    [defaultCenter addObserver:self
+//                      selector:@selector(applicationDidEnterBackground:)
+//                          name:UIApplicationDidEnterBackgroundNotification
+//                        object:nil];
     
     NSDateFormatter* dateFormatter = [[NSDateFormatter alloc] init];
     [dateFormatter setDateFormat:@"yyyy-MM-dd"];
@@ -204,48 +207,46 @@ static const CGFloat ChoosePersonButtonVerticalPadding = 20.f;
                                         repeats:NO];
     }
     manager = [AFHTTPRequestOperationManager manager];
-//    manager.responseSerializer = responseSerializer;
     manager.requestSerializer = [AFJSONRequestSerializer serializer];
     manager.responseSerializer = [AFJSONResponseSerializer serializer];
     
-    [self updateCloud];
+//    [self updateCloud];
 }
--(void) updateCloud {
-    NSURL *ubiq = [[NSFileManager defaultManager]
-                   URLForUbiquityContainerIdentifier:nil];
-    if (ubiq) {
-        NSLog(@"iCloud access at %@", ubiq);
-        // TODO: Load document...
-    } else {
-        NSLog(@"No iCloud access");
-    }
-    NSUbiquitousKeyValueStore *iCloudStore = [NSUbiquitousKeyValueStore defaultStore];
-    NSArray *cloudFav = [iCloudStore arrayForKey:@"cloudFav"];
-    
-    NSString *uudid = [iCloudStore stringForKey:@"uudid"];
-    
-    if(!cloudFav) {
-        NSLog(@"fav array not saved to cloud");
-    }
-    else {
-        NSLog(@"CCC %@", cloudFav);
-        if (![cloudFav isEqualToArray:_favArray]) {
-            for(id i in cloudFav) {
-                [_favArray addObject:i];
-            }
-            [_favArray setArray:[[NSSet setWithArray:_favArray] allObjects]];
-            [iCloudStore setArray:_favArray forKey:@"cloudFav"];
-            [iCloudStore synchronize];
-        }
-    }
-    if (uudid != NULL && ![uudid isEqualToString:[[NSUserDefaults standardUserDefaults] valueForKey:@"uudid"]]) {
-        [[NSUserDefaults standardUserDefaults] setValue:uudid forKey:@"uudid"];
-        [[NSUserDefaults standardUserDefaults] synchronize];
-    }
-    
-    
-
-}
+//-(void) updateCloud {
+//    NSURL *ubiq = [[NSFileManager defaultManager]
+//                   URLForUbiquityContainerIdentifier:nil];
+//    if (ubiq) {
+//        NSLog(@"iCloud access at %@", ubiq);
+//        // TODO: Load document...
+//    } else {
+//        NSLog(@"No iCloud access");
+//    }
+//    NSUbiquitousKeyValueStore *iCloudStore = [NSUbiquitousKeyValueStore defaultStore];
+//    NSArray *cloudFav = [iCloudStore arrayForKey:@"cloudFav"];
+//    NSString *uudid = [iCloudStore stringForKey:@"uudid"];
+//    
+//    if(!cloudFav) {
+//        NSLog(@"fav array not saved to cloud");
+//    }
+//    else {
+//        NSLog(@"CCC %@", cloudFav);
+//        if (![cloudFav isEqualToArray:_favArray]) {
+//            for(id i in cloudFav) {
+//                [_favArray addObject:i];
+//            }
+//            [_favArray setArray:[[NSSet setWithArray:_favArray] allObjects]];
+//            [iCloudStore setArray:_favArray forKey:@"cloudFav"];
+//            [iCloudStore synchronize];
+//        }
+//    }
+//    if (uudid != NULL && ![uudid isEqualToString:[[NSUserDefaults standardUserDefaults] valueForKey:@"uudid"]]) {
+//        [[NSUserDefaults standardUserDefaults] setValue:uudid forKey:@"uudid"];
+//        [[NSUserDefaults standardUserDefaults] synchronize];
+//    }
+//    
+//    
+//
+//}
 -(void)toyAlert {
     
 }
@@ -426,7 +427,7 @@ static const CGFloat ChoosePersonButtonVerticalPadding = 20.f;
     [[NSUserDefaults standardUserDefaults] setInteger:numSwipes forKey:@"numSwipes"];
     BOOL firstMessage = [[NSUserDefaults standardUserDefaults] boolForKey:@"firstMessage"];
     NSLog(@"num sqipes %li", (long)numSwipes);
-    if(!firstMessage && numSwipes == 10 && [_favArray count] >= 1) {
+    if(!firstMessage && numSwipes >= 10 && [_favArray count] >= 1) {
         
         [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"firstMessage"];
         int i = arc4random() % 7;
@@ -447,6 +448,18 @@ static const CGFloat ChoosePersonButtonVerticalPadding = 20.f;
             [SupportKit track:@"Vacation"];//Have you seen any items that would be useful for your next winter vacation?
 
     }
+    
+    BOOL secondMessage = [[NSUserDefaults standardUserDefaults] boolForKey:@"secondMessage"];
+    
+    if(!secondMessage && [_favArray count] >= 7) {
+//        if(1) {
+        [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"secondMessage"];
+        UIAlertView *a = [[UIAlertView alloc] initWithTitle:@"You can send out your liked items by pressing the top left button. Want to send now?" message:@"Tap on the item picture here or in the list view from pressing the top left button to open the website for the product." delegate:self cancelButtonTitle:@"Yes" otherButtonTitles:@"No", nil];
+        a.tag = 3;
+        [a show ];
+    }
+    
+    
     [undoItems addObject:[_frontCardView item]];
     self.frontCardView = _backCardView;
     if ((self.backCardView = [self popItemViewWithFrame:[self backCardViewFrame] neutral:NO])) {
@@ -460,6 +473,18 @@ static const CGFloat ChoosePersonButtonVerticalPadding = 20.f;
                              self.backCardView.alpha = 1.f;
                              self.backCardView.layer.zPosition = 10;
                          } completion:nil];
+    }
+    
+    for(UIView *v in self.view.subviews) {
+        if(v.layer.zPosition == 11 && v != _frontCardView) {
+            [v removeFromSuperview];
+            NSLog(@"remove front");
+        }
+        if(v.layer.zPosition == 10 && v != _backCardView) {
+            [v removeFromSuperview];
+            NSLog(@"remove back");
+        }
+        
     }
 }
 
@@ -540,11 +565,8 @@ static const CGFloat ChoosePersonButtonVerticalPadding = 20.f;
 
     ChooseItemView *personView = [[ChooseItemView alloc] initWithFrame:frame options:options dict:_items[cardsLoadedIndex]];
     catLabel.text = [[self.frontCardView.item objectForKey:@"Category"] objectForKey:@"text"];
-//    catLabel.text = [[self.frontCardView.item objectForKey:@"ProductGroup"] objectForKey:@"text"];
-    
     NSLog(@"large iamge %@",[[self.frontCardView.item objectForKey:@"LargeImage"] objectForKey:@"text"]);
     titleLabel.text = [[self.frontCardView.item objectForKey:@"Title"] objectForKey:@"text"];
-//    titleLabel.text = [[self.frontCardView.item objectForKey:@"Sex"] objectForKey:@"text"];
     return personView;
 }
 
@@ -578,10 +600,6 @@ static const CGFloat ChoosePersonButtonVerticalPadding = 20.f;
                               image.size.height);
     [button setImage:image forState:UIControlStateNormal];
     [button setTintColor:ComplementaryFlatColorOf(FlatMintDark)];
-//    [button setTintColor:[UIColor colorWithRed:247.f/255.f
-//                                         green:91.f/255.f
-//                                          blue:37.f/255.f
-//                                         alpha:1.f]];
     [button addTarget:self
                action:@selector(nopeFrontCardView)
      forControlEvents:UIControlEventTouchUpInside];
@@ -598,10 +616,6 @@ static const CGFloat ChoosePersonButtonVerticalPadding = 20.f;
                               image.size.height);
     [button setImage:image forState:UIControlStateNormal];
     [button setTintColor:FlatMintDark];
-//    [button setTintColor:[UIColor colorWithRed:29.f/255.f
-//                                         green:245.f/255.f
-//                                          blue:106.f/255.f
-//                                         alpha:1.f]];
     [button addTarget:self
                action:@selector(likeFrontCardView)
      forControlEvents:UIControlEventTouchUpInside];
@@ -638,16 +652,15 @@ static const CGFloat ChoosePersonButtonVerticalPadding = 20.f;
                                                                    options:options dict:[undoItems lastObject]];
     self.frontCardView = personView;
     [self.view insertSubview:self.frontCardView aboveSubview:self.backCardView];
-    
-//    DraggableView *d = [self createDraggableViewWithDataAtIndex:0];
-//    [d setItem:[undoItems lastObject]];
     titleLabel.text = [[[undoItems lastObject] objectForKey:@"Title"] objectForKey:@"text"];
     catLabel.text = [[[undoItems lastObject] objectForKey:@"Category"] objectForKey:@"text"];
-//    [self insertSubview:d aboveSubview:[loadedCards firstObject]];
     [undoItems removeObject:[undoItems lastObject]];
     NSLog(@"udndo items %@", [undoItems lastObject]);
-//    [loadedCards removeObject:[loadedCards lastObject]];
-//    [loadedCards insertObject:d atIndex:0];
+    id<GAITracker> tracker = [[GAI sharedInstance] defaultTracker];
+    [tracker send:[[GAIDictionaryBuilder createEventWithCategory:@"undo"
+                                                          action:@"press"
+                                                           label:@"main menu"
+                                                           value:nil] build]];
 }
 #pragma mark Control Events
 
@@ -716,6 +729,10 @@ static const CGFloat ChoosePersonButtonVerticalPadding = 20.f;
         [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"firstRun"];
         
     }
+    else if (alertView.tag == 3) {
+        if (buttonIndex == 0)
+            [self showLeftPanel];
+    }
 }
 void (^boldOptions)(UIView*) = ^(UIView *i) {
     NSMutableArray *treeArray = [[NSMutableArray alloc] initWithArray:i.subviews];
@@ -742,11 +759,11 @@ void (^boldOptions)(UIView*) = ^(UIView *i) {
             break;
     }
 };
-- (void)applicationDidEnterBackground:(NSNotification *)notification {
-    NSUbiquitousKeyValueStore *iCloudStore = [NSUbiquitousKeyValueStore defaultStore];
-    [iCloudStore setArray:_favArray forKey:@"cloudFav"];
-    [iCloudStore setString:[[NSUserDefaults standardUserDefaults] stringForKey:@"uudid"] forKey:@"uudid"];
-    [iCloudStore synchronize];
-    NSLog(@"cloud sync");
-}
+//- (void)applicationDidEnterBackground:(NSNotification *)notification {
+//    NSUbiquitousKeyValueStore *iCloudStore = [NSUbiquitousKeyValueStore defaultStore];
+//    [iCloudStore setArray:_favArray forKey:@"cloudFav"];
+//    [iCloudStore setString:[[NSUserDefaults standardUserDefaults] stringForKey:@"uudid"] forKey:@"uudid"];
+//    [iCloudStore synchronize];
+//    NSLog(@"cloud sync");
+//}
 @end

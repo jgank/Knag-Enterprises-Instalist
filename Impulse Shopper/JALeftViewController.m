@@ -40,6 +40,8 @@
 #import <CommonCrypto/CommonDigest.h>
 #import <Social/Social.h>
 #import "WebControllerViewController.h"
+#import <GAI.h>
+#import <GAIDictionaryBuilder.h>
 
 @interface JALeftViewController () <MFMailComposeViewControllerDelegate>
 
@@ -333,11 +335,25 @@
 -(void) policyPage {
     
     WebControllerViewController *wvc = [[WebControllerViewController alloc] init];
-    [wvc.webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:@"http://instalist.com/policy"]]];
+    [wvc.webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:@"http://instalist.duckdns.org/policy"]]];
     [self presentViewController:wvc animated:YES completion:nil];
+    
+    
+    id<GAITracker> tracker = [[GAI sharedInstance] defaultTracker];
+    [tracker send:[[GAIDictionaryBuilder createEventWithCategory:@"policy"     // Event category (required)
+                                                          action:@"press"  // Event action (required)
+                                                           label:nil          // Event label
+                                                           value:nil] build]];    // Event value
+    
+    
 }
 - (void)_undoTapped:(id)sender {
     [(ChooseItemViewController*)self.sidePanelController.centerPanel undoPressed];
+    id<GAITracker> tracker = [[GAI sharedInstance] defaultTracker];
+    [tracker send:[[GAIDictionaryBuilder createEventWithCategory:@"undo"
+                                                          action:@"press"
+                                                           label:@"left menu"
+                                                           value:nil] build]];
 //    [self.sidePanelController setCenterPanelHidden:YES animated:YES duration:0.2f];
 //    self.hide.hidden = YES;
 //    self.show.hidden = NO;
@@ -354,7 +370,7 @@
         void (^block) (AFHTTPRequestOperation *, id) = ^(AFHTTPRequestOperation *operation, id responseObject) {
             MFMailComposeViewController  *mailer = [[MFMailComposeViewController alloc] init];
             mailer.mailComposeDelegate = self;
-            [mailer setSubject:@"Gift Wish List"];
+            [mailer setSubject:@"Instalist Gift Wish List"];
             NSString *body = @"<center><ul>";
             for (NSDictionary *d in arr) {
                 body = [body stringByAppendingString:[NSString stringWithFormat:@"<li><a href='%@'>%@<br>%@<br>%@<br><img src='%@'/></a><br><br></li>\n",
@@ -364,17 +380,22 @@
                                                       [[d objectForKey:@"DetailPageURL"] objectForKey:@"text"],
                                                       [[d objectForKey:@"LargeImage"] objectForKey:@"text"]]];
             }
-            body = [body stringByAppendingString:@"</ul>\n Created by iPhone Christmas List Creator"];
+            body = [body stringByAppendingString:@"</ul></center>\n Created by Instalist iPhone Christmas List Creator"];
             body = [body stringByAppendingString:@"\n<a href='http://instalist.duckdns.org/redirect.php'>http://instalist.duckdns.org/redirect.php</a>"];
             body = [body stringByAppendingString:[NSString stringWithFormat:@"\n<a href='%@'>%@</a>", operation.responseString, operation.responseString]];
             [mailer setMessageBody:body isHTML:YES];
             [self presentViewController:mailer animated:YES completion:nil];
+            id<GAITracker> tracker = [[GAI sharedInstance] defaultTracker];
+            [tracker send:[[GAIDictionaryBuilder createEventWithCategory:@"email"     // Event category (required)
+                                                                  action:operation.responseString  // Event action (required)
+                                                                   label:@"web"          // Event label
+                                                                   value:nil] build]];    // Event value
         };
         void (^fail) (AFHTTPRequestOperation *, id) = ^(AFHTTPRequestOperation *operation, id responseObject) {
             MFMailComposeViewController  *mailer = [[MFMailComposeViewController alloc] init];
             mailer.mailComposeDelegate = self;
-            [mailer setSubject:@"Gift Wish List"];
-            NSString *body = @"<ul>";
+            [mailer setSubject:@"Instalist Gift Wish List"];
+            NSString *body = @"<center><ul>";
             for (NSDictionary *d in arr) {
                 body = [body stringByAppendingString:[NSString stringWithFormat:@"<li><a href='%@'>%@<br>%@<br>%@<br><img src='%@'/></a><br><br></li>\n",
                                                       [[d objectForKey:@"DetailPageURL"] objectForKey:@"text"],
@@ -383,11 +404,16 @@
                                                       [[d objectForKey:@"DetailPageURL"] objectForKey:@"text"],
                                                       [[d objectForKey:@"LargeImage"] objectForKey:@"text"]]];
             }
-            body = [body stringByAppendingString:@"</ul></center>\n Created by iPhone Christmas List Creator"];
+            body = [body stringByAppendingString:@"</ul></center>\n Created by Instalist iPhone Christmas List Creator"];
             body = [body stringByAppendingString:@"\n<a href='http://instalist.duckdns.org/redirect.php'>http://instalist.duckdns.org/redirect.php</a>"];
             //        NSLog(@"%@",body);
             [mailer setMessageBody:body isHTML:YES];
             [self presentViewController:mailer animated:YES completion:nil];
+            id<GAITracker> tracker = [[GAI sharedInstance] defaultTracker];
+            [tracker send:[[GAIDictionaryBuilder createEventWithCategory:@"email"     // Event category (required)
+                                                                  action:operation.responseString  // Event action (required)
+                                                                   label:@"noweb"          // Event label
+                                                                   value:nil] build]];    // Event value
         };
         [self postBody:block Fail:fail];
     }
@@ -398,6 +424,11 @@
                                               cancelButtonTitle:@"OK"
                                               otherButtonTitles:nil];
         [alert show];
+        id<GAITracker> tracker = [[GAI sharedInstance] defaultTracker];
+        [tracker send:[[GAIDictionaryBuilder createEventWithCategory:@"emailfail"     // Event category (required)
+                                                              action:@"notsetup"
+                                                               label:@"noweb"          // Event label
+                                                               value:nil] build]];    // Event value
     }
 }
 
@@ -449,12 +480,16 @@
                                                       [[d objectForKey:@"FormattedPrice"] objectForKey:@"text"],
                                                       [[d objectForKey:@"DetailPageURL"] objectForKey:@"text"]]];
             }
-            body = [body stringByAppendingString:@"\n Created by iPhone Christmas List Creator"];
-            body = [body stringByAppendingString:@"\n http://instalist.duckdns.org/redirect.php"];
-            body = [body stringByAppendingString:@"\n http://instalist.duckdns.org/"];
+            body = [body stringByAppendingString:@"\nCreated by Instalist iPhone Christmas List Creator"];
+            body = [body stringByAppendingString:@"\nhttp://instalist.duckdns.org/redirect.php\n"];
             body = [body stringByAppendingString:operation.responseString];
             [mailer setBody:body];
             [self presentViewController:mailer animated:YES completion:nil];
+            id<GAITracker> tracker = [[GAI sharedInstance] defaultTracker];
+            [tracker send:[[GAIDictionaryBuilder createEventWithCategory:@"sms"     // Event category (required)
+                                                                  action:operation.responseString  // Event action (required)
+                                                                   label:@"web"          // Event label
+                                                                   value:nil] build]];    // Event value
 
         };
         __block __weak id aL = self;
@@ -471,16 +506,26 @@
                                                       [[d objectForKey:@"FormattedPrice"] objectForKey:@"text"],
                                                       [[d objectForKey:@"DetailPageURL"] objectForKey:@"text"]]];
             }
-            body = [body stringByAppendingString:@"\n Created by iPhone Christmas List Creator"];
+            body = [body stringByAppendingString:@"\n Created by Instalist iPhone Christmas List Creator"];
             body = [body stringByAppendingString:@"\n http://instalist.duckdns.org/redirect.php"];
             [mailer setBody:body];
             [self presentViewController:mailer animated:YES completion:nil];
+            id<GAITracker> tracker = [[GAI sharedInstance] defaultTracker];
+            [tracker send:[[GAIDictionaryBuilder createEventWithCategory:@"sms"
+                                                                  action:operation.responseString
+                                                                   label:@"noweb"
+                                                                   value:nil] build]];
         } ];
     }
     
     else {
         UIAlertView *warningAlert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Your device doesn't support SMS!" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
         [warningAlert show];
+        id<GAITracker> tracker = [[GAI sharedInstance] defaultTracker];
+        [tracker send:[[GAIDictionaryBuilder createEventWithCategory:@"smsfail"
+                                                              action:@"notsetup"
+                                                               label:@"noweb"
+                                                               value:nil] build]];
     }
     
     
@@ -497,12 +542,10 @@
         SLComposeViewController *fbController=[SLComposeViewController composeViewControllerForServiceType:SLServiceTypeTwitter];
         
         
-        if([SLComposeViewController isAvailableForServiceType:SLServiceTypeFacebook])
+        if([SLComposeViewController isAvailableForServiceType:SLServiceTypeTwitter])
         {
             SLComposeViewControllerCompletionHandler __block completionHandler=^(SLComposeViewControllerResult result){
-                
                 [fbController dismissViewControllerAnimated:YES completion:nil];
-                
                 switch(result){
                     case SLComposeViewControllerResultCancelled:
                     default:
@@ -517,12 +560,17 @@
                     }
                         break;
                 }};
-            
 //            [fbController addImage:[UIImage imageNamed:@"1.jpg"]];
             [fbController setInitialText:@"Check out my holiday gift wish list."];
             [fbController addURL:[NSURL URLWithString:operation.responseString]];
             [fbController setCompletionHandler:completionHandler];
-            [self presentViewController:fbController animated:YES completion:nil];
+            [self presentViewController:fbController animated:YES completion:^{
+                id<GAITracker> tracker = [[GAI sharedInstance] defaultTracker];
+                [tracker send:[[GAIDictionaryBuilder createEventWithCategory:@"twitter"
+                                                                      action:operation.responseString
+                                                                       label:@"web"
+                                                                       value:nil] build]];
+            }];
         }
     };
     
@@ -544,7 +592,7 @@
                                               [[d objectForKey:@"DetailPageURL"] objectForKey:@"text"],
                                               [[d objectForKey:@"LargeImage"] objectForKey:@"text"]]];
     }
-    body = [body stringByAppendingString:@"</ul>\n Created by iPhone Christmas List Creator"];
+    body = [body stringByAppendingString:@"</u/>\n Created by Instalist iPhone Christmas List Creator"];
     body = [body stringByAppendingString:@"\n<a href='http://instalist.duckdns.org/redirect.php'>http://instalist.duckdns.org/redirect.php</a>"];
     body = [body stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
 
@@ -552,7 +600,7 @@
     FailB failB = (fail) ? fail :  ^(AFHTTPRequestOperation *operation, NSError *error) {
             NSLog(@"%@",operation.responseString);
             NSLog(@"Error: %@", error);
-            
+        
         };
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     AFSecurityPolicy *securityPolicy = [AFSecurityPolicy policyWithPinningMode:AFSSLPinningModeNone];
@@ -589,8 +637,18 @@
                                                                      handler:^(FBAppCall *call, NSDictionary *results, NSError *error) {
                                                                          if (error) {
                                                                              NSLog(@"Error: %@", error.description);
+                                                                             id<GAITracker> tracker = [[GAI sharedInstance] defaultTracker];
+                                                                             [tracker send:[[GAIDictionaryBuilder createEventWithCategory:@"facebookerror"
+                                                                                                                                   action:error.description
+                                                                                                                                    label:nil
+                                                                                                                                    value:nil] build]];
                                                                          } else {
                                                                              NSLog(@"Success!");
+                                                                             id<GAITracker> tracker = [[GAI sharedInstance] defaultTracker];
+                                                                             [tracker send:[[GAIDictionaryBuilder createEventWithCategory:@"facebook"
+                                                                                                                                   action:operation.responseString
+                                                                                                                                    label:nil
+                                                                                                                                    value:nil] build]];
                                                                          }
                                                                      }];
                 isSuccessful = (appCall  != nil);
@@ -618,6 +676,11 @@
                              [self showAlert:message result:result error:error];
                          }];
                     [connection start];
+                    id<GAITracker> tracker = [[GAI sharedInstance] defaultTracker];
+                    [tracker send:[[GAIDictionaryBuilder createEventWithCategory:@"facebook"
+                                                                          action:message
+                                                                           label:nil
+                                                                           value:nil] build]];
                     
                 }];
             }
@@ -631,9 +694,20 @@
 }
 - (void)_viewWishList:(id)sender {
     [self.sidePanelController showRightPanelAnimated:YES];
+    id<GAITracker> tracker = [[GAI sharedInstance] defaultTracker];
+    [tracker send:[[GAIDictionaryBuilder createEventWithCategory:@"viewWishList"
+                                                          action:@"press"
+                                                           label:@"left menu"
+                                                           value:nil] build]];
 }
 -(void)_review {
+    
     [Appirater rateApp];
+    id<GAITracker> tracker = [[GAI sharedInstance] defaultTracker];
+    [tracker send:[[GAIDictionaryBuilder createEventWithCategory:@"review"
+                                                          action:@"press"
+                                                           label:nil
+                                                           value:nil] build]];
 }
 -(void)print {
     NSArray *arr = ((ChooseItemViewController*)self.sidePanelController.centerPanel).favArray;
@@ -648,7 +722,7 @@
                                               [[d objectForKey:@"FormattedPrice"] objectForKey:@"text"],
                                               [[d objectForKey:@"DetailPageURL"] objectForKey:@"text"]]];
     }
-    body = [body stringByAppendingString:@"\n Created by iPhone Christmas List Creator"];
+    body = [body stringByAppendingString:@"\n Created by Instalist iPhone Christmas List Creator"];
     body = [body stringByAppendingString:@"\n http://instalist.duckdns.org/redirect.php"];
     
     
@@ -659,7 +733,7 @@
     
     UIPrintInfo *printInfo = [UIPrintInfo printInfo];
     printInfo.outputType = UIPrintInfoOutputGeneral;
-    printInfo.jobName = @"Christmas Wish List";
+    printInfo.jobName = @"Instalist Christmas Wish List";
     pic.printInfo = printInfo;
     
     UISimpleTextPrintFormatter *textFormatter = [[UISimpleTextPrintFormatter alloc] initWithText:body];
@@ -677,10 +751,20 @@
     };
     
     [pic presentAnimated:YES completionHandler:completionHandler];
+    id<GAITracker> tracker = [[GAI sharedInstance] defaultTracker];
+    [tracker send:[[GAIDictionaryBuilder createEventWithCategory:@"print"
+                                                          action:@"press"
+                                                           label:nil
+                                                           value:nil] build]];
 //    [pic presentFromBarButtonItem:self.rightButton animated:YES completionHandler:completionHandler];
 }
 -(void)chat{
     [SupportKit show];
+    id<GAITracker> tracker = [[GAI sharedInstance] defaultTracker];
+    [tracker send:[[GAIDictionaryBuilder createEventWithCategory:@"chat"
+                                                          action:@"press"
+                                                           label:nil
+                                                           value:nil] build]];
 }
 // UIAlertView helper for post buttons
 - (void)showAlert:(NSString *)message

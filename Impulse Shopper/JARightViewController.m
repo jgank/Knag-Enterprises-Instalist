@@ -30,6 +30,8 @@
 #import <SDWebImage/UIImageView+WebCache.h>
 #import "UIViewController+JASidePanel.h"
 #import "PureLayout.h"
+#import <GAI.h>
+#import <GAIDictionaryBuilder.h>
 #import <ChameleonFramework/Chameleon.h>
 
 @interface JARightViewController () <UITableViewDataSource, UITableViewDelegate>
@@ -151,6 +153,11 @@
 }
 -(void)viewMenu {
     [self.sidePanelController showLeftPanelAnimated:YES];
+    id<GAITracker> tracker = [[GAI sharedInstance] defaultTracker];
+    [tracker send:[[GAIDictionaryBuilder createEventWithCategory:@"view Menu"
+                                                          action:@"press"
+                                                           label:@"right menu"
+                                                           value:nil] build]];
 }
 #pragma mark - Table view data source
 
@@ -168,6 +175,11 @@
 - (void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     [[UIApplication sharedApplication] openURL:[NSURL URLWithString:[[_favArray[indexPath.row] objectForKey:@"DetailPageURL"] objectForKey:@"text"]]];
+    id<GAITracker> tracker = [[GAI sharedInstance] defaultTracker];
+    [tracker send:[[GAIDictionaryBuilder createEventWithCategory:@"item"     // Event category (required)
+                                                          action:[[_favArray[indexPath.row] objectForKey:@"Category"] objectForKey:@"text"]
+                                                           label:[[_favArray[indexPath.row] objectForKey:@"ASIN"] objectForKey:@"text"]          // Event label
+                                                           value:0] build]];    // Event value
 }
 //- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
 //    if (![self.result[indexPath.row][@"type"] isEqualToString:@"image"]) {
@@ -199,7 +211,7 @@
     
     imageView.backgroundColor = [UIColor clearColor];
 //    imageView.backgroundColor = [UIColor grayColor];
-    [imageView sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@", [[_favArray[indexPath.row] objectForKey:@"MediumImage"] objectForKey:@"text"]]] placeholderImage:[UIImage imageNamed:@"Placeholder"] options:SDWebImageContinueInBackground completed:nil];
+    [imageView sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@", [[_favArray[indexPath.row] objectForKey:@"MediumImage"] objectForKey:@"text"]]] placeholderImage:[UIImage imageNamed:@"Placeholder"] ];
     NSLog(@"fdas %f %f",[[[_favArray[indexPath.row] objectForKey:@"MediumImage"] objectForKey:@"Width"] floatValue], [[[_favArray[indexPath.row] objectForKey:@"MediumImage"] objectForKey:@"Height"] floatValue]);
     if([[[UIDevice currentDevice] systemVersion] doubleValue] >= 8.0) {
         

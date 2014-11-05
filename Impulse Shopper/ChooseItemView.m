@@ -28,6 +28,9 @@
 #import <SDWebImage/UIImageView+WebCache.h>
 #import <ChameleonFramework/Chameleon.h>
 #import "UIColor+MDCRGB8Bit.h"
+#import <GAI.h>
+#import <GAIDictionaryBuilder.h>
+
 static const CGFloat ChoosePersonViewImageLabelWidth = 42.f;
 
 @interface ChooseItemView ()
@@ -44,13 +47,9 @@ static const CGFloat ChoosePersonViewImageLabelWidth = 42.f;
 
 - (instancetype)initWithFrame:(CGRect)frame
                       options:(MDCSwipeToChooseViewOptions *)options dict:(NSDictionary*)dict {
-    self = [super initWithFrame:frame options:options];
     if (self) {
-        [self.imageView sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@", [[dict objectForKey:@"LargeImage"] objectForKey:@"text"]]] placeholderImage:[UIImage imageNamed:@"Placeholder"] options:SDWebImageContinueInBackground completed:nil];
-        
-        self.autoresizingMask = UIViewAutoresizingFlexibleHeight |
-                                UIViewAutoresizingFlexibleWidth |
-                                UIViewAutoresizingFlexibleBottomMargin;
+        self = [super initWithFrame:frame options:options];
+        [self.imageView sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@", [[dict objectForKey:@"LargeImage"] objectForKey:@"text"]]] placeholderImage:[UIImage imageNamed:@"Placeholder"]];
         self.imageView.autoresizingMask = self.autoresizingMask;
         self.imageView.contentMode = UIViewContentModeScaleAspectFit;
         self.backgroundColor = [UIColor whiteColor];
@@ -58,6 +57,9 @@ static const CGFloat ChoosePersonViewImageLabelWidth = 42.f;
         self.imageView.layer.borderWidth = 2.f;
         self.imageView.layer.cornerRadius = 5.f;
         self.imageView.layer.borderColor = [UIColor colorWith8BitRed:220.f green:220.f blue:220.f alpha:1.f].CGColor;
+        self.autoresizingMask = UIViewAutoresizingFlexibleHeight |
+                                UIViewAutoresizingFlexibleWidth |
+                                UIViewAutoresizingFlexibleBottomMargin;
         self.item = dict;
         self.layer.borderColor = FlatBlackDark.CGColor;
         [self constructInformationView];
@@ -115,6 +117,10 @@ static const CGFloat ChoosePersonViewImageLabelWidth = 42.f;
 - (void) touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event {
     NSLog(@"touches count %lu", (unsigned long)touches.count);
     [[UIApplication sharedApplication] openURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@", [[_item objectForKey:@"DetailPageURL"] objectForKey:@"text"]]]];
-    
+    id<GAITracker> tracker = [[GAI sharedInstance] defaultTracker];
+    [tracker send:[[GAIDictionaryBuilder createEventWithCategory:@"item"     // Event category (required)
+                                                          action:[[_item objectForKey:@"Category"] objectForKey:@"text"]
+                                                           label:[[_item objectForKey:@"ASIN"] objectForKey:@"text"]          // Event label
+                                                           value:0] build]];    // Event value
 }
 @end
