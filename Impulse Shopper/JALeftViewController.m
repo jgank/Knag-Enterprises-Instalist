@@ -42,6 +42,8 @@
 #import "WebControllerViewController.h"
 #import <GAI.h>
 #import <GAIDictionaryBuilder.h>
+#import <MBProgressHUD/MBProgressHUD.h>
+
 
 @interface JALeftViewController () <MFMailComposeViewControllerDelegate>
 
@@ -385,6 +387,7 @@
             body = [body stringByAppendingString:[NSString stringWithFormat:@"\n<a href='%@'>%@</a>", operation.responseString, operation.responseString]];
             [mailer setMessageBody:body isHTML:YES];
             [self presentViewController:mailer animated:YES completion:nil];
+            [MBProgressHUD hideHUDForView:self.view animated:YES];
             id<GAITracker> tracker = [[GAI sharedInstance] defaultTracker];
             [tracker send:[[GAIDictionaryBuilder createEventWithCategory:@"email"     // Event category (required)
                                                                   action:operation.responseString  // Event action (required)
@@ -392,6 +395,7 @@
                                                                    value:nil] build]];    // Event value
         };
         void (^fail) (AFHTTPRequestOperation *, id) = ^(AFHTTPRequestOperation *operation, id responseObject) {
+            [MBProgressHUD hideHUDForView:self.view animated:YES];
             MFMailComposeViewController  *mailer = [[MFMailComposeViewController alloc] init];
             mailer.mailComposeDelegate = self;
             [mailer setSubject:@"Instalist Gift Wish List"];
@@ -468,6 +472,7 @@
         
         __block __weak id wSelf = self;
         void (^block) (AFHTTPRequestOperation *, id) = ^(AFHTTPRequestOperation *operation, id responseObject) {
+                        [MBProgressHUD hideHUDForView:self.view animated:YES];
             MFMessageComposeViewController  *mailer = [[MFMessageComposeViewController alloc] init];
             mailer.messageComposeDelegate = wSelf;
             [mailer setSubject:@"Gift Wish List"];
@@ -494,6 +499,7 @@
         };
         __block __weak id aL = self;
         [self postBody:block Fail:^(AFHTTPRequestOperation *operation, NSError *error) {
+            [MBProgressHUD hideHUDForView:self.view animated:YES];
             MFMessageComposeViewController  *mailer = [[MFMessageComposeViewController alloc] init];
             mailer.messageComposeDelegate = aL;
             [mailer setSubject:@"Gift Wish List"];
@@ -534,16 +540,17 @@
 - (void)_postPasteBin:(id)sender {
     
     
-    void (^block) (AFHTTPRequestOperation *, id) = ^(AFHTTPRequestOperation *operation, id responseObject) {
-        NSLog(@"JSON: %@", responseObject);
-        NSLog(@"%@",operation.responseString);
-        
-        
-        SLComposeViewController *fbController=[SLComposeViewController composeViewControllerForServiceType:SLServiceTypeTwitter];
-        
-        
-        if([SLComposeViewController isAvailableForServiceType:SLServiceTypeTwitter])
-        {
+    if([SLComposeViewController isAvailableForServiceType:SLServiceTypeTwitter])
+    {
+        void (^block) (AFHTTPRequestOperation *, id) = ^(AFHTTPRequestOperation *operation, id responseObject) {
+            [MBProgressHUD hideHUDForView:self.view animated:YES];
+            NSLog(@"JSON: %@", responseObject);
+            NSLog(@"%@",operation.responseString);
+            
+            
+            SLComposeViewController *fbController=[SLComposeViewController composeViewControllerForServiceType:SLServiceTypeTwitter];
+            
+            
             SLComposeViewControllerCompletionHandler __block completionHandler=^(SLComposeViewControllerResult result){
                 [fbController dismissViewControllerAnimated:YES completion:nil];
                 switch(result){
@@ -560,7 +567,7 @@
                     }
                         break;
                 }};
-//            [fbController addImage:[UIImage imageNamed:@"1.jpg"]];
+            //            [fbController addImage:[UIImage imageNamed:@"1.jpg"]];
             [fbController setInitialText:@"Check out my holiday gift wish list."];
             [fbController addURL:[NSURL URLWithString:operation.responseString]];
             [fbController setCompletionHandler:completionHandler];
@@ -571,10 +578,12 @@
                                                                        label:@"web"
                                                                        value:nil] build]];
             }];
-        }
-    };
-    
-    [self postBody:block Fail:nil];
+        };
+        [self postBody:block Fail:nil];
+    }
+    else {
+           [[[UIAlertView alloc] initWithTitle:@"Alert" message:@"Twitter account not linked to iOS Device" delegate:nil cancelButtonTitle:@"Okay" otherButtonTitles:nil] show];
+    }
 
 }
 - (void) postBody:(void (^)(AFHTTPRequestOperation*, id))block Fail:(void (^)(AFHTTPRequestOperation *, NSError *))fail {
@@ -598,8 +607,9 @@
 
     typedef void (^FailB) (AFHTTPRequestOperation*, NSError*);
     FailB failB = (fail) ? fail :  ^(AFHTTPRequestOperation *operation, NSError *error) {
-            NSLog(@"%@",operation.responseString);
-            NSLog(@"Error: %@", error);
+        NSLog(@"%@",operation.responseString);
+        NSLog(@"Error: %@", error);
+        [MBProgressHUD hideHUDForView:self.view animated:YES];
         
         };
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
@@ -613,14 +623,15 @@
                              @"hash":[[NSUserDefaults standardUserDefaults] objectForKey:@"uudid"],
                              @"api_dev_key":@"h0wNrPzaGXl1IYN971CT3Xm74X525ivv",
                              @"body":[body stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding]};
+    [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     [manager POST:@"https://instalist.duckdns.org/post.php" parameters:params success:block failure:failB];
     
 }
 - (void)_postToFacebook:(id)sender {
     void (^postBlock) (AFHTTPRequestOperation*, id) =  ^(AFHTTPRequestOperation *operation, id responseObject) {
         if([operation.responseString rangeOfString:@"http://"].location != NSNotFound) {
+            [MBProgressHUD hideHUDForView:self.view animated:YES]; 
             
-
             
             
             NSURL *urlToShare = [NSURL URLWithString:operation.responseString];
@@ -656,14 +667,14 @@
             if (!isSuccessful && [FBDialogs canPresentOSIntegratedShareDialogWithSession:[FBSession activeSession]]){
                 // Next try to post using Facebook's iOS6 integration
                 isSuccessful = [FBDialogs presentOSIntegratedShareDialogModallyFrom:self
-                                                                        initialText:nil
+                                                                        initialText:@"View my Christmas list via Instalist:"
                                                                               image:nil
                                                                                 url:urlToShare
                                                                             handler:nil];
             }
             if (!isSuccessful) {
                 [self performPublishAction:^{
-                    NSString *message = [NSString stringWithFormat:@"Instalist page: %@", operation.responseString];
+                    NSString *message = [NSString stringWithFormat:@"View my Christmas list via Instalist: %@", operation.responseString];
                     
                     FBRequestConnection *connection = [[FBRequestConnection alloc] init];
                     

@@ -49,7 +49,10 @@ static const CGFloat ChoosePersonViewImageLabelWidth = 42.f;
                       options:(MDCSwipeToChooseViewOptions *)options dict:(NSDictionary*)dict {
     if (self) {
         self = [super initWithFrame:frame options:options];
-        [self.imageView sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@", [[dict objectForKey:@"LargeImage"] objectForKey:@"text"]]] placeholderImage:[UIImage imageNamed:@"Placeholder"]];
+        [self.imageView sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@", [[dict objectForKey:@"LargeImage"] objectForKey:@"text"]]] placeholderImage:[UIImage imageNamed:@"Placeholder"] completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
+            
+            NSLog(@"image error %@ %i", error.description, cacheType);
+        }];
         self.imageView.autoresizingMask = self.autoresizingMask;
         self.imageView.contentMode = UIViewContentModeScaleAspectFit;
         self.backgroundColor = [UIColor whiteColor];

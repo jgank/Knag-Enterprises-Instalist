@@ -16,7 +16,6 @@
 
 @property (strong, nonatomic) JASidePanelController *viewController;
 
-- (void)saveContext;
 - (NSURL *)applicationDocumentsDirectory;
 
 

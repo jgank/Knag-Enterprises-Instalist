@@ -29,7 +29,7 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-    [TestFlight takeOff:@"477c76e5-10ed-4299-823a-96435bf1eef9"]; 
+//    [TestFlight takeOff:@"477c76e5-10ed-4299-823a-96435bf1eef9"]; 
     self.viewController = [[JASidePanelController alloc] init];
     self.viewController.leftPanel = [[JALeftViewController alloc] init];
     self.viewController.centerPanel = [[ChooseItemViewController alloc] init];
@@ -121,7 +121,6 @@
 - (void)applicationWillTerminate:(UIApplication *)application {
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
     // Saves changes in the application's managed object context before the application terminates.
-    [self saveContext];
 }
 - (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation {
     // attempt to extract a token from the url
