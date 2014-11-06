@@ -43,7 +43,8 @@ install_resource()
       ;;
   esac
 }
-          install_resource "SupportKit/SupportKit.bundle"
+          install_resource "Facebook-iOS-SDK/src/FBUserSettingsViewResources.bundle"
+                    install_resource "SupportKit/SupportKit.bundle"
                     install_resource "${BUILT_PRODUCTS_DIR}/Appirater.bundle"
           
 rsync -avr --copy-links --no-relative --exclude '*/.svn/*' --files-from="$RESOURCES_TO_COPY" / "${CONFIGURATION_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}"

@@ -57,7 +57,7 @@
 // BitlyForiOS
 #define COCOAPODS_POD_AVAILABLE_BitlyForiOS
 #define COCOAPODS_VERSION_MAJOR_BitlyForiOS 1
-#define COCOAPODS_VERSION_MINOR_BitlyForiOS 2
+#define COCOAPODS_VERSION_MINOR_BitlyForiOS 1
 #define COCOAPODS_VERSION_PATCH_BitlyForiOS 0
 
 // Bolts
@@ -75,7 +75,7 @@
 // Facebook-iOS-SDK
 #define COCOAPODS_POD_AVAILABLE_Facebook_iOS_SDK
 #define COCOAPODS_VERSION_MAJOR_Facebook_iOS_SDK 3
-#define COCOAPODS_VERSION_MINOR_Facebook_iOS_SDK 20
+#define COCOAPODS_VERSION_MINOR_Facebook_iOS_SDK 19
 #define COCOAPODS_VERSION_PATCH_Facebook_iOS_SDK 0
 
 // GoogleAnalytics-iOS-SDK

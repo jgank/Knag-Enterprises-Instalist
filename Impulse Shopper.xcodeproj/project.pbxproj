@@ -22,6 +22,7 @@
 		52CCC69119AE93CB00464A46 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 52CCC68D19AE93CB00464A46 /* QuartzCore.framework */; };
 		52CCC69219AE93CB00464A46 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 52CCC68E19AE93CB00464A46 /* UIKit.framework */; };
 		A07576660AD94FA8B57F540B /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 89FAADAE8CAB497B9353AD67 /* libPods.a */; };
+		EF1698A61A0B43F2003C6DF2 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EF1698A51A0B43F2003C6DF2 /* Main.storyboard */; };
 		EF51278B19EF521C007C636A /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EF51278A19EF521C007C636A /* MessageUI.framework */; };
 		EF70B3EC19EC74C600AA55FA /* SavedCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = EF70B3EB19EC74C600AA55FA /* SavedCell.xib */; };
 		EF70B3EE19ED4C4D00AA55FA /* combined.xml in Resources */ = {isa = PBXBuildFile; fileRef = EF70B3ED19ED4C4D00AA55FA /* combined.xml */; };
@@ -76,6 +77,7 @@
 		68E31D891A53852CD5B33B96 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 		89FAADAE8CAB497B9353AD67 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		A7431BC226B812FEB6FB096E /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
+		EF1698A51A0B43F2003C6DF2 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 		EF2879491A02C0820087DA88 /* Impulse Shopper.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = "Impulse Shopper.entitlements"; sourceTree = "<group>"; };
 		EF51278A19EF521C007C636A /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
 		EF70B3EB19EC74C600AA55FA /* SavedCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SavedCell.xib; sourceTree = "<group>"; };
@@ -135,6 +137,7 @@
 		52CCC64719AE90FD00464A46 = {
 			isa = PBXGroup;
 			children = (
+				EF1698A51A0B43F2003C6DF2 /* Main.storyboard */,
 				52CCC68B19AE93CB00464A46 /* CoreGraphics.framework */,
 				52CCC68C19AE93CB00464A46 /* Foundation.framework */,
 				52CCC68D19AE93CB00464A46 /* QuartzCore.framework */,
@@ -351,6 +354,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				52CCC66419AE90FD00464A46 /* Images.xcassets in Resources */,
+				EF1698A61A0B43F2003C6DF2 /* Main.storyboard in Resources */,
 				EFEC80251A09283100FB8274 /* WebControllerViewController.xib in Resources */,
 				EF70B3EC19EC74C600AA55FA /* SavedCell.xib in Resources */,
 				EF70B3EE19ED4C4D00AA55FA /* combined.xml in Resources */,
