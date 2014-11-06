@@ -32,9 +32,10 @@
 #import <BitlyForiOS/SSTURLShortener.h>
 #import <ChameleonFramework/Chameleon.h>
 #import "InsetLabel.h"
-//#import "SupportKit.h"
+#import "SupportKit.h"
 #import <GAIDictionaryBuilder.h>
 #import <GAI.h>
+#import <Parse/Parse.h>
 
 
 static const CGFloat ChoosePersonButtonHorizontalPadding = 80.f;
@@ -94,8 +95,7 @@ static const CGFloat ChoosePersonButtonVerticalPadding = 20.f;
         
         
         
-        catLabel = [InsetLabel newAutoLayoutView];
-        [self.view addSubview:catLabel];
+        catLabel = [[InsetLabel alloc] initWithFrame:CGRectMake(0, self.view.frame.size.height-35.f, self.view.frame.size.width, 35.f)];
         titleLabel = [UILabel newAutoLayoutView];
         
         
@@ -103,13 +103,14 @@ static const CGFloat ChoosePersonButtonVerticalPadding = 20.f;
         titleLabel.font = [UIFont systemFontOfSize:12];
         titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
         titleLabel.textAlignment = NSTextAlignmentCenter;
-        UIView *menView = [UIView newAutoLayoutView];
-        undoButton = [UIButton newAutoLayoutView];
+        UIView *menView = [[UIView alloc] initWithFrame:CGRectMake(0., 20.f, self.view.frame.size.width, 47.f)];
+        undoButton = [[UIButton alloc] initWithFrame:CGRectMake(12.f, self.view.frame.size.height-27.f, 19.f, 23.f)];
         undoButton.imageView.tintColor = ComplementaryFlatColorOf(FlatMintDark);
         UIImage *img = [UIImage imageNamed:@"215-subscription"];
         img = [img imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
         [undoButton setImage:img forState:UIControlStateNormal];
         [undoButton addTarget:self action:@selector(undoPressed) forControlEvents:UIControlEventTouchUpInside];
+        [self.view addSubview:catLabel];
         [self.view addSubview:undoButton];
         [self.view addSubview:menView];
         [self.view addSubview:menuButton];
@@ -129,10 +130,11 @@ static const CGFloat ChoosePersonButtonVerticalPadding = 20.f;
         titleLabel.textColor = ComplementaryFlatColorOf(FlatMintDark);
         
         
+        
         menView.backgroundColor = FlatMintDark;
         menView.layer.zPosition = -1;
-        [menView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero excludingEdge:ALEdgeBottom];
-        [menView autoPinEdge:ALEdgeBottom toEdge:ALEdgeBottom ofView:titleLabel];
+//        [menView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero excludingEdge:ALEdgeBottom];
+//        [menView autoPinEdge:ALEdgeBottom toEdge:ALEdgeBottom ofView:titleLabel];
         
         
         //        UIView *lv = [[UIView alloc] initWithFrame:CGRectMake(0.f, 20.f, self.view.frame.size.width, 1.0f)];
@@ -147,10 +149,17 @@ static const CGFloat ChoosePersonButtonVerticalPadding = 20.f;
         messageButton.imageView.tintColor = ComplementaryFlatColorOf(FlatMintDark);
         menuButton.imageView.tintColor = ComplementaryFlatColorOf(FlatMintDark);
         
-        [undoButton autoPinEdgeToSuperviewEdge:ALEdgeLeft withInset:12.0f];
-        [undoButton autoPinEdgeToSuperviewEdge:ALEdgeBottom withInset:4.0f];
-        [catLabel autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero excludingEdge:ALEdgeTop];
-        [catLabel autoSetDimension:ALDimensionHeight toSize:35.f];
+//        [undoButton autoPinEdgeToSuperviewEdge:ALEdgeLeft withInset:12.0f];
+//        [undoButton autoPinEdgeToSuperviewEdge:ALEdgeBottom withInset:4.0f];
+//        [catLabel autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero excludingEdge:ALEdgeTop];
+        
+        
+//        [catLabel autoPinEdge:ALEdgeTop toEdge:ALEdgeTop ofView:self.view withOffset:self.view.frame.size.height-35.f];
+//        [catLabel autoPinEdge:ALEdgeBottom toEdge:ALEdgeBottom ofView:self.view];
+//        [catLabel autoPinEdge:ALEdgeRight toEdge:ALEdgeRight ofView:self.view];
+//        [catLabel autoPinEdge:ALEdgeLeft toEdge:ALEdgeLeft ofView:self.view];
+//        
+//        [catLabel autoSetDimension:ALDimensionHeight toSize:35.f];
         catLabel.backgroundColor = FlatMintDark;
         [catLabel setAdjustsFontSizeToFitWidth:YES];
         [catLabel setAdjustsLetterSpacingToFitWidth:YES];
@@ -211,6 +220,8 @@ static const CGFloat ChoosePersonButtonVerticalPadding = 20.f;
     manager = [AFHTTPRequestOperationManager manager];
     manager.requestSerializer = [AFJSONRequestSerializer serializer];
     manager.responseSerializer = [AFJSONResponseSerializer serializer];
+
+
     
     //    [self updateCloud];
 }
@@ -351,10 +362,20 @@ static const CGFloat ChoosePersonButtonVerticalPadding = 20.f;
                                            [[NSUserDefaults standardUserDefaults] setObject:dateString forKey:@"dateUpdated"];
                                            NSError *error;
                                            self.items = [[[XMLReader dictionaryForXMLData:[NSData dataWithContentsOfFile:[documentsDirectory stringByAppendingPathComponent:@"net.xml"]] options:XMLReaderOptionsProcessNamespaces error:&error] objectForKey:@"root"] objectForKey:@"Item"];
+                                           id<GAITracker> tracker = [[GAI sharedInstance] defaultTracker];
+                                           [tracker send:[[GAIDictionaryBuilder createEventWithCategory:@"NList"
+                                                                                                 action:@"pass"
+                                                                                                  label:dateString
+                                                                                                  value:nil] build]];
                                        }
                                        failure:^(AFHTTPRequestOperation *operation, NSError *error) {
                                            [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"useNew"];
                                            NSLog(@"Error: %@", error);
+                                           id<GAITracker> tracker = [[GAI sharedInstance] defaultTracker];
+                                           [tracker send:[[GAIDictionaryBuilder createEventWithCategory:@"Nlist"
+                                                                                                 action:@"fail"
+                                                                                                  label:[error description]
+                                                                                                  value:nil] build]];
                                        }];
     
     op.outputStream = [NSOutputStream outputStreamToFileAtPath:[documentsDirectory stringByAppendingPathComponent:@"net.xml"] append:NO];
@@ -424,20 +445,20 @@ static const CGFloat ChoosePersonButtonVerticalPadding = 20.f;
         [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"firstMessage"];
         int i = arc4random() % 7;
         
-        //        if (i == 0)
-        //            [SupportKit track:@"Likes5"]; //Hello {{ firstName || fallback }}. I hope you found some great gift ideas. Have you been naughty or nice this year?
-        //        else if(i == 1)
-        //            [SupportKit track:@"likeToy"]; //What do you think was the most famous Christmas toy growing up?
-        //        else if (i == 2)
-        //            [SupportKit track:@"nickknack"]; //What would make a great gift for white elephant?
-        //        else if (i == 3)
-        //            [SupportKit track:@"SecretSanta"]; //What do you think is the best category for Secret Santa gifts?
-        //        else if (i == 4)
-        //            [SupportKit track:@"xbox"]; //Do you have or do you plan on getting the Xbox One? I am, I think it is better than the PS4.
-        //        else if (i == 5)
-        //            [SupportKit track:@"favoritepresent"]; //Do you remember your favorite Christmas present of all time?
-        //        else if (i == 6)
-        //            [SupportKit track:@"Vacation"];//Have you seen any items that would be useful for your next winter vacation?
+                if (i == 0)
+                    [SupportKit track:@"Likes5"]; //Hello {{ firstName || fallback }}. I hope you found some great gift ideas. Have you been naughty or nice this year?
+                else if(i == 1)
+                    [SupportKit track:@"likeToy"]; //What do you think was the most famous Christmas toy growing up?
+                else if (i == 2)
+                    [SupportKit track:@"nickknack"]; //What would make a great gift for white elephant?
+                else if (i == 3)
+                    [SupportKit track:@"SecretSanta"]; //What do you think is the best category for Secret Santa gifts?
+                else if (i == 4)
+                    [SupportKit track:@"xbox"]; //Do you have or do you plan on getting the Xbox One? I am, I think it is better than the PS4.
+                else if (i == 5)
+                    [SupportKit track:@"favoritepresent"]; //Do you remember your favorite Christmas present of all time?
+                else if (i == 6)
+                    [SupportKit track:@"Vacation"];//Have you seen any items that would be useful for your next winter vacation?
         
     }
     

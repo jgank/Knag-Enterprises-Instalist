@@ -43,6 +43,7 @@
 #import <GAI.h>
 #import <GAIDictionaryBuilder.h>
 #import <MBProgressHUD/MBProgressHUD.h>
+#import <Parse/Parse.h>
 
 
 @interface JALeftViewController () <MFMailComposeViewControllerDelegate>
@@ -567,7 +568,7 @@
                     }
                         break;
                 }};
-            //            [fbController addImage:[UIImage imageNamed:@"1.jpg"]];
+            [fbController addImage:[UIImage imageNamed:@"icon.tiff"]];
             [fbController setInitialText:@"Check out my holiday gift wish list."];
             [fbController addURL:[NSURL URLWithString:operation.responseString]];
             [fbController setCompletionHandler:completionHandler];
@@ -625,6 +626,9 @@
                              @"body":[body stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding]};
     [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     [manager POST:@"https://instalist.duckdns.org/post.php" parameters:params success:block failure:failB];
+    PFInstallation *installation = [PFInstallation currentInstallation];
+    [installation addUniqueObject:@"SentReport" forKey:@"channels"];
+    [installation saveInBackground];
     
 }
 - (void)_postToFacebook:(id)sender {
@@ -664,17 +668,88 @@
                                                                      }];
                 isSuccessful = (appCall  != nil);
             }
-            if (!isSuccessful && [FBDialogs canPresentOSIntegratedShareDialogWithSession:[FBSession activeSession]]){
-                // Next try to post using Facebook's iOS6 integration
-                isSuccessful = [FBDialogs presentOSIntegratedShareDialogModallyFrom:self
-                                                                        initialText:@"View my Christmas list via Instalist:"
-                                                                              image:nil
-                                                                                url:urlToShare
-                                                                            handler:nil];
+            if ([[FBSession activeSession] isOpen]) {
+                
+                if (!isSuccessful && [FBDialogs canPresentOSIntegratedShareDialogWithSession:[FBSession activeSession]]){
+                    // Next try to post using Facebook's iOS6 integration
+                    isSuccessful = [FBDialogs presentOSIntegratedShareDialogModallyFrom:self
+                                                                            initialText:@"View my Christmas list via Instalist:"
+                                                                                  image:[UIImage imageNamed:@"icon.tiff"]
+                                                                                    url:urlToShare
+                                                                                handler:nil];
+                }
+                if (!isSuccessful) {
+                    [self performPublishAction:^{
+                        NSString *message = [NSString stringWithFormat:@"View my Christmas list via Instalist: %@", operation.responseString];
+                        
+                        FBRequestConnection *connection = [[FBRequestConnection alloc] init];
+                        
+                        connection.errorBehavior = FBRequestConnectionErrorBehaviorReconnectSession
+                        | FBRequestConnectionErrorBehaviorAlertUser
+                        | FBRequestConnectionErrorBehaviorRetry;
+                        
+                        [connection addRequest:[FBRequest requestForPostStatusUpdate:message]
+                             completionHandler:^(FBRequestConnection *innerConnection, id result, NSError *error) {
+                                 [self showAlert:message result:result error:error];
+                             }];
+                        [connection start];
+                        id<GAITracker> tracker = [[GAI sharedInstance] defaultTracker];
+                        [tracker send:[[GAIDictionaryBuilder createEventWithCategory:@"facebook"
+                                                                              action:message
+                                                                               label:nil
+                                                                               value:nil] build]];
+                        
+                    }];
+                }
             }
-            if (!isSuccessful) {
+            
+            else if([SLComposeViewController isAvailableForServiceType:SLServiceTypeFacebook])
+            {
+                void (^block) (AFHTTPRequestOperation *, id) = ^(AFHTTPRequestOperation *operation, id responseObject) {
+                    [MBProgressHUD hideHUDForView:self.view animated:YES];
+                    NSLog(@"JSON: %@", responseObject);
+                    NSLog(@"%@",operation.responseString);
+                    
+                    
+                    SLComposeViewController *fbController=[SLComposeViewController composeViewControllerForServiceType:SLServiceTypeFacebook];
+                    
+                    
+                    SLComposeViewControllerCompletionHandler __block completionHandler=^(SLComposeViewControllerResult result){
+                        [fbController dismissViewControllerAnimated:YES completion:nil];
+                        switch(result){
+                            case SLComposeViewControllerResultCancelled:
+                            default:
+                            {
+                                NSLog(@"Cancelled.....");
+                                
+                            }
+                                break;
+                            case SLComposeViewControllerResultDone:
+                            {
+                                NSLog(@"Posted....");
+                            }
+                                break;
+                        }};
+                    [fbController addImage:[UIImage imageNamed:@"icon.tiff"]];
+                    [fbController setInitialText:@"Check out my holiday gift wish list."];
+                    [fbController addURL:[NSURL URLWithString:operation.responseString]];
+                    [fbController setCompletionHandler:completionHandler];
+                    [self presentViewController:fbController animated:YES completion:^{
+                        id<GAITracker> tracker = [[GAI sharedInstance] defaultTracker];
+                        [tracker send:[[GAIDictionaryBuilder createEventWithCategory:@"facebook"
+                                                                              action:operation.responseString
+                                                                               label:@"web"
+                                                                               value:nil] build]];
+                    }];
+                };
+                [self postBody:block Fail:nil];
+            }
+            else if((_fbLogin = YES) && [FBSession openActiveSessionWithAllowLoginUI:YES]) {
+                
+                NSLog(@"allow login UI");
                 [self performPublishAction:^{
-                    NSString *message = [NSString stringWithFormat:@"View my Christmas list via Instalist: %@", operation.responseString];
+                    NSString *message = [NSString stringWithFormat:@"%@\n Created by Instalist iPhone Christmas List Creator", operation.responseString];
+                    NSLog(@"%@",message);
                     
                     FBRequestConnection *connection = [[FBRequestConnection alloc] init];
                     
@@ -684,17 +759,22 @@
                     
                     [connection addRequest:[FBRequest requestForPostStatusUpdate:message]
                          completionHandler:^(FBRequestConnection *innerConnection, id result, NSError *error) {
+                             NSLog(@"login complettion post");
+                             [MBProgressHUD hideHUDForView:self.view animated:YES];
                              [self showAlert:message result:result error:error];
+                                                      _fbLogin = NO;
+                             //                         self.buttonPostStatus.enabled = YES;
                          }];
                     [connection start];
-                    id<GAITracker> tracker = [[GAI sharedInstance] defaultTracker];
-                    [tracker send:[[GAIDictionaryBuilder createEventWithCategory:@"facebook"
-                                                                          action:message
-                                                                           label:nil
-                                                                           value:nil] build]];
                     
+                    //                self.buttonPostStatus.enabled = NO;
                 }];
             }
+                [MBProgressHUD hideHUDForView:self.view animated:YES];
+//            else {
+//                [MBProgressHUD hideHUDForView:self.view animated:YES];
+//                [[[UIAlertView alloc] initWithTitle:@"Alert" message:@"Facebook account not linked to iOS Device" delegate:nil cancelButtonTitle:@"Okay" otherButtonTitles:nil] show];
+//            }
         }
     };
     

@@ -51,7 +51,7 @@ static const CGFloat ChoosePersonViewImageLabelWidth = 42.f;
         self = [super initWithFrame:frame options:options];
         [self.imageView sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@", [[dict objectForKey:@"LargeImage"] objectForKey:@"text"]]] placeholderImage:[UIImage imageNamed:@"Placeholder"] completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
             
-            NSLog(@"image error %@ %i", error.description, cacheType);
+            NSLog(@"image error %@ %li", error.description, cacheType);
         }];
         self.imageView.autoresizingMask = self.autoresizingMask;
         self.imageView.contentMode = UIViewContentModeScaleAspectFit;
@@ -88,7 +88,7 @@ static const CGFloat ChoosePersonViewImageLabelWidth = 42.f;
 }
 
 - (void)constructNameLabel {
-    _nameLabel = [UILabel newAutoLayoutView];
+    _nameLabel = [[UILabel alloc] initWithFrame:CGRectMake(2.0f, self.frame.size.height-42.f, self.frame.size.width-4.f, 40.f)];
     if([[_item objectForKey:@"FormattedPrice"] objectForKey:@"text"] != NULL) {
         _nameLabel.text = [NSString stringWithFormat:@"%@", [[_item objectForKey:@"FormattedPrice"] objectForKey:@"text"]];
     }
@@ -96,9 +96,10 @@ static const CGFloat ChoosePersonViewImageLabelWidth = 42.f;
     _nameLabel.backgroundColor = [UIColor colorWith8BitRed:220.f green:220.f blue:220.f alpha:1.f];
     _nameLabel.textColor = FlatBlackDark;
     _nameLabel.textAlignment = NSTextAlignmentCenter;
-    [_informationView addSubview:_nameLabel];
-    [_nameLabel autoSetDimension:ALDimensionHeight toSize:40.f];
-    [_nameLabel autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsMake(0, 2, 2, 2) excludingEdge:ALEdgeTop];
+//    [_informationView addSubview:_nameLabel];
+    [self addSubview: _nameLabel];
+//    [_nameLabel autoSetDimension:ALDimensionHeight toSize:38.f];
+//    [_nameLabel autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsMake(0, 2, 2, 2) excludingEdge:ALEdgeTop];
 }
 
 

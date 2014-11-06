@@ -541,6 +541,10 @@ THE SOFTWARE.
 
 
 
+## Parse
+
+See https://www.parse.com/about/terms
+
 ## SDWebImage
 
 Copyright (c) 2009 Olivier Poitrey <rs@dailymotion.com>
