@@ -560,11 +560,27 @@
                     {
                         NSLog(@"Cancelled.....");
                         
+                        
+                        
+                        id<GAITracker> tracker = [[GAI sharedInstance] defaultTracker];
+                        [tracker send:[[GAIDictionaryBuilder createEventWithCategory:@"twittercanceled"
+                                                                              action:operation.responseString
+                                                                               label:@"web"
+                                                                               value:nil] build]];
+                        
+                        
+                        
                     }
                         break;
                     case SLComposeViewControllerResultDone:
                     {
                         NSLog(@"Posted....");
+                        id<GAITracker> tracker = [[GAI sharedInstance] defaultTracker];
+                        [tracker send:[[GAIDictionaryBuilder createEventWithCategory:@"twitter"
+                                                                              action:operation.responseString
+                                                                               label:@"web"
+                                                                               value:nil] build]];
+                        
                     }
                         break;
                 }};
@@ -573,11 +589,6 @@
             [fbController addURL:[NSURL URLWithString:operation.responseString]];
             [fbController setCompletionHandler:completionHandler];
             [self presentViewController:fbController animated:YES completion:^{
-                id<GAITracker> tracker = [[GAI sharedInstance] defaultTracker];
-                [tracker send:[[GAIDictionaryBuilder createEventWithCategory:@"twitter"
-                                                                      action:operation.responseString
-                                                                       label:@"web"
-                                                                       value:nil] build]];
             }];
         };
         [self postBody:block Fail:nil];
@@ -643,7 +654,7 @@
                                                                            name:@"Instalist Christmas List Creator"
                                                                         caption:nil
                                                                     description:@"View my holiday wish list."
-                                                                        picture:nil];
+                                                                        picture:[NSURL URLWithString:@"http://instalist.duckdns.org/images/icon.tiff"]];
             
             BOOL isSuccessful = NO;
             if ([FBDialogs canPresentShareDialogWithParams:params]) {
@@ -695,7 +706,7 @@
                         [connection start];
                         id<GAITracker> tracker = [[GAI sharedInstance] defaultTracker];
                         [tracker send:[[GAIDictionaryBuilder createEventWithCategory:@"facebook"
-                                                                              action:message
+                                                                              action:operation.responseString
                                                                                label:nil
                                                                                value:nil] build]];
                         

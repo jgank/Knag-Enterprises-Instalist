@@ -142,7 +142,7 @@ static const CGFloat ChoosePersonButtonVerticalPadding = 20.f;
         //        UIView *lv = [[UIView alloc] initWithFrame:CGRectMake(0.f, 0.f, 320.0, 20.0f)];
         lv.backgroundColor = ComplementaryFlatColorOf(FlatMintDark);
         [self.view addSubview:lv];
-        lv.layer.zPosition = -1;
+        lv.layer.zPosition = 20;
         
         messageButton.backgroundColor = FlatMintDark;
         menuButton.backgroundColor = FlatMintDark;
@@ -162,7 +162,6 @@ static const CGFloat ChoosePersonButtonVerticalPadding = 20.f;
 //        [catLabel autoSetDimension:ALDimensionHeight toSize:35.f];
         catLabel.backgroundColor = FlatMintDark;
         [catLabel setAdjustsFontSizeToFitWidth:YES];
-        [catLabel setAdjustsLetterSpacingToFitWidth:YES];
         catLabel.textAlignment = NSTextAlignmentCenter;
         [catLabel setFont:[UIFont systemFontOfSize:12.0f]];
         catLabel.textColor = ComplementaryFlatColorOf(FlatMintDark);
@@ -394,47 +393,56 @@ static const CGFloat ChoosePersonButtonVerticalPadding = 20.f;
     }
     else {
         NSLog(@"You liked");
+        BOOL found = NO;
+        for(NSDictionary *d in _favArray) {
+            if ([[[[_frontCardView item] objectForKey:@"ASIN"] objectForKey:@"text"] isEqualToString:[[d objectForKey:@"ASIN"] objectForKey:@"text"]]) {
+                NSLog(@"match");
+                found = YES;
+            }
+        }
         
-        [_favArray addObject:[_frontCardView item]];
-        [_favArray writeToFile:arrayPath atomically:YES];
-        
-        NSString *urlEsc = [[[[_frontCardView item] objectForKey:@"DetailPageURL"] objectForKey:@"text"] stringByRemovingPercentEncoding];
-        NSString *urlEsc1 = [[[_frontCardView item] objectForKey:@"DetailPageURL"] objectForKey:@"text"];
-        
-        NSLog(@"%@", urlEsc);
-        
-        
-        [SSTURLShortener shortenURL:[NSURL URLWithString:urlEsc] username:@"justinknag" apiKey:@"R_a5f42d4c62ac1253dc0cdb2f8d02f912" withCompletionBlock:^(NSURL *shortenedURL, NSError *error) {
-            NSLog(@"short url %@", shortenedURL.absoluteString);
-            NSLog(@"error %@", [error description]);
-            if(!error) {
-                for (id i in _favArray) {
-                    if ([i[@"DetailPageURL"][@"text"] isEqualToString:urlEsc1]) {
-                        i[@"DetailPageURL"][@"text"] = shortenedURL.absoluteString;
-                        [_favArray writeToFile:arrayPath atomically:YES];
-                        return;
+        if(!found) {
+            [_favArray addObject:[_frontCardView item]];
+            [_favArray writeToFile:arrayPath atomically:YES];
+            
+            NSString *urlEsc = [[[[_frontCardView item] objectForKey:@"DetailPageURL"] objectForKey:@"text"] stringByRemovingPercentEncoding];
+            NSString *urlEsc1 = [[[_frontCardView item] objectForKey:@"DetailPageURL"] objectForKey:@"text"];
+            
+            NSLog(@"%@", urlEsc);
+            
+            
+            [SSTURLShortener shortenURL:[NSURL URLWithString:urlEsc] username:@"justinknag" apiKey:@"R_a5f42d4c62ac1253dc0cdb2f8d02f912" withCompletionBlock:^(NSURL *shortenedURL, NSError *error) {
+                NSLog(@"short url %@", shortenedURL.absoluteString);
+                NSLog(@"error %@", [error description]);
+                if(!error) {
+                    for (id i in _favArray) {
+                        if ([i[@"DetailPageURL"][@"text"] isEqualToString:urlEsc1]) {
+                            i[@"DetailPageURL"][@"text"] = shortenedURL.absoluteString;
+                            [_favArray writeToFile:arrayPath atomically:YES];
+                            return;
+                        }
                     }
                 }
-            }
-            else {
-                [manager POST:@"https://www.googleapis.com/urlshortener/v1/url"
-                   parameters:@{@"longUrl":urlEsc1}
-                      success:^(AFHTTPRequestOperation *operation, id responseObject) {
-                          NSLog(@"double");
-                          NSLog(@"got google url %@", responseObject[@"id"]);
-                          for (id i in _favArray) {
-                              if ([i[@"DetailPageURL"][@"text"] isEqualToString:urlEsc1]) {
-                                  i[@"DetailPageURL"][@"text"] = responseObject[@"id"];
-                                  [_favArray writeToFile:arrayPath atomically:YES];
-                                  return;
+                else {
+                    [manager POST:@"https://www.googleapis.com/urlshortener/v1/url"
+                       parameters:@{@"longUrl":urlEsc1}
+                          success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                              NSLog(@"double");
+                              NSLog(@"got google url %@", responseObject[@"id"]);
+                              for (id i in _favArray) {
+                                  if ([i[@"DetailPageURL"][@"text"] isEqualToString:urlEsc1]) {
+                                      i[@"DetailPageURL"][@"text"] = responseObject[@"id"];
+                                      [_favArray writeToFile:arrayPath atomically:YES];
+                                      return;
+                                  }
                               }
                           }
-                      }
-                      failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-                          NSLog(@"Error: %@", error);
-                      }];
-            }
-        }];
+                          failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                              NSLog(@"Error: %@", error);
+                          }];
+                }
+            }];
+        }
     }
     numSwipes++;
     [[NSUserDefaults standardUserDefaults] setInteger:numSwipes forKey:@"numSwipes"];
