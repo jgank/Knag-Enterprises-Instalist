@@ -296,6 +296,10 @@
 //    self.label.center = CGPointMake(floorf(self.sidePanelController.leftVisibleWidth/2.0f), 25.0f);
     NSLog(@"view will appear left");
 }
+-(void)viewWillDisappear:(BOOL)animated {
+    NSLog(@"log will dissapear");
+    [MBProgressHUD hideHUDForView:self.view animated:YES];
+}
 
 
 #pragma mark - Button Actions
@@ -657,29 +661,9 @@
                                                                         picture:[NSURL URLWithString:@"http://instalist.duckdns.org/images/icon.tiff"]];
             
             BOOL isSuccessful = NO;
-            if ([FBDialogs canPresentShareDialogWithParams:params]) {
-                FBAppCall *appCall = [FBDialogs presentShareDialogWithParams:params
-                                                                 clientState:nil
-                                                                     handler:^(FBAppCall *call, NSDictionary *results, NSError *error) {
-                                                                         if (error) {
-                                                                             NSLog(@"Error: %@", error.description);
-                                                                             id<GAITracker> tracker = [[GAI sharedInstance] defaultTracker];
-                                                                             [tracker send:[[GAIDictionaryBuilder createEventWithCategory:@"facebookerror"
-                                                                                                                                   action:error.description
-                                                                                                                                    label:nil
-                                                                                                                                    value:nil] build]];
-                                                                         } else {
-                                                                             NSLog(@"Success!");
-                                                                             id<GAITracker> tracker = [[GAI sharedInstance] defaultTracker];
-                                                                             [tracker send:[[GAIDictionaryBuilder createEventWithCategory:@"facebook"
-                                                                                                                                   action:operation.responseString
-                                                                                                                                    label:nil
-                                                                                                                                    value:nil] build]];
-                                                                         }
-                                                                     }];
-                isSuccessful = (appCall  != nil);
-            }
+
             if ([[FBSession activeSession] isOpen]) {
+               NSLog(@"Fb2");
                 
                 if (!isSuccessful && [FBDialogs canPresentOSIntegratedShareDialogWithSession:[FBSession activeSession]]){
                     // Next try to post using Facebook's iOS6 integration
@@ -713,9 +697,32 @@
                     }];
                 }
             }
-            
+            else if ([FBDialogs canPresentShareDialogWithParams:params]) {
+                NSLog(@"Fb1");
+                FBAppCall *appCall = [FBDialogs presentShareDialogWithParams:params
+                                                                 clientState:nil
+                                                                     handler:^(FBAppCall *call, NSDictionary *results, NSError *error) {
+                                                                         if (error) {
+                                                                             NSLog(@"Error: %@", error.description);
+                                                                             id<GAITracker> tracker = [[GAI sharedInstance] defaultTracker];
+                                                                             [tracker send:[[GAIDictionaryBuilder createEventWithCategory:@"facebookerror"
+                                                                                                                                   action:error.description
+                                                                                                                                    label:nil
+                                                                                                                                    value:nil] build]];
+                                                                         } else {
+                                                                             NSLog(@"Success!");
+                                                                             id<GAITracker> tracker = [[GAI sharedInstance] defaultTracker];
+                                                                             [tracker send:[[GAIDictionaryBuilder createEventWithCategory:@"facebook"
+                                                                                                                                   action:operation.responseString
+                                                                                                                                    label:nil
+                                                                                                                                    value:nil] build]];
+                                                                         }
+                                                                     }];
+                isSuccessful = (appCall  != nil);
+            }
             else if([SLComposeViewController isAvailableForServiceType:SLServiceTypeFacebook])
             {
+               NSLog(@"Fb3");
                 void (^block) (AFHTTPRequestOperation *, id) = ^(AFHTTPRequestOperation *operation, id responseObject) {
                     [MBProgressHUD hideHUDForView:self.view animated:YES];
                     NSLog(@"JSON: %@", responseObject);
@@ -756,6 +763,7 @@
                 [self postBody:block Fail:nil];
             }
             else if((_fbLogin = YES) && [FBSession openActiveSessionWithAllowLoginUI:YES]) {
+               NSLog(@"Fb4");
                 
                 NSLog(@"allow login UI");
                 [self performPublishAction:^{

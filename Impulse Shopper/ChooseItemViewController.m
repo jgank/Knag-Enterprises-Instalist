@@ -36,12 +36,14 @@
 #import <GAIDictionaryBuilder.h>
 #import <GAI.h>
 #import <Parse/Parse.h>
+#import <SCLAlertView-Objective-C/SCLAlertView.h>
+#import <MBProgressHUD/MBProgressHUD.h>
 
 
 static const CGFloat ChoosePersonButtonHorizontalPadding = 80.f;
 static const CGFloat ChoosePersonButtonVerticalPadding = 20.f;
 
-@interface ChooseItemViewController ()
+@interface ChooseItemViewController () <UIWebViewDelegate, UITextFieldDelegate>
 @property (nonatomic, strong) NSArray *items;
 @end
 
@@ -55,7 +57,10 @@ static const CGFloat ChoosePersonButtonVerticalPadding = 20.f;
     NSArray *paths;
     NSString  *arrayPath;
     InsetLabel *catLabel;
+    UITextField *urlField;
+    UITextField *priceField;
     UIButton *undoButton;
+    UIButton *addButton;
     AFHTTPRequestOperationManager *manager;
     NSInteger numSwipes;
 }
@@ -110,8 +115,19 @@ static const CGFloat ChoosePersonButtonVerticalPadding = 20.f;
         img = [img imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
         [undoButton setImage:img forState:UIControlStateNormal];
         [undoButton addTarget:self action:@selector(undoPressed) forControlEvents:UIControlEventTouchUpInside];
+        addButton = [[UIButton alloc] initWithFrame:CGRectMake(self.view.frame.size.width-35.f, self.view.frame.size.height-35.f, 35.f, 35.f)];
+        [addButton setImageEdgeInsets:UIEdgeInsetsMake(0, 0, 0, 0)];
+
+        [addButton.imageView setContentMode:UIViewContentModeScaleAspectFill];
+//        addButton.backgroundColor = [UIColor blackColor];
+        addButton.imageView.tintColor = ComplementaryFlatColorOf(FlatMintDark);
+        UIImage *addImg = [UIImage imageNamed:@"13-plus"];
+        addImg = [addImg imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+        [addButton setImage:addImg forState:UIControlStateNormal];
+        [addButton addTarget:self action:@selector(addPressed) forControlEvents:UIControlEventTouchUpInside];
         [self.view addSubview:catLabel];
         [self.view addSubview:undoButton];
+        [self.view addSubview:addButton];
         [self.view addSubview:menView];
         [self.view addSubview:menuButton];
         [self.view addSubview:messageButton];
@@ -142,7 +158,7 @@ static const CGFloat ChoosePersonButtonVerticalPadding = 20.f;
         //        UIView *lv = [[UIView alloc] initWithFrame:CGRectMake(0.f, 0.f, 320.0, 20.0f)];
         lv.backgroundColor = ComplementaryFlatColorOf(FlatMintDark);
         [self.view addSubview:lv];
-        lv.layer.zPosition = 20;
+        lv.layer.zPosition = 101;
         
         messageButton.backgroundColor = FlatMintDark;
         menuButton.backgroundColor = FlatMintDark;
@@ -414,7 +430,8 @@ static const CGFloat ChoosePersonButtonVerticalPadding = 20.f;
             [SSTURLShortener shortenURL:[NSURL URLWithString:urlEsc] username:@"justinknag" apiKey:@"R_a5f42d4c62ac1253dc0cdb2f8d02f912" withCompletionBlock:^(NSURL *shortenedURL, NSError *error) {
                 NSLog(@"short url %@", shortenedURL.absoluteString);
                 NSLog(@"error %@", [error description]);
-                if(!error) {
+                if(0) {
+//                if(!error) {
                     for (id i in _favArray) {
                         if ([i[@"DetailPageURL"][@"text"] isEqualToString:urlEsc1]) {
                             i[@"DetailPageURL"][@"text"] = shortenedURL.absoluteString;
@@ -652,6 +669,64 @@ static const CGFloat ChoosePersonButtonVerticalPadding = 20.f;
     [self.sidePanelController showRightPanelAnimated:YES];
 }
 
+-(void)addPressed {
+    SCLAlertView *alert = [[SCLAlertView alloc] init];
+    alert.shouldDismissOnTapOutside = YES;
+    alert.view.layer.zPosition = 100;
+    urlField = [alert addTextField:@"Enter URL"];
+    UIPasteboard *pboard = [UIPasteboard generalPasteboard];
+    NSString *pString = [pboard string];
+    NSError *error;
+    NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:@"(?i)\\b(https?://.*)\\b" options:NSRegularExpressionCaseInsensitive error:&error];
+    if ([[regex matchesInString:pString options:0 range:NSMakeRange(0, [pString length])] count] > 0) {
+        urlField.text = pString;
+    }
+
+    
+    priceField = [alert addTextField:@"$99.99 (Optional)"];
+    priceField.delegate = self;
+    priceField.keyboardType = UIKeyboardTypeDecimalPad;
+//    UITextField *priceField = [alert addTextField:@"http://www.amazon.com/Xbox-One-Assassins-Creed-Unity-Bundle/dp/B00NFXON1Q/ref=sr_1_2?ie=UTF8&qid=1417504685&sr=8-2&keywords=xbox"];
+    [alert addButton:@"Done" actionBlock:^(void) {
+        [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+        NSLog(@"Text value: %@", urlField.text);
+        NSURL *URL = [NSURL URLWithString:urlField.text];
+        NSURLRequest *request = [NSURLRequest requestWithURL:URL];
+        UIWebView *webView = [[UIWebView alloc] init];
+        webView.hidden = YES;
+        [self.view addSubview:webView];
+        __weak ChooseItemViewController *weakSelf = self;
+        webView.delegate = weakSelf;
+        NSLog(@"Text value: %@", urlField.text);
+        [webView loadRequest:request];
+        
+
+        
+//        AFHTTPRequestOperation *op = [[AFHTTPRequestOperation alloc] initWithRequest:request];
+//        [op setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
+////            NSString *string = [[NSString alloc] initWithData:responseObject encoding:NSUTF8StringEncoding];
+//            NSLog(@"%@", operation.responseString);
+//            UIWebView *webView = [[UIWebView alloc] init];
+//            __weak ChooseItemViewController *weakSelf = self;
+//            webView.delegate = weakSelf;
+//            [webView loadHTMLString:operation.responseString baseURL:URL];
+////            NSString *webTitle = [webView stringByEvaluatingJavaScriptFromString:@"document.title"];
+////            NSLog(@"web title %@", webTitle);
+//        } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+//            NSLog(@"Error: %@", error);
+//            SCLAlertView *fAlert = [[SCLAlertView alloc] init];
+//            fAlert.shouldDismissOnTapOutside = YES;
+//            fAlert.view.layer.zPosition = 100;
+//            [fAlert showNotice:self title:@"Failed" subTitle:@"Please double check the URL" closeButtonTitle:@"Done" duration:0.0f];
+//
+//        }];
+//        [op start];
+    }];
+    alert.showAnimationType = SlideInFromTop;
+    [alert showEdit:self title:@"Manual Add" subTitle:@"Please enter the URL of the product" closeButtonTitle:@"Cancel" duration:0.0f];
+    
+    //[textField becomeFirstResponder];
+}
 -(void)undoPressed {
     NSLog(@"background view insert undo vidww");
     
@@ -780,6 +855,161 @@ void (^boldOptions)(UIView*) = ^(UIView *i) {
             break;
     }
 };
+
+- (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error {
+    [MBProgressHUD hideHUDForView:self.view animated:YES];
+    SCLAlertView *fAlert = [[SCLAlertView alloc] init];
+    fAlert.shouldDismissOnTapOutside = YES;
+    fAlert.view.layer.zPosition = 100;
+    [fAlert showNotice:self title:@"Failed" subTitle:@"Please double check the URL" closeButtonTitle:@"Done" duration:0.0f];
+}
+- (void)webViewDidFinishLoad:(UIWebView *)webView {
+    if(webView.loading)
+        return;
+    NSString *webTitle = [webView stringByEvaluatingJavaScriptFromString:@"document.title"];
+    NSLog(@"web title %@", webTitle);
+    NSError *error = NULL;
+    NSString *yourHTMLSourceCodeString = [webView stringByEvaluatingJavaScriptFromString:@"document.documentElement.outerHTML"];
+
+    NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:@"(<img\\s[\\s\\S]*?src\\s*?=\\s*?['\"](.*?)['\"][\\s\\S]*?>)+?"
+                                                                           options:NSRegularExpressionCaseInsensitive
+                                                                             error:&error];
+    
+    __block NSString *imgString;
+    NSMutableArray *imgArray = [[NSMutableArray alloc] init];
+    [regex enumerateMatchesInString:yourHTMLSourceCodeString
+                            options:0
+                              range:NSMakeRange(0, [yourHTMLSourceCodeString length])
+                         usingBlock:^(NSTextCheckingResult *result, NSMatchingFlags flags, BOOL *stop) {
+                             
+                             NSString *img = [yourHTMLSourceCodeString substringWithRange:[result rangeAtIndex:2]];
+                             [imgArray addObject:img];
+                             if (!imgString && [img rangeOfString:@"jpg"].location != NSNotFound) {
+                                 imgString = img;
+                             }
+                             NSLog(@"img src %@",img);
+                         }];
+    if (!imgString) {
+        imgString = [imgArray firstObject];
+        for (NSString *i in imgArray) {
+            if ([i rangeOfString:@"png"].location != NSNotFound) {
+                imgString = i;
+                break;
+            }
+        }
+        if(!imgString)
+            imgString = @"";
+    }
+    
+//    NSRegularExpression *findTitle = [NSRegularExpression regularExpressionWithPattern:@"<title[^>]*>(.*?)</title>"
+//                                                                           options:NSRegularExpressionCaseInsensitive
+//                                                                             error:&error];
+//    [findTitle enumerateMatchesInString:yourHTMLSourceCodeString
+//                            options:0
+//                              range:NSMakeRange(0, [yourHTMLSourceCodeString length])
+//                         usingBlock:^(NSTextCheckingResult *result, NSMatchingFlags flags, BOOL *stop) {
+//                             
+//                             NSString *title = [yourHTMLSourceCodeString substringWithRange:[result rangeAtIndex:1]];
+//                             NSLog(@"title : %@",title);
+//                         }];
+    
+    NSString *webUrl = urlField.text;
+    if ([webUrl rangeOfString:@"amazon.com"].location != NSNotFound) {
+        NSString *append;
+        if ([webUrl rangeOfString:@"?"].location != NSNotFound) {
+            append = @"&tag=knag_add-20";
+        }
+        else
+            append = @"?tag=knag_add-20";
+        webUrl = [webUrl stringByAppendingString:append];
+        NSLog(@"weburl %@", webUrl);
+    }
+    NSMutableDictionary *dict = [[NSMutableDictionary alloc] initWithDictionary:[_frontCardView item]];
+    dict[@"DetailPageURL"][@"text"] = webUrl;
+    dict[@"LargeImage"][@"text"] = imgString;
+    dict[@"MediumImage"][@"text"] = imgString;
+    dict[@"Title"][@"text"] = webTitle;
+    dict[@"Category"][@"text"] = @"added";
+    dict[@"ProductGroup"][@"text"] = @"added";
+    dict[@"ASIN"][@"text"] = webUrl;
+    dict[@"FormattedPrice"][@"text"] = priceField.text;
+    NSLog(@"price field %@", priceField.text);
+    BOOL found = NO;
+    for(NSDictionary *d in _favArray) {
+        if ([[[dict objectForKey:@"Title"] objectForKey:@"text"] isEqualToString:[[d objectForKey:@"Title"] objectForKey:@"text"]]) {
+            NSLog(@"match");
+            found = YES;
+            if ([[[dict objectForKey:@"FormattedPrice"] objectForKey:@"text"] isEqualToString:[[d objectForKey:@"FormattedPrice"] objectForKey:@"text"]]) {
+            }
+            else {
+                d[@"FormattedPrice"][@"text"] = priceField.text;
+                [_favArray writeToFile:arrayPath atomically:YES];
+            }
+            break;
+        }
+    }
+    if(!found) {
+        [_favArray addObject:dict];
+        [_favArray writeToFile:arrayPath atomically:YES];
+        //    CFStringRef newString = CFURLCreateStringByAddingPercentEscapes(kCFAllocatorDefault, webUrl, NULL, CFSTR("!*'();:@&=+@,/?#[]"), kCFStringEncodingUTF8);
+        
+        [SSTURLShortener shortenURL:[NSURL URLWithString:webUrl] username:@"justinknag" apiKey:@"R_a5f42d4c62ac1253dc0cdb2f8d02f912" withCompletionBlock:^(NSURL *shortenedURL, NSError *error) {
+            NSLog(@"short url %@", shortenedURL.absoluteString);
+            NSLog(@"error %@", [error description]);
+            if(!error) {
+                for (id i in _favArray) {
+                    if ([i[@"DetailPageURL"][@"text"] isEqualToString:webUrl]) {
+                        i[@"DetailPageURL"][@"text"] = shortenedURL.absoluteString;
+                        NSLog(@"tinyurl %@", shortenedURL.absoluteString);
+                        [_favArray writeToFile:arrayPath atomically:YES];
+                        return;
+                    }
+                }
+            }
+            else {
+                
+                [manager POST:@"https://www.googleapis.com/urlshortener/v1/url"
+                   parameters:@{@"longUrl":webUrl}
+                      success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                          NSLog(@"got google url %@", responseObject[@"id"]);
+                          for (id i in _favArray) {
+                              if ([i[@"DetailPageURL"][@"text"] isEqualToString:webUrl]) {
+                                  i[@"DetailPageURL"][@"text"] = responseObject[@"id"];
+                                  [_favArray writeToFile:arrayPath atomically:YES];
+                                  return;
+                              }
+                          }
+                      }
+                      failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                          NSLog(@"Error: %@", error);
+                      }];
+            }
+        }];
+    }
+    [MBProgressHUD hideHUDForView:self.view animated:YES];
+    [webView removeFromSuperview];
+    webView = nil;
+}
+// Set the currency symbol if the text field is blank when we start to edit.
+- (void)textFieldDidBeginEditing:(UITextField *)textField {
+    if (textField.text.length  == 0)
+    {
+        textField.text = [[NSLocale currentLocale] objectForKey:NSLocaleCurrencySymbol];
+    }
+}
+
+- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
+    NSString *newText = [textField.text stringByReplacingCharactersInRange:range withString:string];
+    
+    // Make sure that the currency symbol is always at the beginning of the string:
+    if (![newText hasPrefix:[[NSLocale currentLocale] objectForKey:NSLocaleCurrencySymbol]])
+    {
+        return NO;
+    }
+    
+    // Default:
+    return YES;
+}
 //- (void)applicationDidEnterBackground:(NSNotification *)notification {
 //    NSUbiquitousKeyValueStore *iCloudStore = [NSUbiquitousKeyValueStore defaultStore];
 //    [iCloudStore setArray:_favArray forKey:@"cloudFav"];
