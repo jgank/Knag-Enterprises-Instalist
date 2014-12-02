@@ -109,6 +109,8 @@
     [Parse setApplicationId:@"mjdTeifBCalPD29qbZDF9W5CIE75LhRTkw067mqC"
                   clientKey:@"SPDdHcrp6yLWWsSJw6e0Yt36HUobyhn89V1GNqur"];
     [PFAnalytics trackAppOpenedWithLaunchOptions:launchOptions];
+    //NSLog(@"%@",[[NSBundle mainBundle] bundlePath]);
+
     return YES;
 }
 
