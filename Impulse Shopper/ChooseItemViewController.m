@@ -78,9 +78,20 @@ static const CGFloat ChoosePersonButtonVerticalPadding = 20.f;
         paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
         NSString *documentsDirectory = [paths objectAtIndex:0]; // Get documents directory
         undoItems = [[NSMutableArray alloc] init];
+        /*
+        NSURL *combinedUrl = [NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:@"combined" ofType:@"xml"]];
+        NSError *error1 = nil;
+        BOOL result = [combinedUrl setResourceValue:[NSNumber numberWithBool:YES] forKey:NSURLIsExcludedFromBackupKey error:&error1];
+        
+        if (result == NO){
+            NSLog(@"not saved %@", error1);
+        }
+         */
+        NSString *cachePath = [NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) objectAtIndex:0];
+ 
         if([[NSUserDefaults standardUserDefaults] boolForKey:@"useNew"] == YES) {
             NSLog(@"reading new file");
-            self.items = [[[XMLReader dictionaryForXMLData:[NSData dataWithContentsOfFile:[documentsDirectory stringByAppendingPathComponent:@"net.xml"]] options:XMLReaderOptionsProcessNamespaces error:&error] objectForKey:@"root"] objectForKey:@"Item"];
+            self.items = [[[XMLReader dictionaryForXMLData:[NSData dataWithContentsOfFile:[cachePath stringByAppendingPathComponent:@"net.xml"]] options:XMLReaderOptionsProcessNamespaces error:&error] objectForKey:@"root"] objectForKey:@"Item"];
             if([self.items count] < 2000) {
                 self.items = [[[XMLReader dictionaryForXMLData:[NSData dataWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"combined" ofType:@"xml"]] options:XMLReaderOptionsProcessNamespaces error:&error] objectForKey:@"root"] objectForKey:@"Item"];
             }
@@ -224,7 +235,10 @@ static const CGFloat ChoosePersonButtonVerticalPadding = 20.f;
     NSDateFormatter* dateFormatter = [[NSDateFormatter alloc] init];
     [dateFormatter setDateFormat:@"yyyy-MM-dd"];
     NSString *dateString = [dateFormatter stringFromDate:[NSDate date]];
-    if (![dateString isEqualToString:[[NSUserDefaults standardUserDefaults] stringForKey:@"dateUpdated"]]) {
+    NSString *cachePath = [NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) objectAtIndex:0];
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+
+    if (![dateString isEqualToString:[[NSUserDefaults standardUserDefaults] stringForKey:@"dateUpdated"]] || ![fileManager fileExistsAtPath:[cachePath stringByAppendingPathComponent:@"net.xml"] isDirectory:0]) {
         NSLog(@"date not match");
         [NSTimer scheduledTimerWithTimeInterval:30.0
                                          target:self
@@ -364,7 +378,7 @@ static const CGFloat ChoosePersonButtonVerticalPadding = 20.f;
 }
 - (void)newList {
     NSString *documentsDirectory = [paths objectAtIndex:0]; // Get documents directory
-    
+    NSString *cachePath = [NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) objectAtIndex:0];
     
     AFHTTPRequestOperation *op = [manager POST:@"http://instalist.duckdns.org/combined.xml"
                                     parameters:nil
@@ -376,12 +390,21 @@ static const CGFloat ChoosePersonButtonVerticalPadding = 20.f;
                                            NSString *dateString = [dateFormatter stringFromDate:[NSDate date]];
                                            [[NSUserDefaults standardUserDefaults] setObject:dateString forKey:@"dateUpdated"];
                                            NSError *error;
-                                           self.items = [[[XMLReader dictionaryForXMLData:[NSData dataWithContentsOfFile:[documentsDirectory stringByAppendingPathComponent:@"net.xml"]] options:XMLReaderOptionsProcessNamespaces error:&error] objectForKey:@"root"] objectForKey:@"Item"];
+                                           self.items = [[[XMLReader dictionaryForXMLData:[NSData dataWithContentsOfFile:[cachePath stringByAppendingPathComponent:@"net.xml"]] options:XMLReaderOptionsProcessNamespaces error:&error] objectForKey:@"root"] objectForKey:@"Item"];
                                            id<GAITracker> tracker = [[GAI sharedInstance] defaultTracker];
                                            [tracker send:[[GAIDictionaryBuilder createEventWithCategory:@"NList"
                                                                                                  action:@"pass"
                                                                                                   label:dateString
                                                                                                   value:nil] build]];
+                                           NSURL *combinedUrl = [NSURL fileURLWithPath:[cachePath stringByAppendingPathComponent:@"net.xml"]];
+                                           NSError *error1 = nil;
+                                           BOOL result = [combinedUrl setResourceValue:[NSNumber numberWithBool:YES] forKey:NSURLIsExcludedFromBackupKey error:&error1];
+                                           if  (!result) {
+                                               NSLog(@"error %@", error1);
+                                           }
+                                           else {
+                                               NSLog(@"new list done");
+                                           }
                                        }
                                        failure:^(AFHTTPRequestOperation *operation, NSError *error) {
                                            [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"useNew"];
@@ -391,9 +414,22 @@ static const CGFloat ChoosePersonButtonVerticalPadding = 20.f;
                                                                                                  action:@"fail"
                                                                                                   label:[error description]
                                                                                                   value:nil] build]];
+                                           NSURL *combinedUrl = [NSURL fileURLWithPath:[cachePath stringByAppendingPathComponent:@"net.xml"]];
+                                           NSError *error1 = nil;
+                                           BOOL result = [combinedUrl setResourceValue:[NSNumber numberWithBool:YES] forKey:NSURLIsExcludedFromBackupKey error:&error1];
+                                           if  (!result) {
+                                               NSLog(@"error %@", error1);
+                                           }
+                                           else {
+                                               NSLog(@"new list done");
+                                           }
                                        }];
     
-    op.outputStream = [NSOutputStream outputStreamToFileAtPath:[documentsDirectory stringByAppendingPathComponent:@"net.xml"] append:NO];
+    
+
+
+    op.outputStream = [NSOutputStream outputStreamToFileAtPath:[cachePath stringByAppendingPathComponent:@"net.xml"] append:NO];
+
 }
 
 #pragma mark - MDCSwipeToChooseDelegate Protocol Methods
@@ -430,8 +466,7 @@ static const CGFloat ChoosePersonButtonVerticalPadding = 20.f;
             [SSTURLShortener shortenURL:[NSURL URLWithString:urlEsc] username:@"justinknag" apiKey:@"R_a5f42d4c62ac1253dc0cdb2f8d02f912" withCompletionBlock:^(NSURL *shortenedURL, NSError *error) {
                 NSLog(@"short url %@", shortenedURL.absoluteString);
                 NSLog(@"error %@", [error description]);
-                if(0) {
-//                if(!error) {
+                if(!error) {
                     for (id i in _favArray) {
                         if ([i[@"DetailPageURL"][@"text"] isEqualToString:urlEsc1]) {
                             i[@"DetailPageURL"][@"text"] = shortenedURL.absoluteString;
@@ -836,9 +871,9 @@ void (^boldOptions)(UIView*) = ^(UIView *i) {
         BOOL forStop = YES;
         NSMutableArray *newArr = [[NSMutableArray alloc] init];
         for (UIView *j in treeArray) {
-            NSLog(@"class name %@",NSStringFromClass([j class]));
+//            NSLog(@"class name %@",NSStringFromClass([j class]));
             if ([j isKindOfClass:[UILabel class]]) {
-                NSLog(@"label text %@", ((UILabel*)j).text);
+//                NSLog(@"label text %@", ((UILabel*)j).text);
                 ((UILabel *)j).font = [UIFont boldSystemFontOfSize:15.f];
             }
             if([j.subviews count] == 0) {

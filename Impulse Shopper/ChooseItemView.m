@@ -52,7 +52,7 @@ static const CGFloat ChoosePersonViewImageLabelWidth = 42.f;
         [self.imageView sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@", [[dict objectForKey:@"LargeImage"] objectForKey:@"text"]]] placeholderImage:[UIImage imageNamed:@"Placeholder"] completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
             
             if (error)
-                NSLog(@"image error %@ %li", error.description, cacheType);
+                NSLog(@"image error %@", error.description);
             }];
         self.imageView.autoresizingMask = self.autoresizingMask;
         self.imageView.contentMode = UIViewContentModeScaleAspectFit;
