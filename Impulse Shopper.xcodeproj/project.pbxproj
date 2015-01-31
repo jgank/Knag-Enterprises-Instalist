@@ -545,15 +545,15 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_ENTITLEMENTS = "Impulse Shopper/Impulse Shopper.entitlements";
-				CODE_SIGN_IDENTITY = "iPhone Developer: Justin Knag (6DC88VRSE2)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Justin Knag (6DC88VRSE2)";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Justin Knag (QVT76MD88U)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Justin Knag (QVT76MD88U)";
 				GCC_INCREASE_PRECOMPILED_HEADER_SHARING = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				INFOPLIST_FILE = "Impulse Shopper/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "efd46770-04ad-4733-9eb4-2c4445c55fef";
+				PROVISIONING_PROFILE = "213c5af8-cb8f-486a-bf9d-70f6bceeecf1";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -565,15 +565,15 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_ENTITLEMENTS = "Impulse Shopper/Impulse Shopper.entitlements";
-				CODE_SIGN_IDENTITY = "iPhone Developer: Justin Knag (6DC88VRSE2)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Justin Knag (6DC88VRSE2)";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Justin Knag (QVT76MD88U)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Justin Knag (QVT76MD88U)";
 				GCC_INCREASE_PRECOMPILED_HEADER_SHARING = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				INFOPLIST_FILE = "Impulse Shopper/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "efd46770-04ad-4733-9eb4-2c4445c55fef";
+				PROVISIONING_PROFILE = "213c5af8-cb8f-486a-bf9d-70f6bceeecf1";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
@@ -593,6 +593,7 @@
 				INFOPLIST_FILE = "Impulse ShopperTests/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "5d60f34c-3cf6-4c25-be13-0838a1f9d599";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Impulse Shopper.app/Impulse Shopper";
 			};
 			name = Debug;
@@ -601,6 +602,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Justin Knag (QVT76MD88U)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Justin Knag (QVT76MD88U)";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(inherited)",
@@ -608,6 +611,7 @@
 				INFOPLIST_FILE = "Impulse ShopperTests/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "5d60f34c-3cf6-4c25-be13-0838a1f9d599";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Impulse Shopper.app/Impulse Shopper";
 			};
 			name = Release;
