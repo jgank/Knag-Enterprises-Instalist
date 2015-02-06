@@ -12,6 +12,7 @@
 #import "JARightViewController.h"
 #import "ChooseItemViewController.h"
 #import <FacebookSDK/FacebookSDK.h>
+#import <Facebook-iOS-SDK/FacebookSDK/FacebookSDK.h>
 #import <Social/Social.h>
 #import <Accounts/Accounts.h>
 #import "Appirater.h"
@@ -35,9 +36,11 @@
     self.viewController.leftPanel = [[JALeftViewController alloc] init];
     self.viewController.centerPanel = [[ChooseItemViewController alloc] init];
     self.viewController.rightPanel = [[JARightViewController alloc] init];
+    [FBSettings setDefaultAppID:@"319243618264779"];
     
     self.window.rootViewController = self.viewController;
     [self.window makeKeyAndVisible];
+    [FBAppEvents activateApp];
     
     
     // Register for Push Notitications, if running iOS 8
@@ -127,7 +130,8 @@
 }
 
 - (void)applicationDidBecomeActive:(UIApplication *)application {
-    // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
+    [FBSettings setDefaultAppID:@"319243618264779"];
+    [FBAppEvents activateApp];
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application {
@@ -136,8 +140,35 @@
 }
 - (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation {
     // attempt to extract a token from the url
-    NSLog(@"openURL %@ %@ %@", url.absoluteString, sourceApplication, annotation);
-    return [FBAppCall handleOpenURL:url sourceApplication:sourceApplication];
+//    NSLog(@"openURL %@ %@ %@", url.absoluteString, sourceApplication, annotation);
+//    return [FBAppCall handleOpenURL:url sourceApplication:sourceApplication];
+    BOOL wasHandled = [FBAppCall handleOpenURL:url
+                             sourceApplication:sourceApplication
+                               fallbackHandler:^(FBAppCall *call) {
+                                   
+                                   // Retrieve the exact url passed to your app during the cross-app call
+                                   NSURL *originalURL = [[call appLinkData] originalURL];
+                                   
+                                   // We just show the target url in an alert view
+                                   // Here's where you'd add your code to analyze the target url and push the relevant view
+                                   [[[UIAlertView alloc] initWithTitle:@"Ad URL: "
+                                                               message:[originalURL absoluteString]
+                                                              delegate:self
+                                                     cancelButtonTitle:@"OK!"
+                                                     otherButtonTitles:nil] show];
+                               }
+                       ];
+    NSString *secondPart = [[url.absoluteString componentsSeparatedByString:@"://"] lastObject];
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSMutableArray *arrayPath = [[paths objectAtIndex:0] stringByAppendingPathComponent:@"fav.out"];
+    NSArray *arrayFromFile = [NSArray arrayWithContentsOfFile:arrayPath];
+    if ([arrayFromFile count] > 0) {
+        [self.viewController showLeftPanelAnimated:YES];
+    }
+    else {
+        [[[UIAlertView alloc] initWithTitle:@"Please like at least 1 item before sending list" message:@"Your friends are waiting!" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil] show];
+    }
+    return wasHandled;
 }
 
 - (NSURL *)applicationDocumentsDirectory {

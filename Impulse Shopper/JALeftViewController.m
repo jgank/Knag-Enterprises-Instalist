@@ -30,6 +30,7 @@
 #import "JARightViewController.h"
 #import <MessageUI/MessageUI.h>
 #import <FacebookSDK/FacebookSDK.h>
+#import <FacebookSDK/FBAppEvents.h>
 #import <AFNetworking/AFNetworking.h>
 #import <Twitter/Twitter.h>
 #import "ChooseItemViewController.h"
@@ -386,7 +387,7 @@
                                                       [[d objectForKey:@"FormattedPrice"] objectForKey:@"text"],
                                                       [[d objectForKey:@"DetailPageURL"] objectForKey:@"text"],
                                                       [[d objectForKey:@"LargeImage"] objectForKey:@"text"]]];
-            }
+             }
             body = [body stringByAppendingString:@"</ul></center>\n Created by Instalist iPhone Christmas List Creator"];
             body = [body stringByAppendingString:@"\n<a href='http://instalist.duckdns.org/redirect.php'>http://instalist.duckdns.org/redirect.php</a>"];
             body = [body stringByAppendingString:[NSString stringWithFormat:@"\n<a href='%@'>%@</a>", operation.responseString, operation.responseString]];
@@ -398,6 +399,7 @@
                                                                   action:operation.responseString  // Event action (required)
                                                                    label:@"web"          // Event label
                                                                    value:nil] build]];    // Event value
+            [FBAppEvents logEvent:@"email"];
         };
         void (^fail) (AFHTTPRequestOperation *, id) = ^(AFHTTPRequestOperation *operation, id responseObject) {
             [MBProgressHUD hideHUDForView:self.view animated:YES];
@@ -423,6 +425,7 @@
                                                                   action:operation.responseString  // Event action (required)
                                                                    label:@"noweb"          // Event label
                                                                    value:nil] build]];    // Event value
+            [FBAppEvents logEvent:@"email"];
         };
         [self postBody:block Fail:fail];
     }
@@ -500,7 +503,8 @@
                                                                   action:operation.responseString  // Event action (required)
                                                                    label:@"web"          // Event label
                                                                    value:nil] build]];    // Event value
-
+           [FBAppEvents logEvent:@"sms"];
+            
         };
         __block __weak id aL = self;
         [self postBody:block Fail:^(AFHTTPRequestOperation *operation, NSError *error) {
@@ -526,6 +530,7 @@
                                                                   action:operation.responseString
                                                                    label:@"noweb"
                                                                    value:nil] build]];
+            [FBAppEvents logEvent:@"sms"];
         } ];
     }
     
@@ -585,6 +590,8 @@
                                                                                label:@"web"
                                                                                value:nil] build]];
                         
+                        [FBAppEvents logEvent:@"twitter"];
+                        
                     }
                         break;
                 }};
@@ -616,6 +623,12 @@
                                               [[d objectForKey:@"FormattedPrice"] objectForKey:@"text"],
                                               [[d objectForKey:@"DetailPageURL"] objectForKey:@"text"],
                                               [[d objectForKey:@"LargeImage"] objectForKey:@"text"]]];
+        
+        [FBAppEvents logEvent:FBAppEventNameAddedToCart valueToSum:[[[d objectForKey:@"FormattedPrice"] objectForKey:@"text"] doubleValue] parameters:
+         @{FBAppEventParameterNameCurrency : @"USD",
+           FBAppEventParameterNameContentType: [[d objectForKey:@"Category"] objectForKey:@"text"],
+           FBAppEventParameterNameContentID : [[d objectForKey:@"ASIN"] objectForKey:@"text"] }];
+        
     }
     body = [body stringByAppendingString:@"</u/>\n Created by Instalist iPhone Christmas List Creator"];
     body = [body stringByAppendingString:@"\n<a href='http://instalist.duckdns.org/redirect.php'>http://instalist.duckdns.org/redirect.php</a>"];
@@ -694,6 +707,9 @@
                                                                                label:nil
                                                                                value:nil] build]];
                         
+                        [FBAppEvents logEvent:@"facebook"];
+                       
+                        
                     }];
                 }
             }
@@ -716,6 +732,7 @@
                                                                                                                                    action:operation.responseString
                                                                                                                                     label:nil
                                                                                                                                     value:nil] build]];
+                                                                             [FBAppEvents logEvent:@"facebook"];
                                                                          }
                                                                      }];
                 isSuccessful = (appCall  != nil);
@@ -758,6 +775,7 @@
                                                                               action:operation.responseString
                                                                                label:@"web"
                                                                                value:nil] build]];
+                        [FBAppEvents logEvent:@"facebook"];
                     }];
                 };
                 [self postBody:block Fail:nil];
@@ -790,10 +808,6 @@
                 }];
             }
                 [MBProgressHUD hideHUDForView:self.view animated:YES];
-//            else {
-//                [MBProgressHUD hideHUDForView:self.view animated:YES];
-//                [[[UIAlertView alloc] initWithTitle:@"Alert" message:@"Facebook account not linked to iOS Device" delegate:nil cancelButtonTitle:@"Okay" otherButtonTitles:nil] show];
-//            }
         }
     };
     
