@@ -97,10 +97,7 @@ static const CGFloat ChoosePersonViewImageLabelWidth = 42.f;
     _nameLabel.backgroundColor = [UIColor colorWith8BitRed:220.f green:220.f blue:220.f alpha:1.f];
     _nameLabel.textColor = FlatBlackDark;
     _nameLabel.textAlignment = NSTextAlignmentCenter;
-//    [_informationView addSubview:_nameLabel];
     [self addSubview: _nameLabel];
-//    [_nameLabel autoSetDimension:ALDimensionHeight toSize:38.f];
-//    [_nameLabel autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsMake(0, 2, 2, 2) excludingEdge:ALEdgeTop];
 }
 
 

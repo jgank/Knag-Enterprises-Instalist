@@ -76,17 +76,7 @@ static const CGFloat ChoosePersonButtonVerticalPadding = 20.f;
         NSError *error;
         NSLog(@"read xmlfile");
         paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-        NSString *documentsDirectory = [paths objectAtIndex:0]; // Get documents directory
         undoItems = [[NSMutableArray alloc] init];
-        /*
-        NSURL *combinedUrl = [NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:@"combined" ofType:@"xml"]];
-        NSError *error1 = nil;
-        BOOL result = [combinedUrl setResourceValue:[NSNumber numberWithBool:YES] forKey:NSURLIsExcludedFromBackupKey error:&error1];
-        
-        if (result == NO){
-            NSLog(@"not saved %@", error1);
-        }
-         */
         NSString *cachePath = [NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) objectAtIndex:0];
  
         if([[NSUserDefaults standardUserDefaults] boolForKey:@"useNew"] == YES) {
@@ -160,13 +150,7 @@ static const CGFloat ChoosePersonButtonVerticalPadding = 20.f;
         
         menView.backgroundColor = FlatMintDark;
         menView.layer.zPosition = -1;
-//        [menView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero excludingEdge:ALEdgeBottom];
-//        [menView autoPinEdge:ALEdgeBottom toEdge:ALEdgeBottom ofView:titleLabel];
-        
-        
-        //        UIView *lv = [[UIView alloc] initWithFrame:CGRectMake(0.f, 20.f, self.view.frame.size.width, 1.0f)];
         UIView *lv = [[UIView alloc] initWithFrame:CGRectMake(0.f, 0.f, self.view.frame.size.width, 20.0f)];
-        //        UIView *lv = [[UIView alloc] initWithFrame:CGRectMake(0.f, 0.f, 320.0, 20.0f)];
         lv.backgroundColor = ComplementaryFlatColorOf(FlatMintDark);
         [self.view addSubview:lv];
         lv.layer.zPosition = 101;
@@ -175,18 +159,6 @@ static const CGFloat ChoosePersonButtonVerticalPadding = 20.f;
         menuButton.backgroundColor = FlatMintDark;
         messageButton.imageView.tintColor = ComplementaryFlatColorOf(FlatMintDark);
         menuButton.imageView.tintColor = ComplementaryFlatColorOf(FlatMintDark);
-        
-//        [undoButton autoPinEdgeToSuperviewEdge:ALEdgeLeft withInset:12.0f];
-//        [undoButton autoPinEdgeToSuperviewEdge:ALEdgeBottom withInset:4.0f];
-//        [catLabel autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero excludingEdge:ALEdgeTop];
-        
-        
-//        [catLabel autoPinEdge:ALEdgeTop toEdge:ALEdgeTop ofView:self.view withOffset:self.view.frame.size.height-35.f];
-//        [catLabel autoPinEdge:ALEdgeBottom toEdge:ALEdgeBottom ofView:self.view];
-//        [catLabel autoPinEdge:ALEdgeRight toEdge:ALEdgeRight ofView:self.view];
-//        [catLabel autoPinEdge:ALEdgeLeft toEdge:ALEdgeLeft ofView:self.view];
-//        
-//        [catLabel autoSetDimension:ALDimensionHeight toSize:35.f];
         catLabel.backgroundColor = FlatMintDark;
         [catLabel setAdjustsFontSizeToFitWidth:YES];
         catLabel.textAlignment = NSTextAlignmentCenter;
@@ -211,27 +183,12 @@ static const CGFloat ChoosePersonButtonVerticalPadding = 20.f;
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    // Display the first ChoosePersonView in front. Users can swipe to indicate
-    // whether they like or dislike the person displayed.
-    
-    // Display the second ChoosePersonView in back. This view controller uses
-    // the MDCSwipeToChooseDelegate protocol methods to update the front and
-    // back views after each user swipe.
     BOOL firstRun = [[NSUserDefaults standardUserDefaults] boolForKey:@"firstRun"] == YES;
     self.backCardView = [self popItemViewWithFrame:[self backCardViewFrame] neutral:firstRun];
     [self.view addSubview:self.backCardView];
     self.frontCardView = [self popItemViewWithFrame:[self frontCardViewFrame] neutral:firstRun];
     [self.view insertSubview:self.frontCardView aboveSubview:self.backCardView];
-    
-    // Add buttons to programmatically swipe the view left or right.
-    // See the `nopeFrontCardView` and `likeFrontCardView` methods.
     NSLog(@"dict");
-    //    NSNotificationCenter* defaultCenter = [NSNotificationCenter defaultCenter];
-    //    [defaultCenter addObserver:self
-    //                      selector:@selector(applicationDidEnterBackground:)
-    //                          name:UIApplicationDidEnterBackgroundNotification
-    //                        object:nil];
-    
     NSDateFormatter* dateFormatter = [[NSDateFormatter alloc] init];
     [dateFormatter setDateFormat:@"yyyy-MM-dd"];
     NSString *dateString = [dateFormatter stringFromDate:[NSDate date]];
@@ -249,9 +206,6 @@ static const CGFloat ChoosePersonButtonVerticalPadding = 20.f;
     manager = [AFHTTPRequestOperationManager manager];
     manager.requestSerializer = [AFJSONRequestSerializer serializer];
     manager.responseSerializer = [AFJSONResponseSerializer serializer];
-
-
-    
     //    [self updateCloud];
 }
 //-(void) updateCloud {
@@ -308,68 +262,6 @@ static const CGFloat ChoosePersonButtonVerticalPadding = 20.f;
         }
     }
     return;
-    //
-    //
-    //    if([[NSUserDefaults standardUserDefaults] objectForKey:@"firstRun"] == NULL) {
-    //
-    //            UIAlertController *toysController = [UIAlertController alertControllerWithTitle:@"Show Toys?" message:@"Would you like to see toys as gift ideas?" preferredStyle:UIAlertControllerStyleAlert];
-    //
-    //            UIAlertAction *yToy = [UIAlertAction actionWithTitle:@"Yes" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
-    //                [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"toys"];
-    //                [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"onlytoys"];
-    //                [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"firstRun"];
-    //            }];
-    //            UIAlertAction *nToy = [UIAlertAction actionWithTitle:@"No" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
-    //                [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"toys"];
-    //                [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"onlytoys"];
-    //                [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"firstRun"];
-    //            }];
-    //            UIAlertAction *bToy = [UIAlertAction actionWithTitle:@"Only Show Toys" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
-    //                [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"toys"];
-    //                [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"onlytoys"];
-    //                [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"firstRun"];
-    //            }];
-    //            [toysController addAction:yToy];
-    //            [toysController addAction:nToy];
-    //            [toysController addAction:bToy];
-    //
-    //        toysController.view.hidden = YES;
-    //        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"Gender:" message:@"For showing appropriate gifts" preferredStyle:UIAlertControllerStyleAlert];
-    //        UIAlertAction *yesAct = [UIAlertAction actionWithTitle:@"Men's" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
-    //            [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"male"];
-    //            [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"female"];
-    //            [self.sidePanelController presentViewController:toysController animated:YES completion:^{
-    //                boldOptions(toysController.view);
-    //                toysController.view.hidden = NO;
-    //            }];
-    //        }];
-    //        UIAlertAction *canAct = [UIAlertAction actionWithTitle:@"Womens's" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
-    //            [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"male"];
-    //            [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"female"];
-    //            [self.sidePanelController presentViewController:toysController animated:YES completion:^{
-    //                boldOptions(toysController.view);
-    //                toysController.view.hidden = NO;
-    //            }];
-    //        }];
-    //        UIAlertAction *bothAct = [UIAlertAction actionWithTitle:@"Both" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
-    //            [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"male"];
-    //            [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"female"];
-    //            [self.sidePanelController presentViewController:toysController animated:YES completion:^{
-    //                boldOptions(toysController.view);
-    //                toysController.view.hidden = NO;
-    //            }];
-    //        }];
-    //        [alertController addAction:yesAct];
-    //        [alertController addAction:canAct];
-    //        [alertController addAction:bothAct];
-    //
-    //        alertController.view.hidden = YES;
-    //        [self.sidePanelController presentViewController:alertController animated:NO completion:^{
-    //            boldOptions(alertController.view);
-    //            alertController.view.hidden = NO;
-    //        }];
-    //
-    //    }
     
 }
 
@@ -377,7 +269,6 @@ static const CGFloat ChoosePersonButtonVerticalPadding = 20.f;
     return UIInterfaceOrientationMaskPortrait;
 }
 - (void)newList {
-    NSString *documentsDirectory = [paths objectAtIndex:0]; // Get documents directory
     NSString *cachePath = [NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) objectAtIndex:0];
     
     AFHTTPRequestOperation *op = [manager POST:@"http://instalist.duckdns.org/combined.xml"
@@ -721,7 +612,6 @@ static const CGFloat ChoosePersonButtonVerticalPadding = 20.f;
     priceField = [alert addTextField:@"$99.99 (Optional)"];
     priceField.delegate = self;
     priceField.keyboardType = UIKeyboardTypeDecimalPad;
-//    UITextField *priceField = [alert addTextField:@"http://www.amazon.com/Xbox-One-Assassins-Creed-Unity-Bundle/dp/B00NFXON1Q/ref=sr_1_2?ie=UTF8&qid=1417504685&sr=8-2&keywords=xbox"];
     [alert addButton:@"Done" actionBlock:^(void) {
         [MBProgressHUD showHUDAddedTo:self.view animated:YES];
         NSLog(@"Text value: %@", urlField.text);
@@ -734,28 +624,6 @@ static const CGFloat ChoosePersonButtonVerticalPadding = 20.f;
         webView.delegate = weakSelf;
         NSLog(@"Text value: %@", urlField.text);
         [webView loadRequest:request];
-        
-
-        
-//        AFHTTPRequestOperation *op = [[AFHTTPRequestOperation alloc] initWithRequest:request];
-//        [op setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
-////            NSString *string = [[NSString alloc] initWithData:responseObject encoding:NSUTF8StringEncoding];
-//            NSLog(@"%@", operation.responseString);
-//            UIWebView *webView = [[UIWebView alloc] init];
-//            __weak ChooseItemViewController *weakSelf = self;
-//            webView.delegate = weakSelf;
-//            [webView loadHTMLString:operation.responseString baseURL:URL];
-////            NSString *webTitle = [webView stringByEvaluatingJavaScriptFromString:@"document.title"];
-////            NSLog(@"web title %@", webTitle);
-//        } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-//            NSLog(@"Error: %@", error);
-//            SCLAlertView *fAlert = [[SCLAlertView alloc] init];
-//            fAlert.shouldDismissOnTapOutside = YES;
-//            fAlert.view.layer.zPosition = 100;
-//            [fAlert showNotice:self title:@"Failed" subTitle:@"Please double check the URL" closeButtonTitle:@"Done" duration:0.0f];
-//
-//        }];
-//        [op start];
     }];
     alert.showAnimationType = SlideInFromTop;
     [alert showEdit:self title:@"Manual Add" subTitle:@"Please enter the URL of the product" closeButtonTitle:@"Cancel" duration:0.0f];
@@ -871,9 +739,7 @@ void (^boldOptions)(UIView*) = ^(UIView *i) {
         BOOL forStop = YES;
         NSMutableArray *newArr = [[NSMutableArray alloc] init];
         for (UIView *j in treeArray) {
-//            NSLog(@"class name %@",NSStringFromClass([j class]));
             if ([j isKindOfClass:[UILabel class]]) {
-//                NSLog(@"label text %@", ((UILabel*)j).text);
                 ((UILabel *)j).font = [UIFont boldSystemFontOfSize:15.f];
             }
             if([j.subviews count] == 0) {
@@ -936,18 +802,6 @@ void (^boldOptions)(UIView*) = ^(UIView *i) {
             imgString = @"";
     }
     
-//    NSRegularExpression *findTitle = [NSRegularExpression regularExpressionWithPattern:@"<title[^>]*>(.*?)</title>"
-//                                                                           options:NSRegularExpressionCaseInsensitive
-//                                                                             error:&error];
-//    [findTitle enumerateMatchesInString:yourHTMLSourceCodeString
-//                            options:0
-//                              range:NSMakeRange(0, [yourHTMLSourceCodeString length])
-//                         usingBlock:^(NSTextCheckingResult *result, NSMatchingFlags flags, BOOL *stop) {
-//                             
-//                             NSString *title = [yourHTMLSourceCodeString substringWithRange:[result rangeAtIndex:1]];
-//                             NSLog(@"title : %@",title);
-//                         }];
-    
     NSString *webUrl = urlField.text;
     if ([webUrl rangeOfString:@"amazon.com"].location != NSNotFound) {
         NSString *append;
@@ -986,7 +840,6 @@ void (^boldOptions)(UIView*) = ^(UIView *i) {
     if(!found) {
         [_favArray addObject:dict];
         [_favArray writeToFile:arrayPath atomically:YES];
-        //    CFStringRef newString = CFURLCreateStringByAddingPercentEscapes(kCFAllocatorDefault, webUrl, NULL, CFSTR("!*'();:@&=+@,/?#[]"), kCFStringEncodingUTF8);
         
         [SSTURLShortener shortenURL:[NSURL URLWithString:webUrl] username:@"justinknag" apiKey:@"R_a5f42d4c62ac1253dc0cdb2f8d02f912" withCompletionBlock:^(NSURL *shortenedURL, NSError *error) {
             NSLog(@"short url %@", shortenedURL.absoluteString);

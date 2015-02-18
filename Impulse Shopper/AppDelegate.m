@@ -139,9 +139,6 @@
     // Saves changes in the application's managed object context before the application terminates.
 }
 - (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation {
-    // attempt to extract a token from the url
-//    NSLog(@"openURL %@ %@ %@", url.absoluteString, sourceApplication, annotation);
-//    return [FBAppCall handleOpenURL:url sourceApplication:sourceApplication];
     BOOL wasHandled = [FBAppCall handleOpenURL:url
                              sourceApplication:sourceApplication
                                fallbackHandler:^(FBAppCall *call) {
@@ -158,9 +155,8 @@
                                                      otherButtonTitles:nil] show];
                                }
                        ];
-    NSString *secondPart = [[url.absoluteString componentsSeparatedByString:@"://"] lastObject];
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    NSMutableArray *arrayPath = [[paths objectAtIndex:0] stringByAppendingPathComponent:@"fav.out"];
+    NSString *arrayPath = [[paths objectAtIndex:0] stringByAppendingPathComponent:@"fav.out"];
     NSArray *arrayFromFile = [NSArray arrayWithContentsOfFile:arrayPath];
     if ([arrayFromFile count] > 0) {
         [self.viewController showLeftPanelAnimated:YES];

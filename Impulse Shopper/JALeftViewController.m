@@ -362,9 +362,6 @@
                                                           action:@"press"
                                                            label:@"left menu"
                                                            value:nil] build]];
-//    [self.sidePanelController setCenterPanelHidden:YES animated:YES duration:0.2f];
-//    self.hide.hidden = YES;
-//    self.show.hidden = NO;
 }
 
 - (void)_emailTapped:(id)sender {
