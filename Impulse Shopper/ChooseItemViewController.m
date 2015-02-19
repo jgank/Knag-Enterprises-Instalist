@@ -397,19 +397,19 @@ static const CGFloat ChoosePersonButtonVerticalPadding = 20.f;
         int i = arc4random() % 7;
         
                 if (i == 0)
-                    [SupportKit track:@"Likes5"]; //Hello {{ firstName || fallback }}. I hope you found some great gift ideas. Have you been naughty or nice this year?
+                    [SupportKit track:@"Likes5"];
                 else if(i == 1)
-                    [SupportKit track:@"likeToy"]; //What do you think was the most famous Christmas toy growing up?
+                    [SupportKit track:@"likeToy"];
                 else if (i == 2)
-                    [SupportKit track:@"nickknack"]; //What would make a great gift for white elephant?
+                    [SupportKit track:@"nickknack"];
                 else if (i == 3)
-                    [SupportKit track:@"SecretSanta"]; //What do you think is the best category for Secret Santa gifts?
+                    [SupportKit track:@"SecretSanta"];
                 else if (i == 4)
-                    [SupportKit track:@"xbox"]; //Do you have or do you plan on getting the Xbox One? I am, I think it is better than the PS4.
+                    [SupportKit track:@"xbox"];
                 else if (i == 5)
-                    [SupportKit track:@"favoritepresent"]; //Do you remember your favorite Christmas present of all time?
+                    [SupportKit track:@"favoritepresent"];
                 else if (i == 6)
-                    [SupportKit track:@"Vacation"];//Have you seen any items that would be useful for your next winter vacation?
+                    [SupportKit track:@"Vacation"];
         
     }
     

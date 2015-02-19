@@ -380,7 +380,7 @@
                                                       [[d objectForKey:@"DetailPageURL"] objectForKey:@"text"],
                                                       [[d objectForKey:@"LargeImage"] objectForKey:@"text"]]];
              }
-            body = [body stringByAppendingString:@"</ul></center>\n Created by Instalist iPhone Christmas List Creator"];
+            body = [body stringByAppendingString:@"</ul></center>\n Created by Instalist iPhone Wish List Creator"];
             body = [body stringByAppendingString:[NSString stringWithFormat:@"\n<a href='%@'>%@</a>", operation.responseString, operation.responseString]];
             [mailer setMessageBody:body isHTML:YES];
             [self presentViewController:mailer animated:YES completion:nil];
@@ -406,7 +406,7 @@
                                                       [[d objectForKey:@"DetailPageURL"] objectForKey:@"text"],
                                                       [[d objectForKey:@"LargeImage"] objectForKey:@"text"]]];
             }
-            body = [body stringByAppendingString:@"</ul></center>\n Created by Instalist iPhone Christmas List Creator"];
+            body = [body stringByAppendingString:@"</ul></center>\n Created by Instalist iPhone Wish List Creator"];
             //        NSLog(@"%@",body);
             [mailer setMessageBody:body isHTML:YES];
             [self presentViewController:mailer animated:YES completion:nil];
@@ -473,7 +473,7 @@
             MFMessageComposeViewController  *mailer = [[MFMessageComposeViewController alloc] init];
             mailer.messageComposeDelegate = wSelf;
             [mailer setSubject:@"Gift Wish List"];
-            NSString *body = @"Created by Instalist iPhone Christmas List Creator\n";
+            NSString *body = @"Created by Instalist iPhone Wish List Creator\n";
             body = [body stringByAppendingString:operation.responseString];
             [mailer setBody:body];
             [self presentViewController:mailer animated:YES completion:nil];
@@ -500,7 +500,7 @@
                                                       [[d objectForKey:@"FormattedPrice"] objectForKey:@"text"],
                                                       [[d objectForKey:@"DetailPageURL"] objectForKey:@"text"]]];
             }
-            body = [body stringByAppendingString:@"\n Created by Instalist iPhone Christmas List Creator"];
+            body = [body stringByAppendingString:@"\n Created by Instalist iPhone Wish List Creator"];
             [mailer setBody:body];
             [self presentViewController:mailer animated:YES completion:nil];
             id<GAITracker> tracker = [[GAI sharedInstance] defaultTracker];
@@ -608,7 +608,7 @@
            FBAppEventParameterNameContentID : [[d objectForKey:@"ASIN"] objectForKey:@"text"] }];
         
     }
-    body = [body stringByAppendingString:@"</u/>\n Created by Instalist iPhone Christmas List Creator"];
+    body = [body stringByAppendingString:@"</u/>\n Created by Instalist iPhone Wish List Creator"];
     body = [body stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
 
     typedef void (^FailB) (AFHTTPRequestOperation*, NSError*);
@@ -645,7 +645,7 @@
             
             NSURL *urlToShare = [NSURL URLWithString:operation.responseString];
             FBLinkShareParams *params = [[FBLinkShareParams alloc] initWithLink:urlToShare
-                                                                           name:@"Instalist Christmas List Creator"
+                                                                           name:@"Instalist Wish List Creator"
                                                                         caption:nil
                                                                     description:@"View my holiday wish list."
                                                                         picture:[NSURL URLWithString:@"http://instalist.duckdns.org/images/icon.tiff"]];
@@ -658,14 +658,14 @@
                 if (!isSuccessful && [FBDialogs canPresentOSIntegratedShareDialogWithSession:[FBSession activeSession]]){
                     // Next try to post using Facebook's iOS6 integration
                     isSuccessful = [FBDialogs presentOSIntegratedShareDialogModallyFrom:self
-                                                                            initialText:@"View my Christmas list via Instalist:"
+                                                                            initialText:@"View my Wish list via Instalist:"
                                                                                   image:[UIImage imageNamed:@"icon.tiff"]
                                                                                     url:urlToShare
                                                                                 handler:nil];
                 }
                 if (!isSuccessful) {
                     [self performPublishAction:^{
-                        NSString *message = [NSString stringWithFormat:@"View my Christmas list via Instalist: %@", operation.responseString];
+                        NSString *message = [NSString stringWithFormat:@"View my Wish list via Instalist: %@", operation.responseString];
                         
                         FBRequestConnection *connection = [[FBRequestConnection alloc] init];
                         
@@ -762,7 +762,7 @@
                 
                 NSLog(@"allow login UI");
                 [self performPublishAction:^{
-                    NSString *message = [NSString stringWithFormat:@"%@\n Created by Instalist iPhone Christmas List Creator", operation.responseString];
+                    NSString *message = [NSString stringWithFormat:@"%@\n Created by Instalist iPhone Wish List Creator", operation.responseString];
                     NSLog(@"%@",message);
                     
                     FBRequestConnection *connection = [[FBRequestConnection alloc] init];
@@ -823,7 +823,7 @@
                                               [[d objectForKey:@"FormattedPrice"] objectForKey:@"text"],
                                               [[d objectForKey:@"DetailPageURL"] objectForKey:@"text"]]];
     }
-    body = [body stringByAppendingString:@"\n Created by Instalist iPhone Christmas List Creator"];
+    body = [body stringByAppendingString:@"\n Created by Instalist iPhone Wish List Creator"];
     
     
     
@@ -833,7 +833,7 @@
     
     UIPrintInfo *printInfo = [UIPrintInfo printInfo];
     printInfo.outputType = UIPrintInfoOutputGeneral;
-    printInfo.jobName = @"Instalist Christmas Wish List";
+    printInfo.jobName = @"Instalist Wish List";
     pic.printInfo = printInfo;
     
     UISimpleTextPrintFormatter *textFormatter = [[UISimpleTextPrintFormatter alloc] initWithText:body];
