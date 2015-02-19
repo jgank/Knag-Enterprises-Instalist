@@ -3,7 +3,7 @@
 //  Impulse Shopper
 //
 //  Created by Justin Knag on 8/27/14.
-//  Copyright (c) 2014 Justin Knag. All rights reserved.
+//  Copyright (c) 2015 Knag Enterprises. All rights reserved.
 //
 
 #import "AppDelegate.h"

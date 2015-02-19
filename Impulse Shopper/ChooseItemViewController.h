@@ -1,7 +1,7 @@
 //
 // ChoosePersonViewController.h
 //
-// Copyright (c) 2014 to present, Brian Gesiak @modocache
+// Copyright (c) 2015 Knag Enterprises.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
