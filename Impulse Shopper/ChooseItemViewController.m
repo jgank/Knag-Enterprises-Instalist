@@ -48,8 +48,8 @@ static const CGFloat ChoosePersonButtonVerticalPadding = 20.f;
 @end
 
 @implementation ChooseItemViewController {
-    NSInteger cardsLoadedIndex; //%%% the index of the card you have loaded into the loadedCards array last
-    NSMutableArray *loadedCards; //%%% the array of card loaded (change max_buffer_size to increase or decrease the number of cards this holds)
+    NSInteger cardsLoadedIndex;
+    NSMutableArray *loadedCards;
     NSMutableArray *undoItems;
     UIButton* menuButton;
     UIButton* messageButton;
@@ -98,13 +98,8 @@ static const CGFloat ChoosePersonButtonVerticalPadding = 20.f;
         messageButton.imageView.contentMode = UIViewContentModeTopLeft;
         [messageButton setImage:[[UIImage imageNamed:@"162-receipt"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] forState:UIControlStateNormal];
         [messageButton addTarget:self action:@selector(showRightPanel) forControlEvents:UIControlEventTouchUpInside];
-        
-        
-        
         catLabel = [[InsetLabel alloc] initWithFrame:CGRectMake(0, self.view.frame.size.height-35.f, self.view.frame.size.width, 35.f)];
         titleLabel = [UILabel newAutoLayoutView];
-        
-        
         titleLabel.numberOfLines = 0;
         titleLabel.font = [UIFont systemFontOfSize:12];
         titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
@@ -120,7 +115,6 @@ static const CGFloat ChoosePersonButtonVerticalPadding = 20.f;
         [addButton setImageEdgeInsets:UIEdgeInsetsMake(0, 0, 0, 0)];
 
         [addButton.imageView setContentMode:UIViewContentModeScaleAspectFill];
-//        addButton.backgroundColor = [UIColor blackColor];
         addButton.imageView.tintColor = ComplementaryFlatColorOf(FlatMintDark);
         UIImage *addImg = [UIImage imageNamed:@"13-plus"];
         addImg = [addImg imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
@@ -145,16 +139,12 @@ static const CGFloat ChoosePersonButtonVerticalPadding = 20.f;
         self.view.backgroundColor = ComplementaryFlatColorOf(FlatWhite);
         titleLabel.backgroundColor = FlatMintDark;
         titleLabel.textColor = ComplementaryFlatColorOf(FlatMintDark);
-        
-        
-        
         menView.backgroundColor = FlatMintDark;
         menView.layer.zPosition = -1;
         UIView *lv = [[UIView alloc] initWithFrame:CGRectMake(0.f, 0.f, self.view.frame.size.width, 20.0f)];
         lv.backgroundColor = ComplementaryFlatColorOf(FlatMintDark);
         [self.view addSubview:lv];
         lv.layer.zPosition = 101;
-        
         messageButton.backgroundColor = FlatMintDark;
         menuButton.backgroundColor = FlatMintDark;
         messageButton.imageView.tintColor = ComplementaryFlatColorOf(FlatMintDark);
@@ -164,15 +154,10 @@ static const CGFloat ChoosePersonButtonVerticalPadding = 20.f;
         catLabel.textAlignment = NSTextAlignmentCenter;
         [catLabel setFont:[UIFont systemFontOfSize:12.0f]];
         catLabel.textColor = ComplementaryFlatColorOf(FlatMintDark);
-        
         [self constructNopeButton];
         [self constructLikedButton];
-        
-        
         numSwipes = [[NSUserDefaults standardUserDefaults] integerForKey:@"numSwipes"];
-        
     }
-    
     return self;
 }
 -(UIStatusBarStyle)preferredStatusBarStyle{
@@ -194,7 +179,6 @@ static const CGFloat ChoosePersonButtonVerticalPadding = 20.f;
     NSString *dateString = [dateFormatter stringFromDate:[NSDate date]];
     NSString *cachePath = [NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) objectAtIndex:0];
     NSFileManager *fileManager = [NSFileManager defaultManager];
-
     if (![dateString isEqualToString:[[NSUserDefaults standardUserDefaults] stringForKey:@"dateUpdated"]] || ![fileManager fileExistsAtPath:[cachePath stringByAppendingPathComponent:@"net.xml"] isDirectory:0]) {
         NSLog(@"date not match");
         [NSTimer scheduledTimerWithTimeInterval:30.0
@@ -243,9 +227,7 @@ static const CGFloat ChoosePersonButtonVerticalPadding = 20.f;
 //
 //
 //}
--(void)toyAlert {
-    
-}
+
 -(void) viewDidAppear:(BOOL)animated {
     titleLabel.text = [[[self.frontCardView item] objectForKey:@"Title"] objectForKey:@"text"];
     catLabel.text = [[[self.frontCardView item] objectForKey:@"Category"] objectForKey:@"text"];
@@ -468,20 +450,10 @@ static const CGFloat ChoosePersonButtonVerticalPadding = 20.f;
 }
 
 - (ChooseItemView *)popItemViewWithFrame:(CGRect)frame neutral:(BOOL)n{
-    
-    // UIView+MDCSwipeToChoose and MDCSwipeToChooseView are heavily customizable.
-    // Each take an "options" argument. Here, we specify the view controller as
-    // a delegate, and provide a custom callback that moves the back card view
-    // based on how far the user has panned the front card view.
     MDCSwipeToChooseViewOptions *options = [MDCSwipeToChooseViewOptions new];
     options.delegate = self;
     options.threshold = 160.f;
     options.onPan = ^(MDCPanState *state){
-        //        CGRect frame = [self backCardViewFrame];
-        //        self.backCardView.frame = CGRectMake(frame.origin.x,
-        //                                             frame.origin.y - (state.thresholdRatio * 10.f),
-        //                                             CGRectGetWidth(frame),
-        //                                             CGRectGetHeight(frame));
     };
     while (1) {
         cardsLoadedIndex = arc4random() % [_items count];
@@ -628,7 +600,6 @@ static const CGFloat ChoosePersonButtonVerticalPadding = 20.f;
     alert.showAnimationType = SlideInFromTop;
     [alert showEdit:self title:@"Manual Add" subTitle:@"Please enter the URL of the product" closeButtonTitle:@"Cancel" duration:0.0f];
     
-    //[textField becomeFirstResponder];
 }
 -(void)undoPressed {
     NSLog(@"background view insert undo vidww");
