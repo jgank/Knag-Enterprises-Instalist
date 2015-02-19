@@ -278,9 +278,6 @@
     }
     [_toyControl addTarget:self action:@selector(segmentChange:) forControlEvents:UIControlEventValueChanged];
     
-//    [@[_emailButton, _smsButton, _facebookButton, _tweetButton, _listButton, _chatButton, _printButton, _rateButton, _maleControl, _toyControl] autoDistributeViewsAlongAxis:ALAxisVertical withFixedSpacing:self.view.frame.size.height/11.0 alignment:NSLayoutFormatAlignAllCenterX];
-    
-    
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(appplicationIsActive:)
                                                  name:UIApplicationDidBecomeActiveNotification
@@ -294,7 +291,6 @@
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-//    self.label.center = CGPointMake(floorf(self.sidePanelController.leftVisibleWidth/2.0f), 25.0f);
     NSLog(@"view will appear left");
 }
 -(void)viewWillDisappear:(BOOL)animated {
@@ -365,7 +361,6 @@
 }
 
 - (void)_emailTapped:(id)sender {
-//    NSArray *arr = ((JACenterViewController*)self.sidePanelController.centerPanel).draggableView.favArray;
     NSArray *arr = ((ChooseItemViewController*)self.sidePanelController.centerPanel).favArray;
     if ([arr count] == 0) {
         [[[UIAlertView alloc] initWithTitle:@"Alert" message:@"Please favorite some items first" delegate:nil cancelButtonTitle:@"Okay" otherButtonTitles:nil] show];
@@ -386,7 +381,6 @@
                                                       [[d objectForKey:@"LargeImage"] objectForKey:@"text"]]];
              }
             body = [body stringByAppendingString:@"</ul></center>\n Created by Instalist iPhone Christmas List Creator"];
-            body = [body stringByAppendingString:@"\n<a href='http://instalist.duckdns.org/redirect.php'>http://instalist.duckdns.org/redirect.php</a>"];
             body = [body stringByAppendingString:[NSString stringWithFormat:@"\n<a href='%@'>%@</a>", operation.responseString, operation.responseString]];
             [mailer setMessageBody:body isHTML:YES];
             [self presentViewController:mailer animated:YES completion:nil];
@@ -413,7 +407,6 @@
                                                       [[d objectForKey:@"LargeImage"] objectForKey:@"text"]]];
             }
             body = [body stringByAppendingString:@"</ul></center>\n Created by Instalist iPhone Christmas List Creator"];
-            body = [body stringByAppendingString:@"\n<a href='http://instalist.duckdns.org/redirect.php'>http://instalist.duckdns.org/redirect.php</a>"];
             //        NSLog(@"%@",body);
             [mailer setMessageBody:body isHTML:YES];
             [self presentViewController:mailer animated:YES completion:nil];
@@ -443,7 +436,6 @@
 
 #pragma mark -
 
-// Convenience method to perform some action that requires the "publish_actions" permissions.
 - (void)performPublishAction:(void(^)(void))action {
     // we defer request for permission to post to the moment of post, then we check for the permission
     if ([FBSession.activeSession.permissions indexOfObject:@"publish_actions"] == NSNotFound) {
@@ -481,17 +473,7 @@
             MFMessageComposeViewController  *mailer = [[MFMessageComposeViewController alloc] init];
             mailer.messageComposeDelegate = wSelf;
             [mailer setSubject:@"Gift Wish List"];
-            NSString *body = @"";
-            NSArray *arr = ((ChooseItemViewController*)self.sidePanelController.centerPanel).favArray;
-            for (NSDictionary *d in arr) {
-                
-                body = [body stringByAppendingString:[NSString stringWithFormat:@"%@, %@, %@\n",
-                                                      [[d objectForKey:@"Title"] objectForKey:@"text"],
-                                                      [[d objectForKey:@"FormattedPrice"] objectForKey:@"text"],
-                                                      [[d objectForKey:@"DetailPageURL"] objectForKey:@"text"]]];
-            }
-            body = [body stringByAppendingString:@"\nCreated by Instalist iPhone Christmas List Creator"];
-            body = [body stringByAppendingString:@"\nhttp://instalist.duckdns.org/redirect.php\n"];
+            NSString *body = @"Created by Instalist iPhone Christmas List Creator\n";
             body = [body stringByAppendingString:operation.responseString];
             [mailer setBody:body];
             [self presentViewController:mailer animated:YES completion:nil];
@@ -519,7 +501,6 @@
                                                       [[d objectForKey:@"DetailPageURL"] objectForKey:@"text"]]];
             }
             body = [body stringByAppendingString:@"\n Created by Instalist iPhone Christmas List Creator"];
-            body = [body stringByAppendingString:@"\n http://instalist.duckdns.org/redirect.php"];
             [mailer setBody:body];
             [self presentViewController:mailer animated:YES completion:nil];
             id<GAITracker> tracker = [[GAI sharedInstance] defaultTracker];
@@ -628,7 +609,6 @@
         
     }
     body = [body stringByAppendingString:@"</u/>\n Created by Instalist iPhone Christmas List Creator"];
-    body = [body stringByAppendingString:@"\n<a href='http://instalist.duckdns.org/redirect.php'>http://instalist.duckdns.org/redirect.php</a>"];
     body = [body stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
 
     typedef void (^FailB) (AFHTTPRequestOperation*, NSError*);
@@ -844,7 +824,6 @@
                                               [[d objectForKey:@"DetailPageURL"] objectForKey:@"text"]]];
     }
     body = [body stringByAppendingString:@"\n Created by Instalist iPhone Christmas List Creator"];
-    body = [body stringByAppendingString:@"\n http://instalist.duckdns.org/redirect.php"];
     
     
     
@@ -877,7 +856,6 @@
                                                           action:@"press"
                                                            label:nil
                                                            value:nil] build]];
-//    [pic presentFromBarButtonItem:self.rightButton animated:YES completionHandler:completionHandler];
 }
 -(void)chat{
     [SupportKit show];
