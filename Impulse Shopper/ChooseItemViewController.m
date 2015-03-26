@@ -38,6 +38,7 @@
 #import <Parse/Parse.h>
 #import <SCLAlertView-Objective-C/SCLAlertView.h>
 #import <MBProgressHUD/MBProgressHUD.h>
+#import "WebControllerViewController.h"
 
 
 static const CGFloat ChoosePersonButtonHorizontalPadding = 80.f;
@@ -327,6 +328,11 @@ static const CGFloat ChoosePersonButtonVerticalPadding = 20.f;
         }
         
         if(!found) {
+            
+            
+            
+            
+            
             [_favArray addObject:[_frontCardView item]];
             [_favArray writeToFile:arrayPath atomically:YES];
             
@@ -696,12 +702,28 @@ static const CGFloat ChoosePersonButtonVerticalPadding = 20.f;
             [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"onlytoys"];
             
         }
+        UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Demo Video?" message:@"Would you like to see a demo video?" delegate:self cancelButtonTitle:@"Yes" otherButtonTitles:@"No", nil];
+        [av setTag:4];
+        [av show];
         [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"firstRun"];
         
     }
     else if (alertView.tag == 3) {
         if (buttonIndex == 0)
             [self showLeftPanel];
+    }
+    else if (alertView.tag == 4) {
+        if (buttonIndex == 0) {
+            WebControllerViewController *wvc = [[WebControllerViewController alloc] init];
+            wvc.lTag = 2;
+            [self presentViewController:wvc animated:YES completion:nil];
+            
+            id<GAITracker> tracker = [[GAI sharedInstance] defaultTracker];
+            [tracker send:[[GAIDictionaryBuilder createEventWithCategory:@"youtuube"     // Event category (required)
+                                                                  action:@"press"  // Event action (required)
+                                                                   label:nil          // Event label
+                                                                   value:nil] build]];    // Event value
+        }
     }
 }
 void (^boldOptions)(UIView*) = ^(UIView *i) {
@@ -809,8 +831,11 @@ void (^boldOptions)(UIView*) = ^(UIView *i) {
         }
     }
     if(!found) {
+        
+        
         [_favArray addObject:dict];
         [_favArray writeToFile:arrayPath atomically:YES];
+        
         
         [SSTURLShortener shortenURL:[NSURL URLWithString:webUrl] username:@"justinknag" apiKey:@"R_a5f42d4c62ac1253dc0cdb2f8d02f912" withCompletionBlock:^(NSURL *shortenedURL, NSError *error) {
             NSLog(@"short url %@", shortenedURL.absoluteString);

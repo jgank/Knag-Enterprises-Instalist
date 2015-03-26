@@ -12,5 +12,6 @@
 
 @property (strong, nonatomic) IBOutlet UIWebView *webView;
 @property (strong, nonatomic) IBOutlet UIToolbar *toolbar;
+@property (readwrite) int lTag;
 - (IBAction)donePressed:(id)sender;
 @end

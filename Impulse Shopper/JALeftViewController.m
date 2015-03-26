@@ -58,8 +58,10 @@
 @property (nonatomic, strong) UIButton *tweetButton;
 @property (nonatomic, strong) UIButton *printButton;
 @property (nonatomic, strong) UIButton *policyButton;
+@property (nonatomic, strong) UIButton *youtubeButton;
 @property (nonatomic, strong) UISegmentedControl *maleControl;
 @property (nonatomic, strong) UISegmentedControl *toyControl;
+
 
 @property (readwrite) BOOL fbLogin;
 
@@ -67,14 +69,14 @@
 
 @implementation JALeftViewController
 
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.view.backgroundColor = FlatNavyBlueDark;
 	
 
     
-    CGFloat space = (self.view.frame.size.height - (40 * 11) - 30 - 40)/ 13 + 40;
-    
+    CGFloat space = (self.view.frame.size.height - (40 * 11) - 30 - 40)/ 13 + 38;
     CGFloat bH = 30.0f;
     
     UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -190,7 +192,7 @@
     button = [UIButton buttonWithType:UIButtonTypeCustom];
     button.imageView.tintColor = FlatWhite;
     bH += space;
-    img = [UIImage imageNamed:@"185-printer"];
+    img = [UIImage imageNamed:@"24-gift"];
     img = [img imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
     [button setImage:img forState:UIControlStateNormal];
     [button setTitleColor:[UIColor colorWithContrastingBlackOrWhiteColorOn:FlatNavyBlueDark isFlat:YES] forState:UIControlStateNormal];
@@ -199,8 +201,8 @@
     button.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
     button.frame = CGRectMake(20.0f, bH, 200.0f, 40.0f);
     button.autoresizingMask = UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleBottomMargin;
-    [button setTitle:@"Print" forState:UIControlStateNormal];
-    [button addTarget:self action:@selector(print) forControlEvents:UIControlEventTouchUpInside];
+    [button setTitle:@"View List Website" forState:UIControlStateNormal];
+    [button addTarget:self action:@selector(showWebpage) forControlEvents:UIControlEventTouchUpInside];
     _printButton = button;
     [self.view addSubview:button];
     
@@ -220,7 +222,25 @@
     button.autoresizingMask = UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleBottomMargin;
     [button setTitle:@"Rate and Review" forState:UIControlStateNormal];
     [button addTarget:self action:@selector(_review) forControlEvents:UIControlEventTouchUpInside];
+    _rateButton = button;
     [self.view addSubview:button];
+    
+    button = [UIButton buttonWithType:UIButtonTypeCustom];
+    bH += space;
+    button.imageView.tintColor = FlatWhite;
+    img = [UIImage imageNamed:@"239-screen"];
+    img = [img imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+    [button setImage:img forState:UIControlStateNormal];
+    [button setTitleColor:[UIColor colorWithContrastingBlackOrWhiteColorOn:FlatNavyBlueDark isFlat:YES] forState:UIControlStateNormal];
+    button.imageEdgeInsets = UIEdgeInsetsMake(0, 0, 0, img.size.width);
+    button.titleEdgeInsets = UIEdgeInsetsMake(0, 24.0f, 0, 0);
+    button.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
+    button.frame = CGRectMake(20.0f, bH, 200.0f, 40.0f);
+    button.autoresizingMask = UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleBottomMargin;
+    [button setTitle:@"Tutorial Video" forState:UIControlStateNormal];
+    [button addTarget:self action:@selector(tutorialVideo) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:button];
+    _youtubeButton = button;
     
     button = [UIButton buttonWithType:UIButtonTypeCustom];
     bH += space;
@@ -237,12 +257,12 @@
     [button setTitle:@"Privacy Policy" forState:UIControlStateNormal];
     [button addTarget:self action:@selector(policyPage) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:button];
-    
     _rateButton = button;
+    
     _maleControl = [[UISegmentedControl alloc] initWithItems:@[@"Men's", @"Women's", @"Both"]];
     _maleControl.tag = 5;
     [self.view addSubview:_maleControl];
-    [_maleControl autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:button withOffset:15.f];
+    [_maleControl autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:button withOffset:12.f];
     [_maleControl autoPinEdge:ALEdgeLeft toEdge:ALEdgeLeft ofView:button];
     [_maleControl setTintColor:FlatWhite];
     
@@ -263,7 +283,7 @@
     _toyControl = [[UISegmentedControl alloc] initWithItems:@[@"Toys", @"No Toys", @"Only Toys"]];
     _toyControl.tag = 6;
     [self.view addSubview:_toyControl];
-    [_toyControl autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:_maleControl withOffset:15.f];
+    [_toyControl autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:_maleControl withOffset:12.f];
     [_toyControl autoPinEdge:ALEdgeLeft toEdge:ALEdgeLeft ofView:button];
     [_toyControl setTintColor:FlatWhite];
     
@@ -339,7 +359,8 @@
 -(void) policyPage {
     
     WebControllerViewController *wvc = [[WebControllerViewController alloc] init];
-    [wvc.webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:@"http://instalist.duckdns.org/policy"]]];
+//    [wvc.webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:@"http://instalist.duckdns.org/policy"]]];
+    wvc.lTag = 1;
     [self presentViewController:wvc animated:YES completion:nil];
     
     
@@ -350,6 +371,19 @@
                                                            value:nil] build]];    // Event value
     
     
+}
+- (void) tutorialVideo {
+    WebControllerViewController *wvc = [[WebControllerViewController alloc] init];
+    wvc.lTag = 2;
+//    [wvc.webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:@"https://m.youtube.com/watch?v=dM1mjiW8J0w"]]];
+    [self presentViewController:wvc animated:YES completion:nil];
+    
+    
+    id<GAITracker> tracker = [[GAI sharedInstance] defaultTracker];
+    [tracker send:[[GAIDictionaryBuilder createEventWithCategory:@"youtuube"     // Event category (required)
+                                                          action:@"press"  // Event action (required)
+                                                           label:nil          // Event label
+                                                           value:nil] build]];    // Event value
 }
 - (void)_undoTapped:(id)sender {
     [(ChooseItemViewController*)self.sidePanelController.centerPanel undoPressed];
@@ -373,10 +407,12 @@
             [mailer setSubject:@"Instalist Gift Wish List"];
             NSString *body = @"<center><ul>";
             for (NSDictionary *d in arr) {
+                NSString *price = [NSString stringWithFormat:@"%@", [[d objectForKey:@"FormattedPrice"] objectForKey:@"text"]];
+                price = [price stringByReplacingOccurrencesOfString:@"(null)" withString:@""];
                 body = [body stringByAppendingString:[NSString stringWithFormat:@"<li><a href='%@'>%@<br>%@<br>%@<br><img src='%@'/></a><br><br></li>\n",
                                                       [[d objectForKey:@"DetailPageURL"] objectForKey:@"text"],
                                                       [[d objectForKey:@"Title"] objectForKey:@"text"],
-                                                      [[d objectForKey:@"FormattedPrice"] objectForKey:@"text"],
+                                                      price,
                                                       [[d objectForKey:@"DetailPageURL"] objectForKey:@"text"],
                                                       [[d objectForKey:@"LargeImage"] objectForKey:@"text"]]];
              }
@@ -399,10 +435,12 @@
             [mailer setSubject:@"Instalist Gift Wish List"];
             NSString *body = @"<center><ul>";
             for (NSDictionary *d in arr) {
+                NSString *price = [NSString stringWithFormat:@"%@", [[d objectForKey:@"FormattedPrice"] objectForKey:@"text"]];
+                price = [price stringByReplacingOccurrencesOfString:@"(null)" withString:@""];
                 body = [body stringByAppendingString:[NSString stringWithFormat:@"<li><a href='%@'>%@<br>%@<br>%@<br><img src='%@'/></a><br><br></li>\n",
                                                       [[d objectForKey:@"DetailPageURL"] objectForKey:@"text"],
                                                       [[d objectForKey:@"Title"] objectForKey:@"text"],
-                                                      [[d objectForKey:@"FormattedPrice"] objectForKey:@"text"],
+                                                      price,
                                                       [[d objectForKey:@"DetailPageURL"] objectForKey:@"text"],
                                                       [[d objectForKey:@"LargeImage"] objectForKey:@"text"]]];
             }
@@ -495,9 +533,11 @@
             NSArray *arr = ((ChooseItemViewController*)self.sidePanelController.centerPanel).favArray;
             for (NSDictionary *d in arr) {
                 
+                NSString *price = [NSString stringWithFormat:@"%@", [[d objectForKey:@"FormattedPrice"] objectForKey:@"text"]];
+                price = [price stringByReplacingOccurrencesOfString:@"(null)" withString:@""];
                 body = [body stringByAppendingString:[NSString stringWithFormat:@"%@, %@, %@\n",
                                                       [[d objectForKey:@"Title"] objectForKey:@"text"],
-                                                      [[d objectForKey:@"FormattedPrice"] objectForKey:@"text"],
+                                                      price,
                                                       [[d objectForKey:@"DetailPageURL"] objectForKey:@"text"]]];
             }
             body = [body stringByAppendingString:@"\n Created by Instalist iPhone Wish List Creator"];
@@ -595,10 +635,12 @@
     }
     NSString *body = @"<ul>";
     for (NSDictionary *d in arr) {
+        NSString *price = [NSString stringWithFormat:@"%@", [[d objectForKey:@"FormattedPrice"] objectForKey:@"text"]];
+        price = [price stringByReplacingOccurrencesOfString:@"(null)" withString:@""];
         body = [body stringByAppendingString:[NSString stringWithFormat:@"<li><a href='%@'>%@<br>%@<br>%@<br><img src='%@'/></a><br><br></li>\n",
                                               [[d objectForKey:@"DetailPageURL"] objectForKey:@"text"],
                                               [[d objectForKey:@"Title"] objectForKey:@"text"],
-                                              [[d objectForKey:@"FormattedPrice"] objectForKey:@"text"],
+                                              price,
                                               [[d objectForKey:@"DetailPageURL"] objectForKey:@"text"],
                                               [[d objectForKey:@"LargeImage"] objectForKey:@"text"]]];
         
@@ -810,52 +852,25 @@
                                                            label:nil
                                                            value:nil] build]];
 }
--(void)print {
-    NSArray *arr = ((ChooseItemViewController*)self.sidePanelController.centerPanel).favArray;
-    if ([arr count] == 0) {
-        [[[UIAlertView alloc] initWithTitle:@"Alert" message:@"Please favorite some items first" delegate:nil cancelButtonTitle:@"Okay" otherButtonTitles:nil] show];
-        return;
-    }
-    NSString *body = @"";
-    for (NSDictionary *d in arr) {
-        body = [body stringByAppendingString:[NSString stringWithFormat:@"%@, %@, %@\n",
-                                              [[d objectForKey:@"Title"] objectForKey:@"text"],
-                                              [[d objectForKey:@"FormattedPrice"] objectForKey:@"text"],
-                                              [[d objectForKey:@"DetailPageURL"] objectForKey:@"text"]]];
-    }
-    body = [body stringByAppendingString:@"\n Created by Instalist iPhone Wish List Creator"];
-    
-    
-    
-    UIPrintInteractionController *pic = [UIPrintInteractionController sharedPrintController];
-    __weak id wSelf = self;
-    pic.delegate = wSelf;
-    
-    UIPrintInfo *printInfo = [UIPrintInfo printInfo];
-    printInfo.outputType = UIPrintInfoOutputGeneral;
-    printInfo.jobName = @"Instalist Wish List";
-    pic.printInfo = printInfo;
-    
-    UISimpleTextPrintFormatter *textFormatter = [[UISimpleTextPrintFormatter alloc] initWithText:body];
-    textFormatter.startPage = 0;
-    textFormatter.contentInsets = UIEdgeInsetsMake(72.0, 72.0, 72.0, 72.0); // 1 inch margins
-    textFormatter.maximumContentWidth = 6 * 72.0;
-    pic.printFormatter = textFormatter;
-    pic.showsPageRange = YES;
-    
-    void (^completionHandler)(UIPrintInteractionController *, BOOL, NSError *) =
-    ^(UIPrintInteractionController *printController, BOOL completed, NSError *error) {
-        if (!completed && error) {
-            NSLog(@"Printing could not complete because of error: %@", error);
-        }
+-(void)showWebpage {
+
+    void (^block) (AFHTTPRequestOperation *, id) = ^(AFHTTPRequestOperation *operation, id responseObject) {
+        [MBProgressHUD hideHUDForView:self.view animated:YES];
+        NSLog(@"JSON: %@", responseObject);
+        NSLog(@"%@",operation.responseString);
+        
+        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:operation.responseString]];
+        
+        id<GAITracker> tracker = [[GAI sharedInstance] defaultTracker];
+        [tracker send:[[GAIDictionaryBuilder createEventWithCategory:@"open url"
+                                                              action:operation.responseString
+                                                               label:@"web"
+                                                               value:nil] build]];
     };
-    
-    [pic presentAnimated:YES completionHandler:completionHandler];
-    id<GAITracker> tracker = [[GAI sharedInstance] defaultTracker];
-    [tracker send:[[GAIDictionaryBuilder createEventWithCategory:@"print"
-                                                          action:@"press"
-                                                           label:nil
-                                                           value:nil] build]];
+    void (^fail) (AFHTTPRequestOperation *, id) = ^(AFHTTPRequestOperation *operation, id responseObject) {
+        [MBProgressHUD hideHUDForView:self.view animated:YES];
+    };
+    [self postBody:block Fail:fail];
 }
 -(void)chat{
     [SupportKit show];

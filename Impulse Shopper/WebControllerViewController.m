@@ -14,10 +14,16 @@
 @end
 
 @implementation WebControllerViewController
+@synthesize lTag;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    [_webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:@"http://instalist.duckdns.org/policy/"]]];
+    if (lTag ==2) {
+            [_webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:@"http://instalist.duckdns.org/youtube.php"]]];
+    }
+    else {
+        [_webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:@"http://instalist.duckdns.org/policy/"]]];
+    }
 }
 
 - (void)didReceiveMemoryWarning {

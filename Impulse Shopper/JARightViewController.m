@@ -251,6 +251,7 @@
 //    [label autoMatchDimension:ALDimensionWidth toDimension:ALDimensionWidth ofView:cell.contentView withMultiplier:(2/3.0f) relation:NSLayoutRelationLessThanOrEqual];
     
     NSString *price = [NSString stringWithFormat:@"\n%@", [[_favArray[indexPath.row] objectForKey:@"FormattedPrice"] objectForKey:@"text"]];
+    price = [price stringByReplacingOccurrencesOfString:@"(null)" withString:@""];
     NSString *lText = [NSString stringWithFormat:@"%@%@",
                        [[_favArray[indexPath.row] objectForKey:@"Title"] objectForKey:@"text"],
                        price];
