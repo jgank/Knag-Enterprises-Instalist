@@ -29,6 +29,14 @@
 		EF70B3EC19EC74C600AA55FA /* SavedCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = EF70B3EB19EC74C600AA55FA /* SavedCell.xib */; };
 		EF70B3EE19ED4C4D00AA55FA /* combined.xml in Resources */ = {isa = PBXBuildFile; fileRef = EF70B3ED19ED4C4D00AA55FA /* combined.xml */; };
 		EFAD358C1A00880800CBA5DF /* InsetLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = EFAD358B1A00880800CBA5DF /* InsetLabel.m */; };
+		EFCF5FA31B10051C00AD6F94 /* InterfaceController.m in Sources */ = {isa = PBXBuildFile; fileRef = EFCF5FA21B10051C00AD6F94 /* InterfaceController.m */; };
+		EFCF5FA61B10051C00AD6F94 /* NotificationController.m in Sources */ = {isa = PBXBuildFile; fileRef = EFCF5FA51B10051C00AD6F94 /* NotificationController.m */; };
+		EFCF5FA91B10051C00AD6F94 /* GlanceController.m in Sources */ = {isa = PBXBuildFile; fileRef = EFCF5FA81B10051C00AD6F94 /* GlanceController.m */; };
+		EFCF5FAB1B10051C00AD6F94 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EFCF5FAA1B10051C00AD6F94 /* Images.xcassets */; };
+		EFCF5FAF1B10051D00AD6F94 /* Instalist WatchKit App.app in Resources */ = {isa = PBXBuildFile; fileRef = EFCF5FAE1B10051C00AD6F94 /* Instalist WatchKit App.app */; };
+		EFCF5FB71B10051D00AD6F94 /* Interface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EFCF5FB51B10051D00AD6F94 /* Interface.storyboard */; };
+		EFCF5FB91B10051D00AD6F94 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EFCF5FB81B10051D00AD6F94 /* Images.xcassets */; };
+		EFCF5FBC1B10051D00AD6F94 /* Instalist WatchKit Extension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = EFCF5F9C1B10051C00AD6F94 /* Instalist WatchKit Extension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		EFDEAE0419FEE8B700D58BFD /* ImageLabelView.m in Sources */ = {isa = PBXBuildFile; fileRef = EFDEADFE19FEE8B700D58BFD /* ImageLabelView.m */; };
 		EFDEAE0519FEE8B700D58BFD /* ChooseItemView.m in Sources */ = {isa = PBXBuildFile; fileRef = EFDEAE0019FEE8B700D58BFD /* ChooseItemView.m */; };
 		EFDEAE0619FEE8B700D58BFD /* ChooseItemViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EFDEAE0219FEE8B700D58BFD /* ChooseItemViewController.m */; };
@@ -49,7 +57,35 @@
 			remoteGlobalIDString = 52CCC64F19AE90FD00464A46;
 			remoteInfo = "Impulse Shopper";
 		};
+		EFCF5FB01B10051D00AD6F94 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 52CCC64819AE90FD00464A46 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = EFCF5FAD1B10051C00AD6F94;
+			remoteInfo = "Instalist WatchKit App";
+		};
+		EFCF5FBA1B10051D00AD6F94 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 52CCC64819AE90FD00464A46 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = EFCF5F9B1B10051C00AD6F94;
+			remoteInfo = "Instalist WatchKit Extension";
+		};
 /* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		EFCF5FC31B10051D00AD6F94 /* Embed App Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				EFCF5FBC1B10051D00AD6F94 /* Instalist WatchKit Extension.appex in Embed App Extensions */,
+			);
+			name = "Embed App Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		52CCC65019AE90FD00464A46 /* Impulse Shopper.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Impulse Shopper.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -90,6 +126,20 @@
 		EFAD358A1A00880800CBA5DF /* InsetLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InsetLabel.h; sourceTree = "<group>"; };
 		EFAD358B1A00880800CBA5DF /* InsetLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InsetLabel.m; sourceTree = "<group>"; };
 		EFC2AB5819F6AFB4007F0875 /* Impulse Shopper.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Impulse Shopper.pch"; sourceTree = SOURCE_ROOT; };
+		EFCF5F9C1B10051C00AD6F94 /* Instalist WatchKit Extension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "Instalist WatchKit Extension.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
+		EFCF5F9F1B10051C00AD6F94 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		EFCF5FA01B10051C00AD6F94 /* PushNotificationPayload.apns */ = {isa = PBXFileReference; lastKnownFileType = text; path = PushNotificationPayload.apns; sourceTree = "<group>"; };
+		EFCF5FA11B10051C00AD6F94 /* InterfaceController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = InterfaceController.h; sourceTree = "<group>"; };
+		EFCF5FA21B10051C00AD6F94 /* InterfaceController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = InterfaceController.m; sourceTree = "<group>"; };
+		EFCF5FA41B10051C00AD6F94 /* NotificationController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NotificationController.h; sourceTree = "<group>"; };
+		EFCF5FA51B10051C00AD6F94 /* NotificationController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NotificationController.m; sourceTree = "<group>"; };
+		EFCF5FA71B10051C00AD6F94 /* GlanceController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GlanceController.h; sourceTree = "<group>"; };
+		EFCF5FA81B10051C00AD6F94 /* GlanceController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GlanceController.m; sourceTree = "<group>"; };
+		EFCF5FAA1B10051C00AD6F94 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
+		EFCF5FAE1B10051C00AD6F94 /* Instalist WatchKit App.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Instalist WatchKit App.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		EFCF5FB41B10051D00AD6F94 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		EFCF5FB61B10051D00AD6F94 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Interface.storyboard; sourceTree = "<group>"; };
+		EFCF5FB81B10051D00AD6F94 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		EFDEADFD19FEE8B700D58BFD /* ImageLabelView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageLabelView.h; sourceTree = "<group>"; };
 		EFDEADFE19FEE8B700D58BFD /* ImageLabelView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImageLabelView.m; sourceTree = "<group>"; };
 		EFDEADFF19FEE8B700D58BFD /* ChooseItemView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChooseItemView.h; sourceTree = "<group>"; };
@@ -135,6 +185,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		EFCF5F991B10051C00AD6F94 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -148,6 +205,8 @@
 				52CCC68E19AE93CB00464A46 /* UIKit.framework */,
 				52CCC65219AE90FD00464A46 /* Impulse Shopper */,
 				52CCC66C19AE90FD00464A46 /* Impulse ShopperTests */,
+				EFCF5F9D1B10051C00AD6F94 /* Instalist WatchKit Extension */,
+				EFCF5FB21B10051D00AD6F94 /* Instalist WatchKit App */,
 				52CCC65119AE90FD00464A46 /* Products */,
 				69FA8F7A7BCB409C94DE4E12 /* Frameworks */,
 				B0A774A2403D1EE57FDE5ED4 /* Pods */,
@@ -159,6 +218,8 @@
 			children = (
 				52CCC65019AE90FD00464A46 /* Impulse Shopper.app */,
 				52CCC66919AE90FD00464A46 /* Impulse ShopperTests.xctest */,
+				EFCF5F9C1B10051C00AD6F94 /* Instalist WatchKit Extension.appex */,
+				EFCF5FAE1B10051C00AD6F94 /* Instalist WatchKit App.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -268,6 +329,48 @@
 			name = xml;
 			sourceTree = "<group>";
 		};
+		EFCF5F9D1B10051C00AD6F94 /* Instalist WatchKit Extension */ = {
+			isa = PBXGroup;
+			children = (
+				EFCF5FA11B10051C00AD6F94 /* InterfaceController.h */,
+				EFCF5FA21B10051C00AD6F94 /* InterfaceController.m */,
+				EFCF5FA41B10051C00AD6F94 /* NotificationController.h */,
+				EFCF5FA51B10051C00AD6F94 /* NotificationController.m */,
+				EFCF5FA71B10051C00AD6F94 /* GlanceController.h */,
+				EFCF5FA81B10051C00AD6F94 /* GlanceController.m */,
+				EFCF5FAA1B10051C00AD6F94 /* Images.xcassets */,
+				EFCF5F9E1B10051C00AD6F94 /* Supporting Files */,
+			);
+			path = "Instalist WatchKit Extension";
+			sourceTree = "<group>";
+		};
+		EFCF5F9E1B10051C00AD6F94 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				EFCF5F9F1B10051C00AD6F94 /* Info.plist */,
+				EFCF5FA01B10051C00AD6F94 /* PushNotificationPayload.apns */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		EFCF5FB21B10051D00AD6F94 /* Instalist WatchKit App */ = {
+			isa = PBXGroup;
+			children = (
+				EFCF5FB51B10051D00AD6F94 /* Interface.storyboard */,
+				EFCF5FB81B10051D00AD6F94 /* Images.xcassets */,
+				EFCF5FB31B10051D00AD6F94 /* Supporting Files */,
+			);
+			path = "Instalist WatchKit App";
+			sourceTree = "<group>";
+		};
+		EFCF5FB31B10051D00AD6F94 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				EFCF5FB41B10051D00AD6F94 /* Info.plist */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -280,10 +383,12 @@
 				52CCC64D19AE90FD00464A46 /* Frameworks */,
 				52CCC64E19AE90FD00464A46 /* Resources */,
 				6FEF1E6381AC487FB82C2FF1 /* Copy Pods Resources */,
+				EFCF5FC31B10051D00AD6F94 /* Embed App Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				EFCF5FBB1B10051D00AD6F94 /* PBXTargetDependency */,
 			);
 			name = "Impulse Shopper";
 			productName = "Impulse Shopper";
@@ -307,6 +412,39 @@
 			productName = "Impulse ShopperTests";
 			productReference = 52CCC66919AE90FD00464A46 /* Impulse ShopperTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		EFCF5F9B1B10051C00AD6F94 /* Instalist WatchKit Extension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = EFCF5FC21B10051D00AD6F94 /* Build configuration list for PBXNativeTarget "Instalist WatchKit Extension" */;
+			buildPhases = (
+				EFCF5F981B10051C00AD6F94 /* Sources */,
+				EFCF5F991B10051C00AD6F94 /* Frameworks */,
+				EFCF5F9A1B10051C00AD6F94 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				EFCF5FB11B10051D00AD6F94 /* PBXTargetDependency */,
+			);
+			name = "Instalist WatchKit Extension";
+			productName = "Instalist WatchKit Extension";
+			productReference = EFCF5F9C1B10051C00AD6F94 /* Instalist WatchKit Extension.appex */;
+			productType = "com.apple.product-type.watchkit-extension";
+		};
+		EFCF5FAD1B10051C00AD6F94 /* Instalist WatchKit App */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = EFCF5FC11B10051D00AD6F94 /* Build configuration list for PBXNativeTarget "Instalist WatchKit App" */;
+			buildPhases = (
+				EFCF5FAC1B10051C00AD6F94 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "Instalist WatchKit App";
+			productName = "Instalist WatchKit App";
+			productReference = EFCF5FAE1B10051C00AD6F94 /* Instalist WatchKit App.app */;
+			productType = "com.apple.product-type.application.watchapp";
 		};
 /* End PBXNativeTarget section */
 
@@ -333,6 +471,13 @@
 						CreatedOnToolsVersion = 6.0;
 						TestTargetID = 52CCC64F19AE90FD00464A46;
 					};
+					EFCF5F9B1B10051C00AD6F94 = {
+						CreatedOnToolsVersion = 6.3.2;
+						DevelopmentTeam = QVT76MD88U;
+					};
+					EFCF5FAD1B10051C00AD6F94 = {
+						CreatedOnToolsVersion = 6.3.2;
+					};
 				};
 			};
 			buildConfigurationList = 52CCC64B19AE90FD00464A46 /* Build configuration list for PBXProject "Impulse Shopper" */;
@@ -350,6 +495,8 @@
 			targets = (
 				52CCC64F19AE90FD00464A46 /* Impulse Shopper */,
 				52CCC66819AE90FD00464A46 /* Impulse ShopperTests */,
+				EFCF5F9B1B10051C00AD6F94 /* Instalist WatchKit Extension */,
+				EFCF5FAD1B10051C00AD6F94 /* Instalist WatchKit App */,
 			);
 		};
 /* End PBXProject section */
@@ -373,6 +520,24 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		EFCF5F9A1B10051C00AD6F94 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				EFCF5FAF1B10051D00AD6F94 /* Instalist WatchKit App.app in Resources */,
+				EFCF5FAB1B10051C00AD6F94 /* Images.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		EFCF5FAC1B10051C00AD6F94 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				EFCF5FB71B10051D00AD6F94 /* Interface.storyboard in Resources */,
+				EFCF5FB91B10051D00AD6F94 /* Images.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -445,6 +610,16 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		EFCF5F981B10051C00AD6F94 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				EFCF5FA61B10051C00AD6F94 /* NotificationController.m in Sources */,
+				EFCF5FA31B10051C00AD6F94 /* InterfaceController.m in Sources */,
+				EFCF5FA91B10051C00AD6F94 /* GlanceController.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -453,7 +628,28 @@
 			target = 52CCC64F19AE90FD00464A46 /* Impulse Shopper */;
 			targetProxy = 52CCC66A19AE90FD00464A46 /* PBXContainerItemProxy */;
 		};
+		EFCF5FB11B10051D00AD6F94 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = EFCF5FAD1B10051C00AD6F94 /* Instalist WatchKit App */;
+			targetProxy = EFCF5FB01B10051D00AD6F94 /* PBXContainerItemProxy */;
+		};
+		EFCF5FBB1B10051D00AD6F94 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = EFCF5F9B1B10051C00AD6F94 /* Instalist WatchKit Extension */;
+			targetProxy = EFCF5FBA1B10051D00AD6F94 /* PBXContainerItemProxy */;
+		};
 /* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		EFCF5FB51B10051D00AD6F94 /* Interface.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				EFCF5FB61B10051D00AD6F94 /* Base */,
+			);
+			name = Interface.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
 		52CCC67119AE90FD00464A46 /* Debug */ = {
@@ -545,8 +741,8 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_ENTITLEMENTS = "Impulse Shopper/Impulse Shopper.entitlements";
-				CODE_SIGN_IDENTITY = "iPhone Distribution: Justin Knag (QVT76MD88U)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Justin Knag (QVT76MD88U)";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_INCREASE_PRECOMPILED_HEADER_SHARING = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				INFOPLIST_FILE = "Impulse Shopper/Info.plist";
@@ -565,8 +761,8 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_ENTITLEMENTS = "Impulse Shopper/Impulse Shopper.entitlements";
-				CODE_SIGN_IDENTITY = "iPhone Distribution: Justin Knag (QVT76MD88U)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Justin Knag (QVT76MD88U)";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_INCREASE_PRECOMPILED_HEADER_SHARING = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				INFOPLIST_FILE = "Impulse Shopper/Info.plist";
@@ -616,6 +812,78 @@
 			};
 			name = Release;
 		};
+		EFCF5FBD1B10051D00AD6F94 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = "Instalist WatchKit Extension/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.2;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				PRODUCT_NAME = "${TARGET_NAME}";
+				SKIP_INSTALL = YES;
+			};
+			name = Debug;
+		};
+		EFCF5FBE1B10051D00AD6F94 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_NO_COMMON_BLOCKS = YES;
+				INFOPLIST_FILE = "Instalist WatchKit Extension/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.2;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				PRODUCT_NAME = "${TARGET_NAME}";
+				SKIP_INSTALL = YES;
+			};
+			name = Release;
+		};
+		EFCF5FBF1B10051D00AD6F94 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				IBSC_MODULE = Instalist_WatchKit_Extension;
+				INFOPLIST_FILE = "Instalist WatchKit App/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.2;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = 4;
+				"TARGETED_DEVICE_FAMILY[sdk=iphonesimulator*]" = "1,4";
+			};
+			name = Debug;
+		};
+		EFCF5FC01B10051D00AD6F94 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_NO_COMMON_BLOCKS = YES;
+				IBSC_MODULE = Instalist_WatchKit_Extension;
+				INFOPLIST_FILE = "Instalist WatchKit App/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.2;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = 4;
+				"TARGETED_DEVICE_FAMILY[sdk=iphonesimulator*]" = "1,4";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -645,6 +913,22 @@
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
+		};
+		EFCF5FC11B10051D00AD6F94 /* Build configuration list for PBXNativeTarget "Instalist WatchKit App" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				EFCF5FBF1B10051D00AD6F94 /* Debug */,
+				EFCF5FC01B10051D00AD6F94 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		EFCF5FC21B10051D00AD6F94 /* Build configuration list for PBXNativeTarget "Instalist WatchKit Extension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				EFCF5FBD1B10051D00AD6F94 /* Debug */,
+				EFCF5FBE1B10051D00AD6F94 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
 		};
 /* End XCConfigurationList section */
 
